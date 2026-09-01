@@ -15,7 +15,7 @@ Editor UI source is in `editor/`. Build compiled assets into `assets/build/`:
 ```bash
 cd editor
 npm install
-npm run build test
+npm run build
 ```
 
 Package a WordPress zip with `./package.sh` (not required on production sites).
