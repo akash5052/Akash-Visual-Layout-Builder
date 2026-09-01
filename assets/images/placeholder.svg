@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-label="Placeholder">
+  <rect width="1200" height="800" fill="#e2e8f0"/>
+  <rect x="40" y="40" width="1120" height="720" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <circle cx="430" cy="320" r="70" fill="#cbd5e1"/>
+  <polygon points="280,560 520,360 720,500 920,280 920,560" fill="#94a3b8"/>
+  <text x="600" y="660" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" fill="#64748b">Image</text>
+</svg>
