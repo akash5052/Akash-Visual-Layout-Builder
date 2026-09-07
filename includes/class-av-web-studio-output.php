@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Sanitize visual-builder HTML and generated CSS. Users cannot paste CSS/JS.
  */
-class EPB_Output {
+class Av_Web_Studio_Output {
 
 	/**
 	 * Allowed HTML for compiled visual markup.
@@ -156,7 +156,7 @@ class EPB_Output {
 			return '';
 		}
 		if (self::is_remote_stock_src($url)) {
-			return EPB_PLUGIN_URL . 'assets/images/placeholder.svg';
+			return AV_WEB_STUDIO_PLUGIN_URL . 'assets/images/placeholder.svg';
 		}
 		return $url;
 	}
@@ -176,7 +176,7 @@ class EPB_Output {
 			];
 		}
 
-		$compiled = EPB_Visual_Compile::compile(self::scrub_visual($doc));
+		$compiled = Av_Web_Studio_Visual_Compile::compile(self::scrub_visual($doc));
 
 		return [
 			'html' => self::kses_html($compiled['html'] ?? ''),

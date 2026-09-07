@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Smart template engine — generates context-aware sections from natural language prompts.
  */
-class EPB_AI_Templates {
+class Av_Web_Studio_AI_Templates {
 
 	/**
 	 * Generate code from a user prompt using intent detection.
@@ -24,7 +24,7 @@ class EPB_AI_Templates {
 
 		$title = self::extract_title($prompt);
 		$slug  = self::slug($title ?: 'section');
-		$topic = EPB_AI_Intent::extract_content_topic($prompt) ?: EPB_AI_Intent::extract_topic($prompt);
+		$topic = Av_Web_Studio_AI_Intent::extract_content_topic($prompt) ?: Av_Web_Studio_AI_Intent::extract_topic($prompt);
 
 		if (self::matches($p, ['pricing', 'plan card', 'plans', 'subscription', 'packages'])) {
 			$code = self::pricing_section($title, $slug, $topic);
@@ -44,18 +44,18 @@ class EPB_AI_Templates {
 			$code = self::newsletter_section($title, $slug);
 		} elseif (self::matches($p, ['feature', 'services', 'what we offer', 'benefits'])) {
 			$code = $topic
-				? EPB_AI_Content::features_section($topic, $title, $slug)
+				? Av_Web_Studio_AI_Content::features_section($topic, $title, $slug)
 				: self::features_section($title, $slug, $prompt);
 		} elseif (self::matches($p, ['saas', 'software', 'startup', 'platform', 'app landing'])) {
 			$code = $topic
-				? EPB_AI_Content::hero_section($topic, $title, $slug)
+				? Av_Web_Studio_AI_Content::hero_section($topic, $title, $slug)
 				: self::saas_hero($title, $slug);
 		} elseif (self::matches($p, ['hero', 'banner', 'landing', 'header section'])) {
-			$code = EPB_AI_Content::hero_section($topic ?: 'professional business', $title, $slug);
+			$code = Av_Web_Studio_AI_Content::hero_section($topic ?: 'professional business', $title, $slug);
 		} elseif ($topic && strlen($topic) > 3) {
-			$code = EPB_AI_Content::hero_section($topic, $title, $slug);
+			$code = Av_Web_Studio_AI_Content::hero_section($topic, $title, $slug);
 		} elseif ($title) {
-			$code = EPB_AI_Content::hero_section($topic ?: $title, $title, $slug);
+			$code = Av_Web_Studio_AI_Content::hero_section($topic ?: $title, $title, $slug);
 		} else {
 			$code = self::generic_content_section($slug);
 		}
@@ -73,7 +73,7 @@ class EPB_AI_Templates {
 	 * @return array
 	 */
 	public static function section_by_type($type, $title, $slug, $prompt = '') {
-		if (EPB_AI_Intent::is_bad_title($title)) {
+		if (Av_Web_Studio_AI_Intent::is_bad_title($title)) {
 			$title = 'Welcome';
 		}
 
@@ -94,8 +94,8 @@ class EPB_AI_Templates {
 				return self::features_section($title, $slug, $prompt);
 			case 'hero':
 			default:
-				$topic = EPB_AI_Intent::extract_content_topic($prompt) ?: EPB_AI_Intent::extract_topic($prompt) ?: $title;
-				return EPB_AI_Content::hero_section($topic, $title, $slug);
+				$topic = Av_Web_Studio_AI_Intent::extract_content_topic($prompt) ?: Av_Web_Studio_AI_Intent::extract_topic($prompt) ?: $title;
+				return Av_Web_Studio_AI_Content::hero_section($topic, $title, $slug);
 		}
 	}
 
@@ -107,7 +107,7 @@ class EPB_AI_Templates {
 	 * @return bool
 	 */
 	public static function page_has_section_type($html, $type) {
-		return EPB_AI_Editor::get_section_by_type($html, $type) !== null;
+		return Av_Web_Studio_AI_Editor::get_section_by_type($html, $type) !== null;
 	}
 
 	/**
@@ -121,22 +121,22 @@ class EPB_AI_Templates {
 		$p = strtolower($prompt);
 
 		if (self::wants_images($p) && stripos($code['html'], '<img') === false) {
-			$topic = EPB_AI_Intent::extract_image_topic($prompt) ?: EPB_AI_Intent::extract_topic($prompt) ?: 'modern professional website';
-			$img   = EPB_AI_Images::img_tag('Professional section image', $topic, 'epb-section-img', 1000, 520);
+			$topic = Av_Web_Studio_AI_Intent::extract_image_topic($prompt) ?: Av_Web_Studio_AI_Intent::extract_topic($prompt) ?: 'modern professional website';
+			$img   = Av_Web_Studio_AI_Images::img_tag('Professional section image', $topic, 'av-web-studio-section-img', 1000, 520);
 			$code['html'] = preg_replace('/(<section[^>]*>)/i', '$1' . "\n  " . $img, $code['html'], 1);
-			$code['css'] .= "\n.epb-section-img { width:100%; max-height:420px; object-fit:cover; border-radius:14px; margin-bottom:24px; display:block; }";
+			$code['css'] .= "\n.av-web-studio-section-img { width:100%; max-height:420px; object-fit:cover; border-radius:14px; margin-bottom:24px; display:block; }";
 		}
 
 		// Always include scroll-reveal motion; extra animation pass when requested.
-		if (strpos($code['js'], '__epbMotionInit') === false) {
-			$code['js'] = EPB_AI_Content::motion_js() . "\n" . $code['js'];
+		if (strpos($code['js'], '__avWebStudioMotionInit') === false) {
+			$code['js'] = Av_Web_Studio_AI_Content::motion_js() . "\n" . $code['js'];
 		}
-		if (strpos($code['css'], '[data-epb-reveal]') === false) {
-			$code['css'] .= "\n[data-epb-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}\n[data-epb-reveal].is-visible{opacity:1;transform:none;}\n@media(prefers-reduced-motion:reduce){[data-epb-reveal]{opacity:1;transform:none;transition:none;}}";
+		if (strpos($code['css'], '[data-av-web-studio-reveal]') === false) {
+			$code['css'] .= "\n[data-av-web-studio-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}\n[data-av-web-studio-reveal].is-visible{opacity:1;transform:none;}\n@media(prefers-reduced-motion:reduce){[data-av-web-studio-reveal]{opacity:1;transform:none;transition:none;}}";
 		}
 
 		if (self::wants_animation($p)) {
-			return EPB_AI_Editor::add_animations($code, 'all');
+			return Av_Web_Studio_AI_Editor::add_animations($code, 'all');
 		}
 
 		return $code;
@@ -214,7 +214,7 @@ class EPB_AI_Templates {
 			return '';
 		}
 
-		if (EPB_AI_Intent::is_complaint(strtolower($prompt))) {
+		if (Av_Web_Studio_AI_Intent::is_complaint(strtolower($prompt))) {
 			return '';
 		}
 
@@ -225,7 +225,7 @@ class EPB_AI_Templates {
 		foreach ($patterns as $pattern) {
 			if (preg_match($pattern, $prompt, $m)) {
 				$t = self::clean_title($m[1]);
-				if (strlen($t) > 2 && strlen($t) < 80 && !self::is_generic_title($t) && !EPB_AI_Intent::is_bad_title($t)) {
+				if (strlen($t) > 2 && strlen($t) < 80 && !self::is_generic_title($t) && !Av_Web_Studio_AI_Intent::is_bad_title($t)) {
 					return $t;
 				}
 			}
@@ -233,7 +233,7 @@ class EPB_AI_Templates {
 
 		if (strlen($prompt) < 70 && !self::is_command_prompt($prompt)) {
 			$t = self::clean_title($prompt);
-			if (!self::is_generic_title($t) && !EPB_AI_Intent::is_bad_title($t)) {
+			if (!self::is_generic_title($t) && !Av_Web_Studio_AI_Intent::is_bad_title($t)) {
 				return $t;
 			}
 		}
@@ -247,13 +247,13 @@ class EPB_AI_Templates {
 	}
 
 	private static function pricing_section($title, $slug, $topic = '') {
-		$p       = $topic ? EPB_AI_Profiles::get($topic, $title) : null;
+		$p       = $topic ? Av_Web_Studio_AI_Profiles::get($topic, $title) : null;
 		$accent  = $p ? esc_attr($p['accent']) : '#0f766e';
 		$heading = $title ?: ( $p ? 'Plans & Pricing' : 'Simple, Transparent Pricing' );
-		$img     = esc_url(EPB_AI_Images::relevant_url($topic ?: 'saas software', 1400, 520, 0, $title, 'hero', $heading));
+		$img     = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic ?: 'saas software', 1400, 520, 0, $title, 'hero', $heading));
 
 		$html = "<section class=\"{$slug}-pricing\">
-  <div class=\"{$slug}-pricing__banner\" style=\"background-image:url('{$img}')\" data-epb-reveal>
+  <div class=\"{$slug}-pricing__banner\" style=\"background-image:url('{$img}')\" data-av-web-studio-reveal>
     <div class=\"{$slug}-pricing__banner-overlay\"></div>
     <div class=\"{$slug}-pricing__banner-inner\">
       <h2>{$heading}</h2>
@@ -262,20 +262,20 @@ class EPB_AI_Templates {
   </div>
   <div class=\"{$slug}-pricing__inner\">
     <div class=\"{$slug}-pricing__grid\">
-      <article class=\"{$slug}-plan\" data-epb-reveal>
+      <article class=\"{$slug}-plan\" data-av-web-studio-reveal>
         <h3>Starter</h3>
         <p class=\"{$slug}-plan__price\"><span>\\$9</span>/mo</p>
         <ul><li>5 Projects</li><li>Basic Analytics</li><li>Email Support</li></ul>
         <button class=\"{$slug}-plan__btn\">Get Started</button>
       </article>
-      <article class=\"{$slug}-plan {$slug}-plan--featured\" data-epb-reveal data-epb-delay=\"80\">
+      <article class=\"{$slug}-plan {$slug}-plan--featured\" data-av-web-studio-reveal data-av-web-studio-delay=\"80\">
         <span class=\"{$slug}-plan__badge\">Popular</span>
         <h3>Pro</h3>
         <p class=\"{$slug}-plan__price\"><span>\\$29</span>/mo</p>
         <ul><li>Unlimited Projects</li><li>Advanced Analytics</li><li>Priority Support</li><li>Custom Domain</li></ul>
         <button class=\"{$slug}-plan__btn {$slug}-plan__btn--primary\">Get Started</button>
       </article>
-      <article class=\"{$slug}-plan\" data-epb-reveal data-epb-delay=\"160\">
+      <article class=\"{$slug}-plan\" data-av-web-studio-reveal data-av-web-studio-delay=\"160\">
         <h3>Enterprise</h3>
         <p class=\"{$slug}-plan__price\"><span>\\$99</span>/mo</p>
         <ul><li>Everything in Pro</li><li>SSO &amp; SAML</li><li>Dedicated Manager</li><li>SLA Guarantee</li></ul>
@@ -311,18 +311,18 @@ class EPB_AI_Templates {
 
 	private static function contact_section($title, $slug) {
 		$heading = $title ?: 'Get In Touch';
-		$img     = esc_url(EPB_AI_Images::relevant_url('professional office meeting', 900, 1100, 0, $heading, 'contact', $heading));
+		$img     = esc_url(Av_Web_Studio_AI_Images::relevant_url('professional office meeting', 900, 1100, 0, $heading, 'contact', $heading));
 
 		$html = "<section class=\"{$slug}-contact\">
   <div class=\"{$slug}-contact__grid\">
-    <div class=\"{$slug}-contact__visual\" data-epb-reveal=\"left\">
+    <div class=\"{$slug}-contact__visual\" data-av-web-studio-reveal=\"left\">
       <img src=\"{$img}\" alt=\"Contact our team\" loading=\"lazy\" width=\"900\" height=\"1100\" />
       <div class=\"{$slug}-contact__card\">
         <strong>We reply within 24 hours</strong>
         <p>hello@example.com · Mon–Fri 9–6</p>
       </div>
     </div>
-    <div class=\"{$slug}-contact__inner\" data-epb-reveal=\"right\">
+    <div class=\"{$slug}-contact__inner\" data-av-web-studio-reveal=\"right\">
       <p class=\"{$slug}-contact__eyebrow\">Contact</p>
       <h2>{$heading}</h2>
       <p>We'd love to hear from you. Fill out the form and we'll respond within 24 hours.</p>
@@ -375,19 +375,19 @@ class EPB_AI_Templates {
 
 	private static function gallery_section($title, $slug, $prompt = '', $topic = '') {
 		$heading  = $title ?: 'Our Portfolio';
-		$topic    = $topic ?: EPB_AI_Intent::extract_image_topic($prompt) ?: EPB_AI_Intent::extract_topic($prompt) ?: 'creative portfolio';
-		$industry = EPB_AI_Images::industry_for_topic($topic);
-		$label    = EPB_AI_Images::industry_label($industry);
+		$topic    = $topic ?: Av_Web_Studio_AI_Intent::extract_image_topic($prompt) ?: Av_Web_Studio_AI_Intent::extract_topic($prompt) ?: 'creative portfolio';
+		$industry = Av_Web_Studio_AI_Images::industry_for_topic($topic);
+		$label    = Av_Web_Studio_AI_Images::industry_label($industry);
 		$items    = '';
 		for ($i = 0; $i < 8; $i++) {
-			$src   = EPB_AI_Images::relevant_url($topic, 720, 540, $i, '', 'gallery', $heading);
-			$alt   = EPB_AI_Images::descriptive_alt($topic, $industry, $i, $heading);
+			$src   = Av_Web_Studio_AI_Images::relevant_url($topic, 720, 540, $i, '', 'gallery', $heading);
+			$alt   = Av_Web_Studio_AI_Images::descriptive_alt($topic, $industry, $i, $heading);
 			$cap   = ucfirst($label) . ' ' . ( $i + 1 );
 			$span  = in_array($i, [0, 5], true) ? ' ' . $slug . '-gallery__item--wide' : '';
-			$items .= '<figure class="' . $slug . '-gallery__item' . $span . '" data-epb-reveal data-epb-delay="' . ( $i * 50 ) . '"><img src="' . esc_url($src) . '" alt="' . esc_attr($alt) . '" loading="lazy" /><figcaption>' . esc_html($cap) . '</figcaption></figure>';
+			$items .= '<figure class="' . $slug . '-gallery__item' . $span . '" data-av-web-studio-reveal data-av-web-studio-delay="' . ( $i * 50 ) . '"><img src="' . esc_url($src) . '" alt="' . esc_attr($alt) . '" loading="lazy" /><figcaption>' . esc_html($cap) . '</figcaption></figure>';
 		}
 
-		$html = "<section class=\"{$slug}-gallery\"><div class=\"{$slug}-gallery__inner\"><header data-epb-reveal><p class=\"{$slug}-gallery__eyebrow\">Showcase</p><h2>{$heading}</h2></header><div class=\"{$slug}-gallery__grid\">{$items}</div></div></section>";
+		$html = "<section class=\"{$slug}-gallery\"><div class=\"{$slug}-gallery__inner\"><header data-av-web-studio-reveal><p class=\"{$slug}-gallery__eyebrow\">Showcase</p><h2>{$heading}</h2></header><div class=\"{$slug}-gallery__grid\">{$items}</div></div></section>";
 
 		$css = ".{$slug}-gallery { padding:100px 20px; background:#090d18; width:100%; font-family:'Outfit',system-ui,sans-serif; }
 .{$slug}-gallery__inner { max-width:1200px; margin:0 auto; }
@@ -421,15 +421,15 @@ class EPB_AI_Templates {
 		];
 		$cards = '';
 		foreach ($items as $i => $item) {
-			$src = esc_url(EPB_AI_Images::relevant_url($topic, 480, 360, $i, $heading, 'menu', $item[0]));
-			$cards .= '<article class="' . $slug . '-menu__item" data-epb-reveal data-epb-delay="' . ( $i * 60 ) . '">'
+			$src = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 480, 360, $i, $heading, 'menu', $item[0]));
+			$cards .= '<article class="' . $slug . '-menu__item" data-av-web-studio-reveal data-av-web-studio-delay="' . ( $i * 60 ) . '">'
 				. '<img src="' . $src . '" alt="' . esc_attr($item[0]) . '" loading="lazy" />'
 				. '<div><h4>' . esc_html($item[0]) . '</h4><p>' . esc_html($item[1]) . '</p><span>' . esc_html($item[2]) . '</span></div></article>';
 		}
 
 		$html = "<section class=\"{$slug}-menu\">
   <div class=\"{$slug}-menu__inner\">
-    <header data-epb-reveal>
+    <header data-av-web-studio-reveal>
       <h2>{$heading}</h2>
       <p class=\"{$slug}-menu__sub\">Freshly prepared with love every day</p>
     </header>
@@ -457,7 +457,7 @@ class EPB_AI_Templates {
 
 	private static function testimonials_section($title, $slug, $topic = '') {
 		$heading = $title ?: 'What Our Customers Say';
-		$p       = $topic ? EPB_AI_Profiles::get($topic, $title) : null;
+		$p       = $topic ? Av_Web_Studio_AI_Profiles::get($topic, $title) : null;
 		$accent  = $p ? esc_attr($p['accent']) : '#0f766e';
 		$topic   = $topic ?: 'professional business';
 		$blocks  = '';
@@ -467,13 +467,13 @@ class EPB_AI_Templates {
 			['quote' => 'Clean design, powerful features, and outstanding support. Highly recommend!', 'name' => 'Priya K.', 'role' => 'Designer'],
 		];
 		foreach ($source as $i => $t) {
-			$avatar = esc_url(EPB_AI_Images::relevant_url($topic, 96, 96, $i + 10, $heading, 'team', $t['name']));
-			$blocks .= '<blockquote data-epb-reveal data-epb-delay="' . ( $i * 80 ) . '"><div class="' . $slug . '-stars">★★★★★</div><p>"' . esc_html($t['quote']) . '"</p><footer><img src="' . $avatar . '" alt="" loading="lazy" /><cite>— ' . esc_html($t['name']) . ', ' . esc_html($t['role']) . '</cite></footer></blockquote>';
+			$avatar = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 96, 96, $i + 10, $heading, 'team', $t['name']));
+			$blocks .= '<blockquote data-av-web-studio-reveal data-av-web-studio-delay="' . ( $i * 80 ) . '"><div class="' . $slug . '-stars">★★★★★</div><p>"' . esc_html($t['quote']) . '"</p><footer><img src="' . $avatar . '" alt="" loading="lazy" /><cite>— ' . esc_html($t['name']) . ', ' . esc_html($t['role']) . '</cite></footer></blockquote>';
 		}
 
 		$html = "<section class=\"{$slug}-testimonials\">
   <div class=\"{$slug}-testimonials__inner\">
-    <h2 data-epb-reveal>{$heading}</h2>
+    <h2 data-av-web-studio-reveal>{$heading}</h2>
     <div class=\"{$slug}-testimonials__grid\">{$blocks}</div>
   </div>
 </section>";
@@ -497,25 +497,25 @@ class EPB_AI_Templates {
 
 	private static function faq_section($title, $slug, $topic = '') {
 		$heading = $title ?: 'Frequently Asked Questions';
-		$p       = $topic ? EPB_AI_Profiles::get($topic, $title) : null;
+		$p       = $topic ? Av_Web_Studio_AI_Profiles::get($topic, $title) : null;
 		$accent  = $p ? esc_attr($p['accent']) : '#0f766e';
 		$items   = '';
 		if ($p && ! empty($p['faq'])) {
 			$i = 0;
 			foreach ($p['faq'] as $item) {
 				$open   = $i === 0 ? ' open' : '';
-				$items .= '<details class="' . $slug . '-faq__item" data-epb-reveal' . $open . '><summary>' . esc_html($item['q']) . '</summary><p>' . esc_html($item['a']) . '</p></details>';
+				$items .= '<details class="' . $slug . '-faq__item" data-av-web-studio-reveal' . $open . '><summary>' . esc_html($item['q']) . '</summary><p>' . esc_html($item['a']) . '</p></details>';
 				++$i;
 			}
 		} else {
-			$items = '<details class="' . $slug . '-faq__item" data-epb-reveal open><summary>How do I get started?</summary><p>Sign up for a free account and follow our quick setup guide.</p></details>'
-				. '<details class="' . $slug . '-faq__item" data-epb-reveal><summary>Can I cancel anytime?</summary><p>Yes — no long-term contracts. Cancel anytime from settings.</p></details>'
-				. '<details class="' . $slug . '-faq__item" data-epb-reveal><summary>Do you offer refunds?</summary><p>30-day money-back guarantee on all paid plans.</p></details>';
+			$items = '<details class="' . $slug . '-faq__item" data-av-web-studio-reveal open><summary>How do I get started?</summary><p>Sign up for a free account and follow our quick setup guide.</p></details>'
+				. '<details class="' . $slug . '-faq__item" data-av-web-studio-reveal><summary>Can I cancel anytime?</summary><p>Yes — no long-term contracts. Cancel anytime from settings.</p></details>'
+				. '<details class="' . $slug . '-faq__item" data-av-web-studio-reveal><summary>Do you offer refunds?</summary><p>30-day money-back guarantee on all paid plans.</p></details>';
 		}
 
 		$html = "<section class=\"{$slug}-faq\">
   <div class=\"{$slug}-faq__inner\">
-    <h2 data-epb-reveal>{$heading}</h2>
+    <h2 data-av-web-studio-reveal>{$heading}</h2>
     <div class=\"{$slug}-faq__list\">{$items}</div>
   </div>
 </section>";
@@ -537,8 +537,8 @@ class EPB_AI_Templates {
 
 	private static function team_section($title, $slug, $prompt = '', $topic = '') {
 		$heading = $title ?: 'Meet Our Team';
-		$ind     = EPB_AI_Images::industry_for_topic($topic ?: EPB_AI_Intent::extract_topic($prompt));
-		$label   = EPB_AI_Images::industry_label($ind);
+		$ind     = Av_Web_Studio_AI_Images::industry_for_topic($topic ?: Av_Web_Studio_AI_Intent::extract_topic($prompt));
+		$label   = Av_Web_Studio_AI_Images::industry_label($ind);
 		$members = [
 			['Alex Rivera', 'CEO & Founder'],
 			['Maya Chen', 'Head of Design'],
@@ -547,14 +547,14 @@ class EPB_AI_Templates {
 		];
 		$cards = '';
 		foreach ($members as $i => $m) {
-			$img = EPB_AI_Images::relevant_url($topic ?: $label, 480, 560, $i, '', 'team', $m[0] . ' ' . $m[1]);
+			$img = Av_Web_Studio_AI_Images::relevant_url($topic ?: $label, 480, 560, $i, '', 'team', $m[0] . ' ' . $m[1]);
 			$alt = $m[0] . ', ' . $m[1] . ' at ' . $label;
-			$cards .= '<article data-epb-reveal data-epb-delay="' . ( $i * 70 ) . '"><div class="' . $slug . '-team__photo-wrap"><img class="' . $slug . '-team__photo" src="' . esc_url($img) . '" alt="' . esc_attr($alt) . '" loading="lazy" /></div><h4>' . esc_html($m[0]) . '</h4><p>' . esc_html($m[1]) . '</p></article>';
+			$cards .= '<article data-av-web-studio-reveal data-av-web-studio-delay="' . ( $i * 70 ) . '"><div class="' . $slug . '-team__photo-wrap"><img class="' . $slug . '-team__photo" src="' . esc_url($img) . '" alt="' . esc_attr($alt) . '" loading="lazy" /></div><h4>' . esc_html($m[0]) . '</h4><p>' . esc_html($m[1]) . '</p></article>';
 		}
 
 		$html = "<section class=\"{$slug}-team\">
   <div class=\"{$slug}-team__inner\">
-    <header data-epb-reveal>
+    <header data-av-web-studio-reveal>
       <h2>{$heading}</h2>
       <p class=\"{$slug}-team__sub\">Passionate people building great products</p>
     </header>
@@ -580,12 +580,12 @@ class EPB_AI_Templates {
 
 	private static function newsletter_section($title, $slug) {
 		$heading = $title ?: 'Stay in the Loop';
-		$img     = esc_url(EPB_AI_Images::relevant_url('newsletter creative workspace', 1400, 700, 0, $heading, 'hero', $heading));
+		$img     = esc_url(Av_Web_Studio_AI_Images::relevant_url('newsletter creative workspace', 1400, 700, 0, $heading, 'hero', $heading));
 
 		$html = "<section class=\"{$slug}-newsletter\">
   <div class=\"{$slug}-newsletter__bg\" style=\"background-image:url('{$img}')\"></div>
   <div class=\"{$slug}-newsletter__overlay\"></div>
-  <div class=\"{$slug}-newsletter__inner\" data-epb-reveal>
+  <div class=\"{$slug}-newsletter__inner\" data-av-web-studio-reveal>
     <h2>{$heading}</h2>
     <p>Subscribe for updates, tips, and exclusive offers.</p>
     <form class=\"{$slug}-newsletter__form\" id=\"{$slug}-nl-form\">
@@ -615,7 +615,7 @@ class EPB_AI_Templates {
 
 	private static function features_section($title, $slug, $prompt) {
 		$heading = $title ?: 'Why Choose Us';
-		$topic   = EPB_AI_Intent::extract_content_topic($prompt) ?: EPB_AI_Intent::extract_topic($prompt) ?: 'professional business';
+		$topic   = Av_Web_Studio_AI_Intent::extract_content_topic($prompt) ?: Av_Web_Studio_AI_Intent::extract_topic($prompt) ?: 'professional business';
 		$items   = [
 			['⚡', 'Lightning Fast', 'Optimized performance for the best user experience.'],
 			['🔒', 'Secure', 'Enterprise-grade security to protect your data.'],
@@ -624,13 +624,13 @@ class EPB_AI_Templates {
 		];
 		$cards = '';
 		foreach ($items as $i => $item) {
-			$img = esc_url(EPB_AI_Images::relevant_url($topic, 640, 420, $i, $heading, 'features', $item[1]));
-			$cards .= '<article data-epb-reveal data-epb-delay="' . ( $i * 70 ) . '"><div class="' . $slug . '-features__media"><img src="' . $img . '" alt="" loading="lazy" /></div><div class="' . $slug . '-features__body"><div class="' . $slug . '-features__icon">' . $item[0] . '</div><h3>' . esc_html($item[1]) . '</h3><p>' . esc_html($item[2]) . '</p></div></article>';
+			$img = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 640, 420, $i, $heading, 'features', $item[1]));
+			$cards .= '<article data-av-web-studio-reveal data-av-web-studio-delay="' . ( $i * 70 ) . '"><div class="' . $slug . '-features__media"><img src="' . $img . '" alt="" loading="lazy" /></div><div class="' . $slug . '-features__body"><div class="' . $slug . '-features__icon">' . $item[0] . '</div><h3>' . esc_html($item[1]) . '</h3><p>' . esc_html($item[2]) . '</p></div></article>';
 		}
 
 		$html = "<section class=\"{$slug}-features\">
   <div class=\"{$slug}-features__inner\">
-    <h2 data-epb-reveal>{$heading}</h2>
+    <h2 data-av-web-studio-reveal>{$heading}</h2>
     <div class=\"{$slug}-features__grid\">{$cards}</div>
   </div>
 </section>";
@@ -656,16 +656,16 @@ class EPB_AI_Templates {
 
 	private static function saas_hero($title, $slug) {
 		$heading = $title ?: 'Build Faster, Ship Smarter';
-		$img     = esc_url(EPB_AI_Images::relevant_url('saas software startup dashboard', 1600, 900, 0, $heading, 'hero', $heading));
+		$img     = esc_url(Av_Web_Studio_AI_Images::relevant_url('saas software startup dashboard', 1600, 900, 0, $heading, 'hero', $heading));
 
 		$html = "<section class=\"{$slug}-hero\">
   <div class=\"{$slug}-hero__bg\" style=\"background-image:url('{$img}')\"></div>
   <div class=\"{$slug}-hero__overlay\"></div>
   <div class=\"{$slug}-hero__inner\">
-    <span class=\"{$slug}-hero__badge\" data-epb-reveal>New: AI-Powered Workflows</span>
-    <h1 data-epb-reveal data-epb-delay=\"80\">{$heading}</h1>
-    <p data-epb-reveal data-epb-delay=\"140\">The all-in-one platform that helps teams collaborate, automate, and scale without limits.</p>
-    <div class=\"{$slug}-hero__actions\" data-epb-reveal data-epb-delay=\"200\">
+    <span class=\"{$slug}-hero__badge\" data-av-web-studio-reveal>New: AI-Powered Workflows</span>
+    <h1 data-av-web-studio-reveal data-av-web-studio-delay=\"80\">{$heading}</h1>
+    <p data-av-web-studio-reveal data-av-web-studio-delay=\"140\">The all-in-one platform that helps teams collaborate, automate, and scale without limits.</p>
+    <div class=\"{$slug}-hero__actions\" data-av-web-studio-reveal data-av-web-studio-delay=\"200\">
       <button class=\"{$slug}-hero__btn {$slug}-hero__btn--primary\">Start Free Trial</button>
       <button class=\"{$slug}-hero__btn\">Watch Demo</button>
     </div>
@@ -699,14 +699,14 @@ class EPB_AI_Templates {
 			['🔧', 'Full Control', 'Every section, column, and widget is fully editable.'],
 		];
 		foreach ($items as $i => $item) {
-			$img = esc_url(EPB_AI_Images::relevant_url($topic, 640, 420, $i, 'Why Choose Us', 'features', $item[1]));
-			$cards .= '<article data-epb-reveal data-epb-delay="' . ( $i * 80 ) . '"><img src="' . $img . '" alt="" loading="lazy" /><span class="' . $slug . '-block__icon">' . $item[0] . '</span><h3>' . esc_html($item[1]) . '</h3><p>' . esc_html($item[2]) . '</p></article>';
+			$img = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 640, 420, $i, 'Why Choose Us', 'features', $item[1]));
+			$cards .= '<article data-av-web-studio-reveal data-av-web-studio-delay="' . ( $i * 80 ) . '"><img src="' . $img . '" alt="" loading="lazy" /><span class="' . $slug . '-block__icon">' . $item[0] . '</span><h3>' . esc_html($item[1]) . '</h3><p>' . esc_html($item[2]) . '</p></article>';
 		}
 
 		$html = "<section class=\"{$slug}-block\">
   <div class=\"{$slug}-block__inner\">
-    <h2 data-epb-reveal>Why Choose Us</h2>
-    <p class=\"{$slug}-block__sub\" data-epb-reveal>Everything you need to build a beautiful, high-converting page.</p>
+    <h2 data-av-web-studio-reveal>Why Choose Us</h2>
+    <p class=\"{$slug}-block__sub\" data-av-web-studio-reveal>Everything you need to build a beautiful, high-converting page.</p>
     <div class=\"{$slug}-block__grid\">{$cards}</div>
   </div>
 </section>";

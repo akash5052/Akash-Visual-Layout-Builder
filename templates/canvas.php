@@ -1,8 +1,8 @@
 <?php
 /**
- * EPB Canvas — minimal page shell without theme header or footer.
+ * AV Web Studio Canvas — minimal page shell without theme header or footer.
  *
- * @package WPVisualX
+ * @package AV Web Studio
  */
 
 if (!defined('ABSPATH')) {
@@ -16,9 +16,9 @@ if (!defined('ABSPATH')) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class('epb-canvas-template'); ?>>
+<body <?php body_class('av-web-studio-canvas-template'); ?>>
 <?php wp_body_open(); ?>
-<main id="epb-canvas-content" class="epb-canvas-content">
+<main id="av-web-studio-canvas-content" class="av-web-studio-canvas-content">
 <?php
 while (have_posts()) {
 	the_post();

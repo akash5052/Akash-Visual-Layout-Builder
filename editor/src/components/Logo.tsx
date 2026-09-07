@@ -36,15 +36,14 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Logo({ compact = false }: LogoProps) {
   if (compact) {
-    return <LogoMark className="epb-logo__mark epb-logo__mark--animated" />;
+    return <LogoMark className="av-web-studio-logo__mark av-web-studio-logo__mark--animated" />;
   }
 
   return (
-    <div className="epb-logo" aria-label="WPVisualX">
-      <LogoMark className="epb-logo__mark epb-logo__mark--animated" />
-      <span className="epb-logo__text">
-        <span className="epb-logo__brand">WPVisual</span>
-        <span className="epb-logo__brand epb-logo__brand--accent">X</span>
+    <div className="av-web-studio-logo" aria-label="AV Web Studio">
+      <LogoMark className="av-web-studio-logo__mark av-web-studio-logo__mark--animated" />
+      <span className="av-web-studio-logo__text">
+        <span className="av-web-studio-logo__brand">AV Web Studio</span>
       </span>
     </div>
   );

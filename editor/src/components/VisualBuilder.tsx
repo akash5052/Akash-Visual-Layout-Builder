@@ -93,7 +93,7 @@ type DragPayload =
 
 type InspectorTab = "content" | "style";
 
-const DND_MIME = "application/x-epb-widget";
+const DND_MIME = "application/x-av-web-studio-widget";
 
 function emit(doc: VisualDocument, onChange: VisualBuilderProps["onChange"]) {
   onChange(doc, compileVisualDocument(doc));
@@ -504,45 +504,45 @@ export function VisualBuilder({
 
   return (
     <div
-      className={`epb-visual ${dragging ? "is-dragging" : ""}${railOpen ? "" : " is-rail-collapsed"}${inspectorOpen ? "" : " is-inspector-collapsed"}`}
+      className={`av-web-studio-visual ${dragging ? "is-dragging" : ""}${railOpen ? "" : " is-rail-collapsed"}${inspectorOpen ? "" : " is-inspector-collapsed"}`}
     >
-      <div className={`epb-visual__side epb-visual__side--left${railOpen ? "" : " is-collapsed"}`}>
-        <aside className="epb-visual__rail" aria-label="Elements" aria-hidden={!railOpen}>
-        <div className="epb-visual__panel-head">
+      <div className={`av-web-studio-visual__side av-web-studio-visual__side--left${railOpen ? "" : " is-collapsed"}`}>
+        <aside className="av-web-studio-visual__rail" aria-label="Elements" aria-hidden={!railOpen}>
+        <div className="av-web-studio-visual__panel-head">
           <h3>Elements</h3>
-          <p className="epb-visual__panel-sub">Add sections &amp; widgets</p>
+          <p className="av-web-studio-visual__panel-sub">Add sections &amp; widgets</p>
         </div>
 
-        <div className="epb-visual__rail-block">
-          <h4 className="epb-visual__rail-label">Sections</h4>
-          <div className="epb-visual__preset-grid">
+        <div className="av-web-studio-visual__rail-block">
+          <h4 className="av-web-studio-visual__rail-label">Sections</h4>
+          <div className="av-web-studio-visual__preset-grid">
             {SECTION_PRESETS.map((preset) => (
               <button
                 key={preset.label}
                 type="button"
-                className="epb-visual__preset"
+                className="av-web-studio-visual__preset"
                 onClick={() => handleAddSection(preset.columns)}
                 title={`Add ${preset.label} section`}
               >
-                <span className={`epb-visual__preset-icon epb-visual__preset-icon--${preset.columns}`} aria-hidden="true" />
-                <span className="epb-visual__preset-label">{preset.label}</span>
+                <span className={`av-web-studio-visual__preset-icon av-web-studio-visual__preset-icon--${preset.columns}`} aria-hidden="true" />
+                <span className="av-web-studio-visual__preset-label">{preset.label}</span>
               </button>
             ))}
           </div>
         </div>
 
-        <div className="epb-visual__rail-block">
-          <h4 className="epb-visual__rail-label">Widgets</h4>
-          <p className="epb-visual__hint">Drag onto the canvas, or click to add.</p>
+        <div className="av-web-studio-visual__rail-block">
+          <h4 className="av-web-studio-visual__rail-label">Widgets</h4>
+          <p className="av-web-studio-visual__hint">Drag onto the canvas, or click to add.</p>
           {WIDGET_CATEGORIES.map((category) => (
-            <div key={category.id} className="epb-visual__widget-cat">
-              <h5 className="epb-visual__widget-cat-title">{category.label}</h5>
-              <div className="epb-visual__widget-grid epb-visual__widget-grid--tiles">
+            <div key={category.id} className="av-web-studio-visual__widget-cat">
+              <h5 className="av-web-studio-visual__widget-cat-title">{category.label}</h5>
+              <div className="av-web-studio-visual__widget-grid av-web-studio-visual__widget-grid--tiles">
                 {category.items.map((item) => (
                   <button
                     key={item.type}
                     type="button"
-                    className="epb-visual__widget-tile"
+                    className="av-web-studio-visual__widget-tile"
                     title={`${item.hint} — drag or click`}
                     draggable
                     onDragStart={(e) => {
@@ -555,10 +555,10 @@ export function VisualBuilder({
                     }}
                     onClick={() => handleAddWidget(item.type)}
                   >
-                    <span className="epb-visual__widget-tile-icon" aria-hidden="true">
+                    <span className="av-web-studio-visual__widget-tile-icon" aria-hidden="true">
                       {WIDGET_ICONS[item.type] || item.icon}
                     </span>
-                    <span className="epb-visual__widget-tile-label">{item.label}</span>
+                    <span className="av-web-studio-visual__widget-tile-label">{item.label}</span>
                   </button>
                 ))}
               </div>
@@ -574,22 +574,22 @@ export function VisualBuilder({
         />
       </div>
 
-      <div className="epb-visual__canvas-wrap">
-        <div className="epb-visual__canvas-toolbar">
-          <div className="epb-visual__canvas-toolbar-left">
-            <span className="epb-visual__canvas-title">Canvas</span>
+      <div className="av-web-studio-visual__canvas-wrap">
+        <div className="av-web-studio-visual__canvas-toolbar">
+          <div className="av-web-studio-visual__canvas-toolbar-left">
+            <span className="av-web-studio-visual__canvas-title">Canvas</span>
             {selection ? (
-              <span className="epb-visual__breadcrumb">
-                <span className="epb-visual__breadcrumb-sep">/</span>
+              <span className="av-web-studio-visual__breadcrumb">
+                <span className="av-web-studio-visual__breadcrumb-sep">/</span>
                 {selectionMeta.title}
               </span>
             ) : null}
           </div>
-          <div className="epb-visual__canvas-toolbar-right">
+          <div className="av-web-studio-visual__canvas-toolbar-right">
             {onDevicePreviewChange ? (
               <DeviceSwitcher value={devicePreview} onChange={onDevicePreviewChange} />
             ) : null}
-            <span className={`epb-visual__canvas-note ${dragging ? "is-live" : ""}`}>
+            <span className={`av-web-studio-visual__canvas-note ${dragging ? "is-live" : ""}`}>
               {dragging
                 ? "Drop on a blue line or highlighted column"
                 : `${DEVICE_PREVIEW_LABELS[devicePreview]} · Click to select · Drag to rearrange`}
@@ -597,24 +597,24 @@ export function VisualBuilder({
           </div>
         </div>
         <div
-          className={`epb-visual__canvas epb-visual__canvas--${devicePreview}${doc.sections.length === 0 ? " epb-visual__canvas--blank" : ""}`}
+          className={`av-web-studio-visual__canvas av-web-studio-visual__canvas--${devicePreview}${doc.sections.length === 0 ? " av-web-studio-visual__canvas--blank" : ""}`}
           onClick={() => {
             setSelection(null);
             setShowStructurePicker(false);
           }}
         >
           <div
-            className="epb-visual__canvas-device"
+            className="av-web-studio-visual__canvas-device"
             style={
               devicePreview === "desktop"
                 ? { width: "100%", maxWidth: "100%" }
                 : { width: DEVICE_PREVIEW_WIDTHS[devicePreview], maxWidth: "100%" }
             }
           >
-          <div className="epb-visual__page">
+          <div className="av-web-studio-visual__page">
           {doc.sections.length === 0 ? (
             <div
-              className="epb-visual__empty"
+              className="av-web-studio-visual__empty"
               onDragOver={(e) => {
                 if (readDragPayload(e)) {
                   e.preventDefault();
@@ -623,11 +623,11 @@ export function VisualBuilder({
               }}
               onDrop={handleEmptyDrop}
             >
-              <div className="epb-visual__empty-zone">
-                <div className="epb-visual__empty-actions-row">
+              <div className="av-web-studio-visual__empty-zone">
+                <div className="av-web-studio-visual__empty-actions-row">
                   <button
                     type="button"
-                    className="epb-visual__empty-circle epb-visual__empty-circle--add"
+                    className="av-web-studio-visual__empty-circle av-web-studio-visual__empty-circle--add"
                     title="Add section"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -638,14 +638,14 @@ export function VisualBuilder({
                   </button>
                 </div>
                 {showStructurePicker ? (
-                  <div className="epb-visual__structure-picker">
-                    <p className="epb-visual__structure-picker-title">Select structure</p>
-                    <div className="epb-visual__structure-picker-grid">
+                  <div className="av-web-studio-visual__structure-picker">
+                    <p className="av-web-studio-visual__structure-picker-title">Select structure</p>
+                    <div className="av-web-studio-visual__structure-picker-grid">
                       {SECTION_PRESETS.map((preset) => (
                         <button
                           key={preset.label}
                           type="button"
-                          className="epb-visual__structure-preset"
+                          className="av-web-studio-visual__structure-preset"
                           title={`Add ${preset.label} section`}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -653,7 +653,7 @@ export function VisualBuilder({
                           }}
                         >
                           <span
-                            className={`epb-visual__preset-icon epb-visual__preset-icon--${preset.columns}`}
+                            className={`av-web-studio-visual__preset-icon av-web-studio-visual__preset-icon--${preset.columns}`}
                             aria-hidden="true"
                           />
                         </button>
@@ -661,7 +661,7 @@ export function VisualBuilder({
                     </div>
                   </div>
                 ) : null}
-                <p className="epb-visual__empty-hint">Drag widget here</p>
+                <p className="av-web-studio-visual__empty-hint">Drag widget here</p>
               </div>
             </div>
           ) : (
@@ -674,7 +674,7 @@ export function VisualBuilder({
             return (
             <div
               key={section.id}
-              className={`epb-visual-section ${selection?.kind === "section" && selection.sectionId === section.id ? "is-selected" : ""}`}
+              className={`av-web-studio-visual-section ${selection?.kind === "section" && selection.sectionId === section.id ? "is-selected" : ""}`}
               style={{
                 background: sectionSettings.background,
                 color: sectionSettings.textColor,
@@ -703,9 +703,9 @@ export function VisualBuilder({
               }}
               onContextMenu={(e) => openContextMenu(e, { kind: "section", sectionId: section.id })}
             >
-              <div className="epb-visual-section__chrome">
+              <div className="av-web-studio-visual-section__chrome">
                 <StructureIcon kind="section" title={`Section ${sectionIndex + 1}`} />
-                <div className="epb-visual-section__actions">
+                <div className="av-web-studio-visual-section__actions">
                   <ChromeIconButton
                     title="Add column"
                     variant="add"
@@ -728,7 +728,7 @@ export function VisualBuilder({
               </div>
 
               <div
-                className="epb-visual-section__row"
+                className="av-web-studio-visual-section__row"
                 style={{
                   maxWidth:
                     typeof sectionSettings.contentWidth === "number"
@@ -810,7 +810,7 @@ export function VisualBuilder({
                               }
                             />
                             <div
-                              className={`epb-visual-inner ${
+                              className={`av-web-studio-visual-inner ${
                                 selection?.kind === "inner-section" && selection.innerSectionId === child.id
                                   ? "is-selected"
                                   : ""
@@ -833,9 +833,9 @@ export function VisualBuilder({
                                 })
                               }
                             >
-                              <div className="epb-visual-inner__chrome">
+                              <div className="av-web-studio-visual-inner__chrome">
                                 <StructureIcon kind="inner-section" title="Inner section" />
-                                <div className="epb-visual-inner__actions">
+                                <div className="av-web-studio-visual-inner__actions">
                                   <ChromeIconButton
                                     title="Add column"
                                     variant="add"
@@ -864,7 +864,7 @@ export function VisualBuilder({
                                 </div>
                               </div>
                               <div
-                                className="epb-visual-inner__row"
+                                className="av-web-studio-visual-inner__row"
                                 style={{
                                   gap: (() => {
                                     const innerSettings = resolveSectionSettings(
@@ -1120,7 +1120,7 @@ export function VisualBuilder({
           {doc.sections.length > 0 ? (
             <button
               type="button"
-              className="epb-visual__add-section"
+              className="av-web-studio-visual__add-section"
               onClick={(e) => {
                 e.stopPropagation();
                 handleAddSection(1);
@@ -1134,22 +1134,22 @@ export function VisualBuilder({
         </div>
       </div>
 
-      <div className={`epb-visual__side epb-visual__side--right${inspectorOpen ? "" : " is-collapsed"}`}>
+      <div className={`av-web-studio-visual__side av-web-studio-visual__side--right${inspectorOpen ? "" : " is-collapsed"}`}>
         <PanelSideToggle
           side="right"
           open={inspectorOpen}
           onToggle={() => setInspectorOpen((open) => !open)}
           label={inspectorOpen ? "Hide settings panel" : "Show settings panel"}
         />
-        <aside className="epb-visual__inspector" aria-label="Settings" aria-hidden={!inspectorOpen}>
-        <div className="epb-visual__panel-head">
+        <aside className="av-web-studio-visual__inspector" aria-label="Settings" aria-hidden={!inspectorOpen}>
+        <div className="av-web-studio-visual__panel-head">
           <h3>{selectionMeta.title}</h3>
-          {selectionMeta.subtitle ? <p className="epb-visual__panel-sub">{selectionMeta.subtitle}</p> : null}
+          {selectionMeta.subtitle ? <p className="av-web-studio-visual__panel-sub">{selectionMeta.subtitle}</p> : null}
         </div>
 
         {!selection && (
-          <div className="epb-visual__empty-inspector">
-            <div className="epb-visual__empty-inspector-icon" aria-hidden="true">
+          <div className="av-web-studio-visual__empty-inspector">
+            <div className="av-web-studio-visual__empty-inspector-icon" aria-hidden="true">
               ✎
             </div>
             <p>Select anything on the canvas to edit its settings here.</p>
@@ -1158,7 +1158,7 @@ export function VisualBuilder({
               <li>Click a column for width &amp; padding</li>
               <li>Click a widget for content &amp; style</li>
             </ul>
-            <p className="epb-visual__empty-inspector-note">
+            <p className="av-web-studio-visual__empty-inspector-note">
               Page title, layout, featured image, and more are under the <strong>Page Options</strong> tab.
             </p>
           </div>
@@ -1173,10 +1173,10 @@ export function VisualBuilder({
           const patchSection = (patch: Partial<typeof effectiveSettings>) =>
             apply(updateSectionSettingsForDevice(docRef.current, selectedSection.id, devicePreview, patch));
           return (
-          <div className="epb-visual__fields">
+          <div className="av-web-studio-visual__fields">
             <ResponsiveDeviceBanner device={devicePreview} />
-            <div className="epb-visual__group">
-              <h4 className="epb-visual__group-title">Colors</h4>
+            <div className="av-web-studio-visual__group">
+              <h4 className="av-web-studio-visual__group-title">Colors</h4>
               <ColorField
                 label="Background"
                 value={effectiveSettings.background}
@@ -1189,8 +1189,8 @@ export function VisualBuilder({
                 onChange={(next) => patchSection({ textColor: next })}
               />
             </div>
-            <div className="epb-visual__group">
-              <h4 className="epb-visual__group-title">Layout</h4>
+            <div className="av-web-studio-visual__group">
+              <h4 className="av-web-studio-visual__group-title">Layout</h4>
               <DimensionsField
                 label="Padding"
                 values={expandCssBox(effectiveSettings.padding, "0px")}
@@ -1237,8 +1237,8 @@ export function VisualBuilder({
                 />
               </Field>
             </div>
-            <div className="epb-visual__group">
-              <h4 className="epb-visual__group-title">Background image</h4>
+            <div className="av-web-studio-visual__group">
+              <h4 className="av-web-studio-visual__group-title">Background image</h4>
               <Field label="Image">
                 <ImageMediaControl
                   url={effectiveSettings.backgroundImage}
@@ -1250,7 +1250,7 @@ export function VisualBuilder({
             {devicePreview !== "desktop" && (
               <button
                 type="button"
-                className="epb-visual__reset-btn"
+                className="av-web-studio-visual__reset-btn"
                 onClick={() =>
                   apply(clearSectionSettingsOverrides(docRef.current, selectedSection.id, devicePreview))
                 }
@@ -1274,10 +1274,10 @@ export function VisualBuilder({
           const patchColumn = (patch: Partial<typeof columnSettings>) =>
             apply(updateColumnSettingsForDevice(docRef.current, selection, devicePreview, patch));
           return (
-          <div className="epb-visual__fields">
+          <div className="av-web-studio-visual__fields">
             <ResponsiveDeviceBanner device={devicePreview} />
-            <div className="epb-visual__group">
-              <h4 className="epb-visual__group-title">Column</h4>
+            <div className="av-web-studio-visual__group">
+              <h4 className="av-web-studio-visual__group-title">Column</h4>
               <label>
                 Width (%)
                 <input
@@ -1315,7 +1315,7 @@ export function VisualBuilder({
             {devicePreview !== "desktop" && (
               <button
                 type="button"
-                className="epb-visual__reset-btn"
+                className="av-web-studio-visual__reset-btn"
                 onClick={() => apply(clearColumnSettingsOverrides(docRef.current, selection, devicePreview))}
               >
                 Reset {DEVICE_PREVIEW_LABELS[devicePreview]} overrides
@@ -1326,8 +1326,8 @@ export function VisualBuilder({
         })()}
 
         {selection?.kind === "inner-section" && (
-          <div className="epb-visual__fields">
-            <p className="epb-visual__panel-sub">Select an inner column or widget inside this nested section to edit it.</p>
+          <div className="av-web-studio-visual__fields">
+            <p className="av-web-studio-visual__panel-sub">Select an inner column or widget inside this nested section to edit it.</p>
             <InspectorDeleteButton
               label="Delete inner section"
               onDelete={() => {
@@ -1347,7 +1347,7 @@ export function VisualBuilder({
 
         {selectedWidget && selection?.kind === "widget" && (
           <>
-            <div className="epb-visual__tabs" role="tablist">
+            <div className="av-web-studio-visual__tabs" role="tablist">
               <button
                 type="button"
                 role="tab"
@@ -1426,7 +1426,7 @@ function PanelSideToggle({
   return (
     <button
       type="button"
-      className={`epb-visual__side-toggle epb-visual__side-toggle--${side}`}
+      className={`av-web-studio-visual__side-toggle av-web-studio-visual__side-toggle--${side}`}
       onClick={onToggle}
       aria-label={label}
       aria-expanded={open}
@@ -1439,19 +1439,19 @@ function PanelSideToggle({
 
 function EmptyColumnDropHint() {
   return (
-    <div className="epb-visual-column__empty">
-      <span className="epb-visual-column__empty-plus" aria-hidden="true">
+    <div className="av-web-studio-visual-column__empty">
+      <span className="av-web-studio-visual-column__empty-plus" aria-hidden="true">
         +
       </span>
-      <span className="epb-visual-column__empty-hint">Drag widget here</span>
+      <span className="av-web-studio-visual-column__empty-hint">Drag widget here</span>
     </div>
   );
 }
 
 function InspectorDeleteButton({ label, onDelete }: { label: string; onDelete: () => void }) {
   return (
-    <div className="epb-visual__inspector-delete">
-      <button type="button" className="epb-visual__inspector-delete-btn" onClick={onDelete}>
+    <div className="av-web-studio-visual__inspector-delete">
+      <button type="button" className="av-web-studio-visual__inspector-delete-btn" onClick={onDelete}>
         {label}
       </button>
     </div>
@@ -1472,7 +1472,7 @@ function ChromeIconButton({
   return (
     <button
       type="button"
-      className={`epb-visual__chrome-btn epb-visual__chrome-btn--${variant}`}
+      className={`av-web-studio-visual__chrome-btn av-web-studio-visual__chrome-btn--${variant}`}
       title={title}
       aria-label={title}
       onClick={onClick}
@@ -1528,7 +1528,7 @@ function ColumnDropZone({
 
   return (
     <div
-      className={`epb-visual-column ${selected ? "is-selected" : ""} ${isDropTarget ? "is-drop-target" : ""}`}
+      className={`av-web-studio-visual-column ${selected ? "is-selected" : ""} ${isDropTarget ? "is-drop-target" : ""}`}
       style={style}
       onClick={(e) => {
         e.stopPropagation();
@@ -1550,9 +1550,9 @@ function ColumnDropZone({
         setDropKey(null);
       }}
     >
-      <div className="epb-visual-column__chrome">
+      <div className="av-web-studio-visual-column__chrome">
         <StructureIcon kind={structureKind} title={label} />
-        <div className="epb-visual-column__actions">
+        <div className="av-web-studio-visual-column__actions">
           {chromeExtra}
           {onRemove ? (
             <ChromeRemoveButton
@@ -1584,7 +1584,7 @@ function DropSlot({
   const active = activeKey === slotKey;
   return (
     <div
-      className={`epb-visual-drop ${active ? "is-active" : ""}`}
+      className={`av-web-studio-visual-drop ${active ? "is-active" : ""}`}
       onDragEnter={(e) => {
         e.preventDefault();
         setDropKey(slotKey);
@@ -1634,7 +1634,7 @@ function findColumnSettings(
 function ResponsiveDeviceBanner({ device }: { device: DevicePreview }) {
   if (device === "desktop") return null;
   return (
-    <div className="epb-visual__device-banner">
+    <div className="av-web-studio-visual__device-banner">
       <strong>{DEVICE_PREVIEW_LABELS[device]} styles</strong>
       <p>Desktop styles stay as the default. Changes here only apply on {DEVICE_PREVIEW_LABELS[device].toLowerCase()} screens.</p>
     </div>
@@ -1716,8 +1716,8 @@ function ColorField({
 
   return (
     <Field label={label}>
-      <div className="epb-visual__color-control">
-        <div className="epb-visual__color-row">
+      <div className="av-web-studio-visual__color-control">
+        <div className="av-web-studio-visual__color-row">
           <input
             type="color"
             value={parsed.hex}
@@ -1726,7 +1726,7 @@ function ColorField({
           />
           <input
             type="text"
-            className="epb-visual__hex-input"
+            className="av-web-studio-visual__hex-input"
             value={hexText}
             placeholder="#000000"
             spellCheck={false}
@@ -1756,17 +1756,17 @@ function ColorField({
             }}
           />
           {allowClear ? (
-            <button type="button" className="epb-visual__link-btn" onClick={() => onChange("transparent")}>
+            <button type="button" className="av-web-studio-visual__link-btn" onClick={() => onChange("transparent")}>
               Clear
             </button>
           ) : null}
         </div>
-        <div className="epb-visual__opacity-row">
-          <label className="epb-visual__opacity-label" htmlFor={`epb-opacity-${label.replace(/\s+/g, "-").toLowerCase()}`}>
+        <div className="av-web-studio-visual__opacity-row">
+          <label className="av-web-studio-visual__opacity-label" htmlFor={`av-web-studio-opacity-${label.replace(/\s+/g, "-").toLowerCase()}`}>
             Opacity
           </label>
           <input
-            id={`epb-opacity-${label.replace(/\s+/g, "-").toLowerCase()}`}
+            id={`av-web-studio-opacity-${label.replace(/\s+/g, "-").toLowerCase()}`}
             type="range"
             min={0}
             max={100}
@@ -1776,14 +1776,14 @@ function ColorField({
           />
           <input
             type="number"
-            className="epb-visual__opacity-input"
+            className="av-web-studio-visual__opacity-input"
             min={0}
             max={100}
             value={parsed.alpha}
             onChange={(e) => onChange(formatColorValue(parsed.hex, Number(e.target.value) || 0))}
             aria-label={`${label} opacity percent`}
           />
-          <span className="epb-visual__opacity-unit">%</span>
+          <span className="av-web-studio-visual__opacity-unit">%</span>
         </div>
       </div>
     </Field>
@@ -1881,10 +1881,10 @@ function SizeField({
 
   return (
     <Field label={label}>
-      <div className="epb-visual__size-control">
+      <div className="av-web-studio-visual__size-control">
         <input
           type="number"
-          className="epb-visual__size-input"
+          className="av-web-studio-visual__size-input"
           value={parsed.num}
           placeholder={placeholder}
           step={numericStep}
@@ -1892,7 +1892,7 @@ function SizeField({
           onChange={(e) => onChange(formatSizeValue(e.target.value, unit))}
         />
         <select
-          className="epb-visual__unit-select"
+          className="av-web-studio-visual__unit-select"
           value={unit}
           aria-label={`${label} unit`}
           onChange={(e) => {
@@ -1992,15 +1992,15 @@ function DimensionsField({
   };
 
   return (
-    <div className="epb-visual__dimensions">
-      <div className="epb-visual__dimensions-head">
-        <span className="epb-visual__dimensions-label">{label}</span>
-        <div className="epb-visual__dimensions-units" role="group" aria-label={`${label} units`}>
+    <div className="av-web-studio-visual__dimensions">
+      <div className="av-web-studio-visual__dimensions-head">
+        <span className="av-web-studio-visual__dimensions-label">{label}</span>
+        <div className="av-web-studio-visual__dimensions-units" role="group" aria-label={`${label} units`}>
           {DIMENSION_UNITS.map((u) => (
             <button
               key={u}
               type="button"
-              className={`epb-visual__dimensions-unit ${unit === u ? "is-active" : ""}`}
+              className={`av-web-studio-visual__dimensions-unit ${unit === u ? "is-active" : ""}`}
               onClick={() => setUnit(u)}
             >
               {u}
@@ -2008,9 +2008,9 @@ function DimensionsField({
           ))}
         </div>
       </div>
-      <div className="epb-visual__dimensions-row">
+      <div className="av-web-studio-visual__dimensions-row">
         {(["top", "right", "bottom", "left"] as BoxSideKey[]).map((side) => (
-          <label key={side} className="epb-visual__dimensions-cell">
+          <label key={side} className="av-web-studio-visual__dimensions-cell">
             <input
               type="number"
               value={nums[side]}
@@ -2024,7 +2024,7 @@ function DimensionsField({
         ))}
         <button
           type="button"
-          className={`epb-visual__dimensions-link ${linked ? "is-active" : ""}`}
+          className={`av-web-studio-visual__dimensions-link ${linked ? "is-active" : ""}`}
           title={linked ? "Unlink values" : "Link values"}
           aria-label={linked ? "Unlink values" : "Link values"}
           aria-pressed={linked}
@@ -2092,10 +2092,10 @@ const VISUAL_GOOGLE_FONTS_HREF =
 
 function ensureVisualEditorFonts() {
   if (typeof document === "undefined") return;
-  if (!window.epbBuilderData?.pluginSettings?.google_fonts_enabled) return;
-  if (document.getElementById("epb-visual-fonts")) return;
+  if (!window.avWebStudioBuilderData?.pluginSettings?.google_fonts_enabled) return;
+  if (document.getElementById("av-web-studio-visual-fonts")) return;
   const link = document.createElement("link");
-  link.id = "epb-visual-fonts";
+  link.id = "av-web-studio-visual-fonts";
   link.rel = "stylesheet";
   link.href = VISUAL_GOOGLE_FONTS_HREF;
   document.head.appendChild(link);
@@ -2159,7 +2159,7 @@ function WidgetCard({
 }) {
   return (
     <div
-      className={`epb-visual-widget ${selected ? "is-selected" : ""}`}
+      className={`av-web-studio-visual-widget ${selected ? "is-selected" : ""}`}
       draggable
       onDragStart={(e) => {
         e.stopPropagation();
@@ -2172,12 +2172,12 @@ function WidgetCard({
       }}
       onContextMenu={onContextMenu}
     >
-      <div className="epb-visual-widget__chrome">
-        <span className="epb-visual-widget__drag" title="Drag to move" aria-hidden="true">
+      <div className="av-web-studio-visual-widget__chrome">
+        <span className="av-web-studio-visual-widget__drag" title="Drag to move" aria-hidden="true">
           ⋮⋮
         </span>
-        <span className="epb-visual-widget__type" title={widgetLabel(widget.type)}>
-          <span className="epb-visual-widget__type-icon" aria-hidden="true">
+        <span className="av-web-studio-visual-widget__type" title={widgetLabel(widget.type)}>
+          <span className="av-web-studio-visual-widget__type-icon" aria-hidden="true">
             {WIDGET_ICONS[widget.type]}
           </span>
         </span>
@@ -2189,7 +2189,7 @@ function WidgetCard({
           }}
         />
       </div>
-      <div className="epb-visual-widget__preview" style={previewStyle(widget, devicePreview)}>
+      <div className="av-web-studio-visual-widget__preview" style={previewStyle(widget, devicePreview)}>
         {renderWidgetPreview(widget, pageId)}
       </div>
     </div>
@@ -2286,7 +2286,7 @@ function renderWidgetPreview(widget: VisualWidget, pageId = 0) {
         </div>
       );
     case "html":
-      return <p className="epb-visual-widget__preview-text">{widget.content.replace(/<[^>]+>/g, " ").slice(0, 180)}</p>;
+      return <p className="av-web-studio-visual-widget__preview-text">{widget.content.replace(/<[^>]+>/g, " ").slice(0, 180)}</p>;
     case "posts-grid":
     case "posts-list":
     case "posts-carousel":
@@ -2302,15 +2302,15 @@ function renderWidgetPreview(widget: VisualWidget, pageId = 0) {
           marginLeft: "0px",
         },
       });
-      return <div className="epb-visual-widget__compiled" dangerouslySetInnerHTML={{ __html: html }} />;
+      return <div className="av-web-studio-visual-widget__compiled" dangerouslySetInnerHTML={{ __html: html }} />;
     }
   }
 }
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="epb-visual__field">
-      <span className="epb-visual__field-label">{label}</span>
+    <div className="av-web-studio-visual__field">
+      <span className="av-web-studio-visual__field-label">{label}</span>
       {children}
     </div>
   );
@@ -2341,11 +2341,11 @@ function ImageMediaControl({
   };
 
   return (
-    <div className="epb-visual-media">
+    <div className="av-web-studio-visual-media">
       {url ? (
-        <div className="epb-visual-media__preview">
+        <div className="av-web-studio-visual-media__preview">
           <img src={url} alt="" />
-          <div className="epb-visual-media__toolbar">
+          <div className="av-web-studio-visual-media__toolbar">
             <button type="button" onClick={pick}>
               Change
             </button>
@@ -2355,18 +2355,18 @@ function ImageMediaControl({
           </div>
         </div>
       ) : (
-        <button type="button" className="epb-visual-media__empty" onClick={pick}>
+        <button type="button" className="av-web-studio-visual-media__empty" onClick={pick}>
           <span aria-hidden="true">+</span>
           Choose image
         </button>
       )}
-      <div className="epb-visual-media__actions">
+      <div className="av-web-studio-visual-media__actions">
         {url ? (
-          <button type="button" className="epb-visual__link-btn" onClick={pick}>
+          <button type="button" className="av-web-studio-visual__link-btn" onClick={pick}>
             Choose from library
           </button>
         ) : null}
-        <button type="button" className="epb-visual__link-btn" onClick={() => setShowUrl((v) => !v)}>
+        <button type="button" className="av-web-studio-visual__link-btn" onClick={() => setShowUrl((v) => !v)}>
           {showUrl ? "Hide URL" : "Or paste URL"}
         </button>
       </div>
@@ -2392,7 +2392,7 @@ function WidgetContentSettings({
   pageId?: number;
 }) {
   return (
-    <div className="epb-visual__fields">
+    <div className="av-web-studio-visual__fields">
       {widget.type === "heading" && (
         <>
           <Field label="Text">
@@ -2453,7 +2453,7 @@ function WidgetContentSettings({
             allowClear
           />
           <ColorField label="Text color" value={widget.textColor} onChange={(next) => onChange({ textColor: next })} />
-          <label className="epb-visual__check">
+          <label className="av-web-studio-visual__check">
             <input
               type="checkbox"
               checked={widget.fullWidth}
@@ -2461,7 +2461,7 @@ function WidgetContentSettings({
             />
             Full width
           </label>
-          <div className="epb-visual__field-row">
+          <div className="av-web-studio-visual__field-row">
             <SizeField
               label="Padding X"
               value={widget.paddingX}
@@ -2624,8 +2624,8 @@ function WidgetLinkFields({
 }) {
   if (WIDGETS_WITH_OWN_LINK_UI.has(widget.type)) return null;
   return (
-    <div className="epb-visual__group">
-      <h4 className="epb-visual__group-title">Link</h4>
+    <div className="av-web-studio-visual__group">
+      <h4 className="av-web-studio-visual__group-title">Link</h4>
       <Field label="URL">
         <UrlSuggestField
           value={widget.linkUrl || ""}
@@ -2633,8 +2633,8 @@ function WidgetLinkFields({
           placeholder="Search pages or paste a URL"
         />
       </Field>
-      <p className="epb-visual__hint">Optional. Makes the whole widget clickable.</p>
-      <label className="epb-visual__check">
+      <p className="av-web-studio-visual__hint">Optional. Makes the whole widget clickable.</p>
+      <label className="av-web-studio-visual__check">
         <input
           type="checkbox"
           checked={!!widget.linkNewTab}
@@ -2663,10 +2663,10 @@ function WidgetStyleSettings({
   const patchStyle = (partial: Partial<WidgetStyle>) => onPatchStyle(partial);
 
   return (
-    <div className="epb-visual__fields">
+    <div className="av-web-studio-visual__fields">
       <ResponsiveDeviceBanner device={devicePreview} />
-      <div className="epb-visual__group">
-        <h4 className="epb-visual__group-title">Spacing</h4>
+      <div className="av-web-studio-visual__group">
+        <h4 className="av-web-studio-visual__group-title">Spacing</h4>
         <DimensionsField
           label="Margin"
           values={{
@@ -2711,8 +2711,8 @@ function WidgetStyleSettings({
         </Field>
       </div>
 
-      <div className="epb-visual__group">
-        <h4 className="epb-visual__group-title">Typography</h4>
+      <div className="av-web-studio-visual__group">
+        <h4 className="av-web-studio-visual__group-title">Typography</h4>
         <Field label="Font family">
           <select
             value={style.fontFamily || ""}
@@ -2727,7 +2727,7 @@ function WidgetStyleSettings({
           </select>
         </Field>
 
-        <div className="epb-visual__field-row">
+        <div className="av-web-studio-visual__field-row">
           <SizeField
             label="Font size"
             value={style.fontSize}
@@ -2746,7 +2746,7 @@ function WidgetStyleSettings({
           </Field>
         </div>
 
-        <div className="epb-visual__field-row">
+        <div className="av-web-studio-visual__field-row">
           <SizeField
             label="Line height"
             value={style.lineHeight}
@@ -2777,8 +2777,8 @@ function WidgetStyleSettings({
         </Field>
       </div>
 
-      <div className="epb-visual__group">
-        <h4 className="epb-visual__group-title">Size & background</h4>
+      <div className="av-web-studio-visual__group">
+        <h4 className="av-web-studio-visual__group-title">Size & background</h4>
         <SizeField
           label="Max width"
           value={style.maxWidth}
@@ -2793,9 +2793,9 @@ function WidgetStyleSettings({
         />
       </div>
 
-      <div className="epb-visual__group">
-        <h4 className="epb-visual__group-title">Border</h4>
-        <div className="epb-visual__field-row">
+      <div className="av-web-studio-visual__group">
+        <h4 className="av-web-studio-visual__group-title">Border</h4>
+        <div className="av-web-studio-visual__field-row">
           <Field label="Border style">
             <select
               value={style.borderStyle}
@@ -2827,8 +2827,8 @@ function WidgetStyleSettings({
         />
       </div>
 
-      <div className="epb-visual__group">
-        <h4 className="epb-visual__group-title">Effects</h4>
+      <div className="av-web-studio-visual__group">
+        <h4 className="av-web-studio-visual__group-title">Effects</h4>
         <Field label="Box shadow">
           <select value={style.boxShadow} onChange={(e) => patchStyle({ boxShadow: e.target.value })}>
             <option value="none">None</option>
@@ -2852,7 +2852,7 @@ function WidgetStyleSettings({
 
       <button
         type="button"
-        className="epb-visual__reset-btn"
+        className="av-web-studio-visual__reset-btn"
         onClick={() =>
           devicePreview === "desktop"
             ? onChange({ style: { ...DEFAULT_WIDGET_STYLE } })

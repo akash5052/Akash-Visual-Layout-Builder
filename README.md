@@ -1,10 +1,10 @@
-# WPVisualX
+# AV Web Studio
 
 WordPress plugin for building and managing pages, posts, layouts, and popups with a visual editor.
 
 ## Repository
 
-Source: [github.com/akash5052/EP-Builder](https://github.com/akash5052/EP-Builder)
+Source: [github.com/akash5052/AV-Web-Studio](https://github.com/akash5052/AV-Web-Studio)
 
 WordPress.org details (description, install, FAQ, changelog) live in [`readme.txt`](readme.txt).
 

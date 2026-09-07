@@ -60,27 +60,27 @@ export function SeoPanel({ seo, pageTitle, permalink, isSaving = false, onChange
   const displayImage = seo.social_image;
 
   return (
-    <div className="epb-seo-panel">
-      <div className="epb-seo-panel__header">
-        <div className="epb-seo-panel__header-main">
+    <div className="av-web-studio-seo-panel">
+      <div className="av-web-studio-seo-panel__header">
+        <div className="av-web-studio-seo-panel__header-main">
           <h3>SEO Settings</h3>
           <p>Optimize how this page appears in search and social shares.</p>
-          <div className={`epb-seo-score epb-seo-score--${score >= 5 ? "good" : score >= 3 ? "ok" : "low"}`}>
-            <span className="epb-seo-score__value">{score}/{scoreItems.length}</span>
-            <span className="epb-seo-score__label">SEO score</span>
+          <div className={`av-web-studio-seo-score av-web-studio-seo-score--${score >= 5 ? "good" : score >= 3 ? "ok" : "low"}`}>
+            <span className="av-web-studio-seo-score__value">{score}/{scoreItems.length}</span>
+            <span className="av-web-studio-seo-score__label">SEO score</span>
           </div>
         </div>
-        <button type="button" className="epb-btn epb-btn--primary" disabled={isSaving} onClick={onSave}>
+        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary" disabled={isSaving} onClick={onSave}>
           {isSaving ? "Saving…" : "Save SEO"}
         </button>
       </div>
 
-      <div className="epb-seo-panel__grid">
-        <section className="epb-seo-section">
-          <label className="epb-seo-field">
-            <span className="epb-seo-field__label">
+      <div className="av-web-studio-seo-panel__grid">
+        <section className="av-web-studio-seo-section">
+          <label className="av-web-studio-seo-field">
+            <span className="av-web-studio-seo-field__label">
               Meta title
-              <span className={`epb-seo-char epb-seo-char--${titleStatus}`}>
+              <span className={`av-web-studio-seo-char av-web-studio-seo-char--${titleStatus}`}>
                 {(titleValue.length || pageTitle.length)}/60
               </span>
             </span>
@@ -90,13 +90,13 @@ export function SeoPanel({ seo, pageTitle, permalink, isSaving = false, onChange
               placeholder={pageTitle || "Defaults to page title"}
               onChange={(e) => update({ meta_title: e.target.value })}
             />
-            <span className="epb-seo-hint">Shown in browser tab and Google results. Ideal: 50–60 characters.</span>
+            <span className="av-web-studio-seo-hint">Shown in browser tab and Google results. Ideal: 50–60 characters.</span>
           </label>
 
-          <label className="epb-seo-field">
-            <span className="epb-seo-field__label">
+          <label className="av-web-studio-seo-field">
+            <span className="av-web-studio-seo-field__label">
               Meta description
-              <span className={`epb-seo-char epb-seo-char--${descStatus}`}>{descLen}/160</span>
+              <span className={`av-web-studio-seo-char av-web-studio-seo-char--${descStatus}`}>{descLen}/160</span>
             </span>
             <textarea
               rows={4}
@@ -104,36 +104,36 @@ export function SeoPanel({ seo, pageTitle, permalink, isSaving = false, onChange
               placeholder="Write a compelling summary for search engines..."
               onChange={(e) => update({ meta_description: e.target.value })}
             />
-            <span className="epb-seo-hint">Ideal: 120–160 characters. Appears under your title in search results.</span>
+            <span className="av-web-studio-seo-hint">Ideal: 120–160 characters. Appears under your title in search results.</span>
           </label>
 
-          <label className="epb-seo-field">
-            <span className="epb-seo-field__label">Focus keyword (ranking keyword)</span>
+          <label className="av-web-studio-seo-field">
+            <span className="av-web-studio-seo-field__label">Focus keyword (ranking keyword)</span>
             <input
               type="text"
               value={seo.focus_keyword}
               placeholder="e.g. coffee shop downtown"
               onChange={(e) => update({ focus_keyword: e.target.value })}
             />
-            <span className="epb-seo-hint">The main phrase you want this page to rank for.</span>
+            <span className="av-web-studio-seo-hint">The main phrase you want this page to rank for.</span>
           </label>
         </section>
 
-        <section className="epb-seo-section">
-          <div className="epb-seo-field">
-            <span className="epb-seo-field__label">Social sharing image</span>
+        <section className="av-web-studio-seo-section">
+          <div className="av-web-studio-seo-field">
+            <span className="av-web-studio-seo-field__label">Social sharing image</span>
             {displayImage ? (
-              <div className="epb-seo-image-preview">
+              <div className="av-web-studio-seo-image-preview">
                 <img src={displayImage} alt="" />
-                <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm" onClick={() => update({ social_image: "", social_image_id: 0 })}>
+                <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={() => update({ social_image: "", social_image_id: 0 })}>
                   Remove
                 </button>
               </div>
             ) : (
-              <div className="epb-seo-image-empty">No image — social shares may use a generic preview.</div>
+              <div className="av-web-studio-seo-image-empty">No image — social shares may use a generic preview.</div>
             )}
-            <div className="epb-seo-image-actions">
-              <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm" onClick={handlePickImage}>
+            <div className="av-web-studio-seo-image-actions">
+              <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={handlePickImage}>
                 Choose from library
               </button>
             </div>
@@ -143,32 +143,32 @@ export function SeoPanel({ seo, pageTitle, permalink, isSaving = false, onChange
               placeholder="https://example.com/image.jpg"
               onChange={(e) => update({ social_image: e.target.value, social_image_id: 0 })}
             />
-            <span className="epb-seo-hint">Recommended: 1200×630px for Facebook, X, and LinkedIn.</span>
+            <span className="av-web-studio-seo-hint">Recommended: 1200×630px for Facebook, X, and LinkedIn.</span>
           </div>
 
-          <div className="epb-seo-preview">
-            <span className="epb-seo-preview__label">Search preview</span>
-            <div className="epb-seo-snippet">
-              <div className="epb-seo-snippet__title">{displayTitle}</div>
-              <div className="epb-seo-snippet__url">{permalink || "yoursite.com/page"}</div>
-              <div className="epb-seo-snippet__desc">{displayDesc}</div>
+          <div className="av-web-studio-seo-preview">
+            <span className="av-web-studio-seo-preview__label">Search preview</span>
+            <div className="av-web-studio-seo-snippet">
+              <div className="av-web-studio-seo-snippet__title">{displayTitle}</div>
+              <div className="av-web-studio-seo-snippet__url">{permalink || "yoursite.com/page"}</div>
+              <div className="av-web-studio-seo-snippet__desc">{displayDesc}</div>
             </div>
           </div>
 
-          <div className="epb-seo-preview">
-            <span className="epb-seo-preview__label">Social preview</span>
-            <div className="epb-seo-social">
-              {displayImage && <img className="epb-seo-social__img" src={displayImage} alt="" />}
-              <div className="epb-seo-social__body">
-                <div className="epb-seo-social__title">{displayTitle}</div>
-                <div className="epb-seo-social__desc">{displayDesc}</div>
+          <div className="av-web-studio-seo-preview">
+            <span className="av-web-studio-seo-preview__label">Social preview</span>
+            <div className="av-web-studio-seo-social">
+              {displayImage && <img className="av-web-studio-seo-social__img" src={displayImage} alt="" />}
+              <div className="av-web-studio-seo-social__body">
+                <div className="av-web-studio-seo-social__title">{displayTitle}</div>
+                <div className="av-web-studio-seo-social__desc">{displayDesc}</div>
               </div>
             </div>
           </div>
 
-          <ul className="epb-seo-checklist">
+          <ul className="av-web-studio-seo-checklist">
             {scoreItems.map((item) => (
-              <li key={item.label} className={item.ok ? "epb-seo-checklist__item--ok" : ""}>
+              <li key={item.label} className={item.ok ? "av-web-studio-seo-checklist__item--ok" : ""}>
                 {item.ok ? "✓" : "○"} {item.label}
               </li>
             ))}

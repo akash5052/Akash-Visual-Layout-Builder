@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * SVG upload support and media library helpers.
  */
-class EPB_SVG {
+class Av_Web_Studio_SVG {
 
 	const MIME_TYPE = 'image/svg+xml';
 
@@ -137,21 +137,21 @@ class EPB_SVG {
 	 */
 	public static function upload($file) {
 		if (empty($file['tmp_name']) || !file_exists($file['tmp_name'])) {
-			return new WP_Error('epb_svg_missing', __('No SVG file uploaded.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_svg_missing', __('No SVG file uploaded.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$checked = wp_check_filetype_and_ext($file['tmp_name'], $file['name']);
 		$ext     = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
 		if ($ext !== 'svg' && ($checked['type'] ?? '') !== self::MIME_TYPE) {
-			return new WP_Error('epb_svg_invalid', __('Only SVG files are allowed.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_svg_invalid', __('Only SVG files are allowed.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$raw  = file_get_contents($file['tmp_name']); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$safe = self::sanitize($raw);
 
 		if ($safe === '') {
-			return new WP_Error('epb_svg_empty', __('SVG file is empty or invalid.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_svg_empty', __('SVG file is empty or invalid.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		file_put_contents($file['tmp_name'], $safe); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
@@ -169,7 +169,7 @@ class EPB_SVG {
 		);
 
 		if (!empty($uploaded['error'])) {
-			return new WP_Error('epb_svg_upload', $uploaded['error'], [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_svg_upload', $uploaded['error'], [ 'status' => 500 ]);
 		}
 
 		$attachment_id = wp_insert_attachment(
@@ -183,7 +183,7 @@ class EPB_SVG {
 		);
 
 		if (is_wp_error($attachment_id) || !$attachment_id) {
-			return new WP_Error('epb_svg_attachment', __('Could not save SVG to media library.', 'wpvisualx'), [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_svg_attachment', __('Could not save SVG to media library.', 'av-web-studio'), [ 'status' => 500 ]);
 		}
 
 		require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -206,7 +206,7 @@ class EPB_SVG {
 				'filename' => basename($uploaded['file']),
 				'date'     => current_time('mysql'),
 			],
-			'message' => __('SVG uploaded.', 'wpvisualx'),
+			'message' => __('SVG uploaded.', 'av-web-studio'),
 		];
 	}
 
@@ -219,10 +219,10 @@ class EPB_SVG {
 	public static function delete($id) {
 		$post = get_post($id);
 		if (!$post || $post->post_type !== 'attachment' || get_post_mime_type($id) !== self::MIME_TYPE) {
-			return new WP_Error('epb_svg_not_found', __('SVG not found.', 'wpvisualx'), [ 'status' => 404 ]);
+			return new WP_Error('av_web_studio_svg_not_found', __('SVG not found.', 'av-web-studio'), [ 'status' => 404 ]);
 		}
 
 		$result = wp_delete_attachment($id, true);
-		return $result ? true : new WP_Error('epb_svg_delete_failed', __('Could not delete SVG.', 'wpvisualx'), [ 'status' => 500 ]);
+		return $result ? true : new WP_Error('av_web_studio_svg_delete_failed', __('Could not delete SVG.', 'av-web-studio'), [ 'status' => 500 ]);
 	}
 }

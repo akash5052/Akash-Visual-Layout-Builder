@@ -7,9 +7,9 @@ if (!defined('ABSPATH')) {
 /**
  * Per-page SEO settings and front-end meta output.
  */
-class EPB_SEO {
+class Av_Web_Studio_SEO {
 
-	const META_KEY = '_epb_seo';
+	const META_KEY = '_av_web_studio_seo';
 
 	public function __construct() {
 		add_filter('pre_get_document_title', [ $this, 'filter_document_title' ]);
@@ -131,20 +131,20 @@ class EPB_SEO {
 	}
 
 	/**
-	 * Whether post is an EPB page with SEO output enabled.
+	 * Whether post is an AV Web Studio page with SEO output enabled.
 	 *
 	 * @param int|null $post_id Post ID.
 	 * @return int|false
 	 */
-	private function get_epb_post_id($post_id = null) {
+	private function get_av_web_studio_post_id($post_id = null) {
 		if ($post_id === null) {
-			if (!is_singular(EPB_Post_Types::types())) {
+			if (!is_singular(Av_Web_Studio_Post_Types::types())) {
 				return false;
 			}
 			$post_id = get_queried_object_id();
 		}
 
-		if (!$post_id || get_post_meta($post_id, EPB_Renderer::META_ENABLED, true) !== '1') {
+		if (!$post_id || get_post_meta($post_id, Av_Web_Studio_Renderer::META_ENABLED, true) !== '1') {
 			return false;
 		}
 
@@ -152,13 +152,13 @@ class EPB_SEO {
 	}
 
 	/**
-	 * Filter document title for EPB pages.
+	 * Filter document title for AV Web Studio pages.
 	 *
 	 * @param string $title Current title.
 	 * @return string
 	 */
 	public function filter_document_title($title) {
-		$post_id = $this->get_epb_post_id();
+		$post_id = $this->get_av_web_studio_post_id();
 		if (!$post_id) {
 			return $title;
 		}
@@ -171,7 +171,7 @@ class EPB_SEO {
 	 * Output SEO meta tags in wp_head.
 	 */
 	public function output_head_meta() {
-		$post_id = $this->get_epb_post_id();
+		$post_id = $this->get_av_web_studio_post_id();
 		if (!$post_id) {
 			return;
 		}

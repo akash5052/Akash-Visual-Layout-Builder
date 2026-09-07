@@ -18,7 +18,7 @@ const VIEW_LABELS: Record<AppView, string> = {
 function NavIcon({ children }: { children: ReactNode }) {
   return (
     <svg
-      className="epb-main-nav__svg"
+      className="av-web-studio-main-nav__svg"
       viewBox="0 0 24 24"
       width="18"
       height="18"
@@ -113,7 +113,7 @@ export function MainNav({
   onBackToList,
   onPopupsBackToList,
 }: MainNavProps) {
-  const urls = window.epbBuilderData.adminUrls;
+  const urls = window.avWebStudioBuilderData.adminUrls;
   const items: { view: AppView; href: string }[] = [
     { view: "dashboard", href: urls.dashboard },
     { view: "pages", href: urls.pages },
@@ -124,7 +124,7 @@ export function MainNav({
     { view: "svg", href: urls.svg },
     { view: "tracking", href: urls.tracking },
   ];
-  if (urls.settings && (window.epbBuilderData.canManageSettings || window.epbBuilderData.pluginSettings?.can_manage_settings)) {
+  if (urls.settings && (window.avWebStudioBuilderData.canManageSettings || window.avWebStudioBuilderData.pluginSettings?.can_manage_settings)) {
     items.push({ view: "settings", href: urls.settings });
   }
 
@@ -149,35 +149,35 @@ export function MainNav({
   };
 
   return (
-    <nav className="epb-main-nav" aria-label="WPVisualX sections">
-      <div className="epb-main-nav__brand">
-        <LogoMark className="epb-main-nav__brand-mark" />
-        <span className="epb-main-nav__brand-text">WPVisualX</span>
+    <nav className="av-web-studio-main-nav" aria-label="AV Web Studio sections">
+      <div className="av-web-studio-main-nav__brand">
+        <LogoMark className="av-web-studio-main-nav__brand-mark" />
+        <span className="av-web-studio-main-nav__brand-text">AV Web Studio</span>
       </div>
 
-      <ul className="epb-main-nav__list">
+      <ul className="av-web-studio-main-nav__list">
         {items.map((item) => (
           <li key={item.view}>
             <a
               href={item.href}
-              className={`epb-main-nav__link ${activeView === item.view && !editingContent ? "epb-main-nav__link--active" : ""}`}
+              className={`av-web-studio-main-nav__link ${activeView === item.view && !editingContent ? "av-web-studio-main-nav__link--active" : ""}`}
               onClick={(event) => handleNavClick(event, item.view, item.href)}
             >
-              <span className="epb-main-nav__icon">{VIEW_ICONS[item.view]}</span>
-              <span className="epb-main-nav__label">{VIEW_LABELS[item.view]}</span>
+              <span className="av-web-studio-main-nav__icon">{VIEW_ICONS[item.view]}</span>
+              <span className="av-web-studio-main-nav__label">{VIEW_LABELS[item.view]}</span>
             </a>
           </li>
         ))}
       </ul>
 
-      <div className="epb-main-nav__bottom">
+      <div className="av-web-studio-main-nav__bottom">
         {editingContent && onBackToList && (
-          <button type="button" className="epb-main-nav__back" onClick={onBackToList}>
+          <button type="button" className="av-web-studio-main-nav__back" onClick={onBackToList}>
             ← Back to list
           </button>
         )}
-        <div className="epb-main-nav__footer">
-          <span className="epb-main-nav__version">v{window.epbBuilderData.version}</span>
+        <div className="av-web-studio-main-nav__footer">
+          <span className="av-web-studio-main-nav__version">v{window.avWebStudioBuilderData.version}</span>
         </div>
       </div>
     </nav>

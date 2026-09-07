@@ -2,7 +2,7 @@
 /**
  * Silence is golden.
  *
- * @package WPVisualX
+ * @package AV Web Studio
  */
 
 // Prevent direct access.

@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Industry-aware full-page generation with images, motion, and polished layouts.
  */
-class EPB_AI_Content {
+class Av_Web_Studio_AI_Content {
 
 	/**
 	 * Starter template catalog for the Templates UI.
@@ -90,8 +90,8 @@ class EPB_AI_Content {
 
 		foreach ($items as &$item) {
 			try {
-				$item['preview'] = EPB_AI_Images::relevant_url($item['topic'], 960, 640, 0, $item['brand'], 'hero', $item['title']);
-				$profile         = EPB_AI_Profiles::get($item['topic'], $item['brand']);
+				$item['preview'] = Av_Web_Studio_AI_Images::relevant_url($item['topic'], 960, 640, 0, $item['brand'], 'hero', $item['title']);
+				$profile         = Av_Web_Studio_AI_Profiles::get($item['topic'], $item['brand']);
 				$item['accent']  = $profile['accent'] ?? '#2563eb';
 			} catch (Throwable $e) {
 				$item['preview'] = '';
@@ -133,7 +133,7 @@ class EPB_AI_Content {
 	 * @return array{html:string,css:string,js:string}
 	 */
 	public static function generate_industrial_page($topic, $page_title = '', $variant = 'manufacturing') {
-		return EPB_AI_Industrial::generate($topic, $page_title, $variant);
+		return Av_Web_Studio_AI_Industrial::generate($topic, $page_title, $variant);
 	}
 
 	/**
@@ -144,26 +144,26 @@ class EPB_AI_Content {
 	 * @return array{html:string,css:string,js:string}
 	 */
 	public static function generate_full_page($topic, $page_title = '') {
-		$p     = EPB_AI_Profiles::get($topic, $page_title);
+		$p     = Av_Web_Studio_AI_Profiles::get($topic, $page_title);
 		$slug  = sanitize_title(substr($p['brand'], 0, 24)) ?: 'landing';
 		$brand = $p['brand'];
 
-		$hero_img = esc_url(EPB_AI_Images::relevant_url($topic, 1600, 900, 0, $page_title, 'hero', $p['hero_headline']));
-		$feat_img = esc_url(EPB_AI_Images::relevant_url($topic, 1000, 720, 1, $page_title, 'features', $p['features_title']));
-		$cta_img  = esc_url(EPB_AI_Images::relevant_url($topic, 1400, 700, 5, $page_title, 'hero', $p['cta_title']));
+		$hero_img = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 1600, 900, 0, $page_title, 'hero', $p['hero_headline']));
+		$feat_img = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 1000, 720, 1, $page_title, 'features', $p['features_title']));
+		$cta_img  = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 1400, 700, 5, $page_title, 'hero', $p['cta_title']));
 
 		$gal_items = '';
 		for ($i = 0; $i < 6; $i++) {
-			$src = esc_url(EPB_AI_Images::relevant_url($topic, 720, 540, $i + 2, $page_title, 'gallery', $brand));
+			$src = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 720, 540, $i + 2, $page_title, 'gallery', $brand));
 			$alt = esc_attr($brand . ' gallery ' . ( $i + 1 ));
-			$gal_items .= '<figure class="' . $slug . '-gallery__item" data-epb-reveal data-epb-delay="' . ( $i * 60 ) . '">'
+			$gal_items .= '<figure class="' . $slug . '-gallery__item" data-av-web-studio-reveal data-av-web-studio-delay="' . ( $i * 60 ) . '">'
 				. '<img src="' . $src . '" alt="' . $alt . '" loading="lazy" width="720" height="540" />'
 				. '<figcaption>' . esc_html($brand) . ' · ' . ( $i + 1 ) . '</figcaption></figure>';
 		}
 
 		$thumbs = '';
 		for ($i = 0; $i < 3; $i++) {
-			$src = esc_url(EPB_AI_Images::relevant_url($topic, 320, 240, $i + 8, $page_title, 'gallery', $brand));
+			$src = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 320, 240, $i + 8, $page_title, 'gallery', $brand));
 			$thumbs .= '<img src="' . $src . '" alt="" loading="lazy" width="320" height="240" />';
 		}
 
@@ -186,7 +186,7 @@ class EPB_AI_Content {
 		$features_html = '';
 		$fi = 0;
 		foreach ($p['features'] as $f) {
-			$features_html .= '<article class="' . $slug . '-feat-card" data-epb-reveal data-epb-delay="' . ( $fi * 80 ) . '">'
+			$features_html .= '<article class="' . $slug . '-feat-card" data-av-web-studio-reveal data-av-web-studio-delay="' . ( $fi * 80 ) . '">'
 				. '<div class="' . $slug . '-feat-icon">' . esc_html($f['icon']) . '</div>'
 				. '<h3>' . esc_html($f['title']) . '</h3>'
 				. '<p>' . esc_html($f['text']) . '</p></article>';
@@ -195,14 +195,14 @@ class EPB_AI_Content {
 
 		$bullets = '';
 		foreach ($p['about_bullets'] as $b) {
-			$bullets .= '<li data-epb-reveal><span aria-hidden="true">✓</span> ' . esc_html($b) . '</li>';
+			$bullets .= '<li data-av-web-studio-reveal><span aria-hidden="true">✓</span> ' . esc_html($b) . '</li>';
 		}
 
 		$testimonials_html = '';
 		$ti = 0;
 		foreach ($p['testimonials'] as $t) {
-			$avatar = esc_url(EPB_AI_Images::relevant_url($topic, 96, 96, $ti + 12, $page_title, 'team', $t['name']));
-			$testimonials_html .= '<blockquote class="' . $slug . '-quote" data-epb-reveal data-epb-delay="' . ( $ti * 90 ) . '">'
+			$avatar = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 96, 96, $ti + 12, $page_title, 'team', $t['name']));
+			$testimonials_html .= '<blockquote class="' . $slug . '-quote" data-av-web-studio-reveal data-av-web-studio-delay="' . ( $ti * 90 ) . '">'
 				. '<div class="' . $slug . '-quote__stars" aria-hidden="true">★★★★★</div>'
 				. '<p>"' . esc_html($t['quote']) . '"</p>'
 				. '<footer><img src="' . $avatar . '" alt="" width="48" height="48" loading="lazy" />'
@@ -214,7 +214,7 @@ class EPB_AI_Content {
 		$faq_i    = 0;
 		foreach ($p['faq'] as $item) {
 			$open     = $faq_i === 0 ? ' open' : '';
-			$faq_html .= '<details class="' . $slug . '-faq__item" data-epb-reveal' . $open . '>'
+			$faq_html .= '<details class="' . $slug . '-faq__item" data-av-web-studio-reveal' . $open . '>'
 				. '<summary>' . esc_html($item['q']) . '</summary>'
 				. '<p>' . esc_html($item['a']) . '</p></details>';
 			++$faq_i;
@@ -230,10 +230,10 @@ class EPB_AI_Content {
     <div class=\"{$slug}-hero__overlay\"></div>
     <div class=\"{$slug}-hero__glow\" aria-hidden=\"true\"></div>
     <div class=\"{$slug}-hero__inner\">
-      <span class=\"{$slug}-hero__badge\" data-epb-reveal>{$badge}</span>
-      <h1 id=\"{$slug}-hero-h1\" data-epb-reveal data-epb-delay=\"80\">{$headline}</h1>
-      <p class=\"{$slug}-hero__lead\" data-epb-reveal data-epb-delay=\"140\">{$hero_sub}</p>
-      <div class=\"{$slug}-hero__actions\" data-epb-reveal data-epb-delay=\"200\">
+      <span class=\"{$slug}-hero__badge\" data-av-web-studio-reveal>{$badge}</span>
+      <h1 id=\"{$slug}-hero-h1\" data-av-web-studio-reveal data-av-web-studio-delay=\"80\">{$headline}</h1>
+      <p class=\"{$slug}-hero__lead\" data-av-web-studio-reveal data-av-web-studio-delay=\"140\">{$hero_sub}</p>
+      <div class=\"{$slug}-hero__actions\" data-av-web-studio-reveal data-av-web-studio-delay=\"200\">
         <a href=\"#contact\" class=\"{$slug}-btn {$slug}-btn--primary\">{$cta1}</a>
         <a href=\"#gallery\" class=\"{$slug}-btn {$slug}-btn--ghost\">{$cta2}</a>
       </div>
@@ -243,16 +243,16 @@ class EPB_AI_Content {
 
   <section class=\"{$slug}-stats\" aria-label=\"Highlights\">
     <div class=\"{$slug}-wrap {$slug}-stats__grid\">
-      <div class=\"{$slug}-stat\" data-epb-reveal><strong data-count=\"12\">0</strong><span>Years experience</span></div>
-      <div class=\"{$slug}-stat\" data-epb-reveal data-epb-delay=\"80\"><strong data-count=\"850\">0</strong><span>Happy clients</span></div>
-      <div class=\"{$slug}-stat\" data-epb-reveal data-epb-delay=\"160\"><strong data-count=\"98\">0</strong><span>Satisfaction %</span></div>
-      <div class=\"{$slug}-stat\" data-epb-reveal data-epb-delay=\"240\"><strong data-count=\"24\">0</strong><span>Awards won</span></div>
+      <div class=\"{$slug}-stat\" data-av-web-studio-reveal><strong data-count=\"12\">0</strong><span>Years experience</span></div>
+      <div class=\"{$slug}-stat\" data-av-web-studio-reveal data-av-web-studio-delay=\"80\"><strong data-count=\"850\">0</strong><span>Happy clients</span></div>
+      <div class=\"{$slug}-stat\" data-av-web-studio-reveal data-av-web-studio-delay=\"160\"><strong data-count=\"98\">0</strong><span>Satisfaction %</span></div>
+      <div class=\"{$slug}-stat\" data-av-web-studio-reveal data-av-web-studio-delay=\"240\"><strong data-count=\"24\">0</strong><span>Awards won</span></div>
     </div>
   </section>
 
   <section id=\"features\" class=\"{$slug}-features\">
     <div class=\"{$slug}-wrap\">
-      <header class=\"{$slug}-section-head\" data-epb-reveal>
+      <header class=\"{$slug}-section-head\" data-av-web-studio-reveal>
         <p class=\"{$slug}-eyebrow\">What we offer</p>
         <h2>{$feat_title}</h2>
         <p class=\"{$slug}-lead\">{$feat_lead}</p>
@@ -263,11 +263,11 @@ class EPB_AI_Content {
 
   <section class=\"{$slug}-about\">
     <div class=\"{$slug}-about__grid {$slug}-wrap\">
-      <div class=\"{$slug}-about__visual\" data-epb-reveal=\"left\">
+      <div class=\"{$slug}-about__visual\" data-av-web-studio-reveal=\"left\">
         <img class=\"{$slug}-about__img\" src=\"{$feat_img}\" alt=\"{$img_alt}\" width=\"1000\" height=\"720\" loading=\"lazy\" />
         <div class=\"{$slug}-about__thumbs\">{$thumbs}</div>
       </div>
-      <div class=\"{$slug}-about__text\" data-epb-reveal=\"right\">
+      <div class=\"{$slug}-about__text\" data-av-web-studio-reveal=\"right\">
         <p class=\"{$slug}-eyebrow\">Our story</p>
         <h2>{$about_title}</h2>
         <p>{$about_p1}</p>
@@ -279,7 +279,7 @@ class EPB_AI_Content {
 
   <section id=\"gallery\" class=\"{$slug}-gallery\">
     <div class=\"{$slug}-wrap\">
-      <header class=\"{$slug}-section-head\" data-epb-reveal>
+      <header class=\"{$slug}-section-head\" data-av-web-studio-reveal>
         <p class=\"{$slug}-eyebrow\">Gallery</p>
         <h2>Moments that define us</h2>
         <p class=\"{$slug}-lead\">A visual look at the craft, people, and places behind {$brand_esc}.</p>
@@ -290,7 +290,7 @@ class EPB_AI_Content {
 
   <section class=\"{$slug}-testimonials\">
     <div class=\"{$slug}-wrap\">
-      <header class=\"{$slug}-section-head\" data-epb-reveal>
+      <header class=\"{$slug}-section-head\" data-av-web-studio-reveal>
         <p class=\"{$slug}-eyebrow\">Testimonials</p>
         <h2>Loved by people like you</h2>
       </header>
@@ -300,7 +300,7 @@ class EPB_AI_Content {
 
   <section class=\"{$slug}-faq\">
     <div class=\"{$slug}-wrap {$slug}-faq__wrap\">
-      <header class=\"{$slug}-section-head\" data-epb-reveal>
+      <header class=\"{$slug}-section-head\" data-av-web-studio-reveal>
         <p class=\"{$slug}-eyebrow\">FAQ</p>
         <h2>Questions, answered</h2>
       </header>
@@ -311,7 +311,7 @@ class EPB_AI_Content {
   <section id=\"contact\" class=\"{$slug}-cta\">
     <div class=\"{$slug}-cta__bg\" style=\"background-image:url('{$cta_img}')\" aria-hidden=\"true\"></div>
     <div class=\"{$slug}-cta__overlay\"></div>
-    <div class=\"{$slug}-wrap {$slug}-cta__inner\" data-epb-reveal>
+    <div class=\"{$slug}-wrap {$slug}-cta__inner\" data-av-web-studio-reveal>
       <h2>{$cta_title}</h2>
       <p>{$cta_text}</p>
       <a href=\"#\" class=\"{$slug}-btn {$slug}-btn--primary {$slug}-btn--lg\">{$cta1}</a>
@@ -334,8 +334,8 @@ class EPB_AI_Content {
 	 * @return array
 	 */
 	public static function hero_section($topic, $page_title, $slug) {
-		$p        = EPB_AI_Profiles::get($topic, $page_title);
-		$img      = esc_url(EPB_AI_Images::relevant_url($topic, 1600, 900, 0, $page_title, 'hero', $p['hero_headline']));
+		$p        = Av_Web_Studio_AI_Profiles::get($topic, $page_title);
+		$img      = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 1600, 900, 0, $page_title, 'hero', $p['hero_headline']));
 		$headline = esc_html($p['hero_headline']);
 		$badge    = esc_html($p['hero_badge']);
 		$sub      = esc_html($p['hero_sub']);
@@ -348,10 +348,10 @@ class EPB_AI_Content {
   <div class=\"{$slug}-hero__bg\" style=\"background-image:url('{$img}')\"></div>
   <div class=\"{$slug}-hero__overlay\"></div>
   <div class=\"{$slug}-hero__inner\">
-    <span class=\"{$slug}-hero__badge\" data-epb-reveal>{$badge}</span>
-    <h1 data-epb-reveal data-epb-delay=\"80\">{$headline}</h1>
-    <p data-epb-reveal data-epb-delay=\"140\">{$sub}</p>
-    <div class=\"{$slug}-hero__btns\" data-epb-reveal data-epb-delay=\"200\">
+    <span class=\"{$slug}-hero__badge\" data-av-web-studio-reveal>{$badge}</span>
+    <h1 data-av-web-studio-reveal data-av-web-studio-delay=\"80\">{$headline}</h1>
+    <p data-av-web-studio-reveal data-av-web-studio-delay=\"140\">{$sub}</p>
+    <div class=\"{$slug}-hero__btns\" data-av-web-studio-reveal data-av-web-studio-delay=\"200\">
       <button class=\"{$slug}-hero__btn {$slug}-hero__btn--fill\">{$cta1}</button>
       <button class=\"{$slug}-hero__btn {$slug}-hero__btn--outline\">{$cta2}</button>
     </div>
@@ -370,8 +370,8 @@ class EPB_AI_Content {
 .{$slug}-hero__btn--fill { background:#fff; color:{$a}; box-shadow:0 10px 30px rgba(0,0,0,.25); }
 .{$slug}-hero__btn--outline { background:transparent; color:#fff; border:2px solid rgba(255,255,255,.55); }
 .{$slug}-hero__btn:hover { transform:translateY(-3px); }
-[data-epb-reveal]{opacity:0;transform:translateY(28px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1);}
-[data-epb-reveal].is-visible{opacity:1;transform:none;}
+[data-av-web-studio-reveal]{opacity:0;transform:translateY(28px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1);}
+[data-av-web-studio-reveal].is-visible{opacity:1;transform:none;}
 @keyframes {$slug}-ken { from { transform:scale(1.08) translateY(0); } to { transform:scale(1) translateY(-1.5%); } }";
 
 		$js = self::motion_js() . "document.querySelectorAll('.{$slug}-hero__btn').forEach(function(b){b.addEventListener('click',function(){b.textContent='Thank you!';});});";
@@ -388,21 +388,21 @@ class EPB_AI_Content {
 	 * @return array
 	 */
 	public static function features_section($topic, $page_title, $slug) {
-		$p     = EPB_AI_Profiles::get($topic, $page_title);
+		$p     = Av_Web_Studio_AI_Profiles::get($topic, $page_title);
 		$a     = esc_attr($p['accent']);
 		$title = esc_html(str_replace('{brand}', $p['brand'], $p['features_title']));
 		$lead  = esc_html($p['features_lead']);
 		$cards = '';
 		$i     = 0;
 		foreach ($p['features'] as $f) {
-			$img = esc_url(EPB_AI_Images::relevant_url($topic, 640, 420, $i, $page_title, 'features', $f['title']));
-			$cards .= '<article data-epb-reveal data-epb-delay="' . ( $i * 80 ) . '">'
+			$img = esc_url(Av_Web_Studio_AI_Images::relevant_url($topic, 640, 420, $i, $page_title, 'features', $f['title']));
+			$cards .= '<article data-av-web-studio-reveal data-av-web-studio-delay="' . ( $i * 80 ) . '">'
 				. '<div class="media"><img src="' . $img . '" alt="" loading="lazy" width="640" height="420" /></div>'
 				. '<div class="body"><span class="icon">' . esc_html($f['icon']) . '</span><h3>' . esc_html($f['title']) . '</h3><p>' . esc_html($f['text']) . '</p></div></article>';
 			++$i;
 		}
 
-		$html = "<section class=\"{$slug}-feat\"><div class=\"inner\"><h2 data-epb-reveal>{$title}</h2><p class=\"lead\" data-epb-reveal>{$lead}</p><div class=\"grid\">{$cards}</div></div></section>";
+		$html = "<section class=\"{$slug}-feat\"><div class=\"inner\"><h2 data-av-web-studio-reveal>{$title}</h2><p class=\"lead\" data-av-web-studio-reveal>{$lead}</p><div class=\"grid\">{$cards}</div></div></section>";
 
 		$css = ".{$slug}-feat { padding:110px 24px; background:linear-gradient(180deg,#fff 0%,#f4f6f9 100%); width:100%; font-family:'Outfit',system-ui,sans-serif; }
 .{$slug}-feat .inner { max-width:1140px; margin:0 auto; text-align:center; }
@@ -418,8 +418,8 @@ class EPB_AI_Content {
 .{$slug}-feat .icon { font-size:1.5rem; display:block; margin-bottom:10px; }
 .{$slug}-feat h3 { margin:0 0 8px; font-size:1.12rem; color:#0f172a; }
 .{$slug}-feat p { margin:0; color:#64748b; line-height:1.65; font-size:.95rem; }
-[data-epb-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
-[data-epb-reveal].is-visible{opacity:1;transform:none;}";
+[data-av-web-studio-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+[data-av-web-studio-reveal].is-visible{opacity:1;transform:none;}";
 
 		$js = self::motion_js();
 
@@ -433,11 +433,11 @@ class EPB_AI_Content {
 	 */
 	public static function motion_js() {
 		return "(function(){
-  if(window.__epbMotionInit) return; window.__epbMotionInit=true;
+  if(window.__avWebStudioMotionInit) return; window.__avWebStudioMotionInit=true;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var els=document.querySelectorAll('[data-epb-reveal]');
+  var els=document.querySelectorAll('[data-av-web-studio-reveal]');
   function show(el){
-    var d=parseInt(el.getAttribute('data-epb-delay')||'0',10);
+    var d=parseInt(el.getAttribute('data-av-web-studio-delay')||'0',10);
     setTimeout(function(){el.classList.add('is-visible');}, reduce?0:d);
   }
   if(reduce || !('IntersectionObserver' in window)){els.forEach(show); }
@@ -552,10 +552,10 @@ class EPB_AI_Content {
 .{$slug}-cta__inner { position:relative; z-index:1; max-width:640px; }
 .{$slug}-cta h2 { font-family:'Fraunces',Georgia,serif; color:#fff; font-size:clamp(1.9rem,3vw,2.7rem); font-weight:700; margin:0 0 16px; }
 .{$slug}-cta p { opacity:.94; font-size:1.1rem; margin:0 0 32px; }
-[data-epb-reveal]{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1); will-change:opacity,transform;}
-[data-epb-reveal=\"left\"]{transform:translateX(-36px);}
-[data-epb-reveal=\"right\"]{transform:translateX(36px);}
-[data-epb-reveal].is-visible{opacity:1;transform:none;}
+[data-av-web-studio-reveal]{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1); will-change:opacity,transform;}
+[data-av-web-studio-reveal=\"left\"]{transform:translateX(-36px);}
+[data-av-web-studio-reveal=\"right\"]{transform:translateX(36px);}
+[data-av-web-studio-reveal].is-visible{opacity:1;transform:none;}
 @keyframes {$slug}-ken { from { transform:scale(1.1) translate3d(0,0,0); } to { transform:scale(1) translate3d(0,-1.5%,0); } }
 @keyframes {$slug}-float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-18px); } }
 @keyframes {$slug}-scroll { 0% { opacity:1; transform:translateY(0); } 100% { opacity:0; transform:translateY(12px); } }
@@ -569,7 +569,7 @@ class EPB_AI_Content {
 }
 @media(prefers-reduced-motion:reduce){
   .{$slug}-hero__bg,.{$slug}-hero__glow,.{$slug}-hero__scroll span { animation:none !important; }
-  [data-epb-reveal]{opacity:1;transform:none;transition:none;}
+  [data-av-web-studio-reveal]{opacity:1;transform:none;transition:none;}
 }";
 	}
 
@@ -581,7 +581,7 @@ class EPB_AI_Content {
 			'description' => wp_strip_all_tags($desc),
 		];
 		$js = self::motion_js();
-		$js .= 'var epbSchema=' . wp_json_encode($schema) . ';(function(){var s=document.createElement("script");s.type="application/ld+json";s.textContent=JSON.stringify(epbSchema);document.head.appendChild(s);})();';
+		$js .= 'var avWebStudioSchema=' . wp_json_encode($schema) . ';(function(){var s=document.createElement("script");s.type="application/ld+json";s.textContent=JSON.stringify(avWebStudioSchema);document.head.appendChild(s);})();';
 		return $js;
 	}
 }

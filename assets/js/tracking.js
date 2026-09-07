@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var cfg = window.epbTracking || {};
+  var cfg = window.avWebStudioTracking || {};
 
   if (cfg.gtmId) {
     window.dataLayer = window.dataLayer || [];

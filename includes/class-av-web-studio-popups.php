@@ -7,9 +7,9 @@ if (!defined('ABSPATH')) {
 /**
  * Site popups with triggers and display conditions.
  */
-class EPB_Popups {
+class Av_Web_Studio_Popups {
 
-	const OPTION_KEY = 'epb_popups';
+	const OPTION_KEY = 'av_web_studio_popups';
 
 	const TRIGGERS = [ 'load', 'scroll', 'exit_intent', 'click', 'inactivity' ];
 
@@ -63,7 +63,7 @@ class EPB_Popups {
 	 * @return string
 	 */
 	public static function generate_id() {
-		return 'epb_' . substr(wp_generate_password(10, false, false), 0, 10);
+		return 'av_web_studio_' . substr(wp_generate_password(10, false, false), 0, 10);
 	}
 
 	/**
@@ -309,7 +309,7 @@ class EPB_Popups {
 		$post_types = [];
 		if (!empty($popup['conditions']['post_types']) && is_array($popup['conditions']['post_types'])) {
 			foreach ($popup['conditions']['post_types'] as $type) {
-				if (EPB_Post_Types::is_supported_type($type)) {
+				if (Av_Web_Studio_Post_Types::is_supported_type($type)) {
 					$post_types[] = $type;
 				}
 			}
@@ -334,7 +334,7 @@ class EPB_Popups {
 		}
 
 		if (is_array($visual)) {
-			$compiled = EPB_Output::compile_visual($visual);
+			$compiled = Av_Web_Studio_Output::compile_visual($visual);
 			$html     = $compiled['html'];
 			$css      = $compiled['css'];
 		} else {
@@ -452,15 +452,15 @@ class EPB_Popups {
 
 		$html = '';
 		if (!empty($popup['visual']) && is_array($popup['visual'])) {
-			$compiled = EPB_Output::compile_visual($popup['visual']);
+			$compiled = Av_Web_Studio_Output::compile_visual($popup['visual']);
 			$html     = $compiled['html'];
 		}
 
-		return '<div id="epb-popup-' . $id . '" class="epb-popup" data-epb-popup="' . $id . '" aria-hidden="true" role="dialog" aria-modal="true">'
-			. '<div class="epb-popup__overlay" data-epb-close></div>'
-			. '<div class="epb-popup__dialog" role="document">'
-			. '<button type="button" class="epb-popup__close" data-epb-close aria-label="' . esc_attr__('Close', 'wpvisualx') . '">&times;</button>'
-			. '<div class="epb-popup__content">' . $html . '</div>'
+		return '<div id="av-web-studio-popup-' . $id . '" class="av-web-studio-popup" data-av-web-studio-popup="' . $id . '" aria-hidden="true" role="dialog" aria-modal="true">'
+			. '<div class="av-web-studio-popup__overlay" data-av-web-studio-close></div>'
+			. '<div class="av-web-studio-popup__dialog" role="document">'
+			. '<button type="button" class="av-web-studio-popup__close" data-av-web-studio-close aria-label="' . esc_attr__('Close', 'av-web-studio') . '">&times;</button>'
+			. '<div class="av-web-studio-popup__content">' . $html . '</div>'
 			. '</div></div>';
 	}
 

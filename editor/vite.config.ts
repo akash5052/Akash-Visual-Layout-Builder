@@ -14,7 +14,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         format: "iife",
-        name: "epbBuilderApp",
+        name: "avWebStudioBuilderApp",
         entryFileNames: "index.js",
         assetFileNames: "index.[ext]",
         inlineDynamicImports: true,

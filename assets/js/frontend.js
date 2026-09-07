@@ -6,11 +6,11 @@
   }
 
   function initAccordions() {
-    qsa("[data-epb-accordion]").forEach(function (root) {
-      qsa("[data-epb-acc]", root).forEach(function (btn) {
+    qsa("[data-av-web-studio-accordion]").forEach(function (root) {
+      qsa("[data-av-web-studio-acc]", root).forEach(function (btn) {
         btn.addEventListener("click", function () {
-          var id = btn.getAttribute("data-epb-acc");
-          var panel = root.querySelector('[data-epb-acc-panel="' + id + '"]');
+          var id = btn.getAttribute("data-av-web-studio-acc");
+          var panel = root.querySelector('[data-av-web-studio-acc-panel="' + id + '"]');
           if (!panel) {
             return;
           }
@@ -26,10 +26,10 @@
   }
 
   function initCounters() {
-    qsa("[data-epb-counter]").forEach(function (root) {
+    qsa("[data-av-web-studio-counter]").forEach(function (root) {
       var end = Number(root.getAttribute("data-end") || 0);
       var duration = Number(root.getAttribute("data-duration") || 1500);
-      var valueEl = root.querySelector("[data-epb-counter-value]");
+      var valueEl = root.querySelector("[data-av-web-studio-counter-value]");
       if (!valueEl) {
         return;
       }

@@ -27,22 +27,22 @@ const PAGE_TEMPLATE_OPTIONS: {
   {
     value: "default",
     label: "Default",
-    description: "Theme header and footer with WPVisualX content in the content area.",
+    description: "Theme header and footer with AV Web Studio content in the content area.",
   },
   {
-    value: "epb-full-width",
-    label: "WPVisualX Full Width",
+    value: "av-web-studio-full-width",
+    label: "AV Web Studio Full Width",
     description: "Stretch content edge-to-edge while keeping the theme header and footer.",
   },
   {
-    value: "epb-canvas",
-    label: "WPVisualX Canvas",
-    description: "No header, no footer — just your WPVisualX page content.",
+    value: "av-web-studio-canvas",
+    label: "AV Web Studio Canvas",
+    description: "No header, no footer — just your AV Web Studio page content.",
   },
   {
     value: "theme",
     label: "Theme",
-    description: "Use your theme layout with minimal WPVisualX layout overrides.",
+    description: "Use your theme layout with minimal AV Web Studio layout overrides.",
   },
 ];
 
@@ -64,10 +64,10 @@ function CategoryTree({
   if (items.length === 0) return null;
 
   return (
-    <ul className="epb-post-categories" style={{ marginLeft: depth ? 12 : 0 }}>
+    <ul className="av-web-studio-post-categories" style={{ marginLeft: depth ? 12 : 0 }}>
       {items.map((cat) => (
         <li key={cat.id}>
-          <label className="epb-post-categories__item">
+          <label className="av-web-studio-post-categories__item">
             <input
               type="checkbox"
               checked={selected.includes(cat.id)}
@@ -100,12 +100,12 @@ function ToggleField({
   hint?: string;
 }) {
   return (
-    <label className="epb-post-toggle">
-      <span className="epb-post-toggle__copy">
-        <span className="epb-seo-field__label">{label}</span>
-        {hint ? <span className="epb-seo-hint">{hint}</span> : null}
+    <label className="av-web-studio-post-toggle">
+      <span className="av-web-studio-post-toggle__copy">
+        <span className="av-web-studio-seo-field__label">{label}</span>
+        {hint ? <span className="av-web-studio-seo-hint">{hint}</span> : null}
       </span>
-      <span className="epb-post-toggle__control">
+      <span className="av-web-studio-post-toggle__control">
         <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
         <span>{checked ? "Yes" : "No"}</span>
       </span>
@@ -123,17 +123,17 @@ function FeaturedImageField({
   onRemove: () => void;
 }) {
   return (
-    <div className="epb-seo-field">
-      <span className="epb-seo-field__label">Featured image</span>
+    <div className="av-web-studio-seo-field">
+      <span className="av-web-studio-seo-field__label">Featured image</span>
       {url ? (
-        <div className="epb-seo-image-preview">
+        <div className="av-web-studio-seo-image-preview">
           <img src={url} alt="" />
-          <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm" onClick={onRemove}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={onRemove}>
             Remove
           </button>
         </div>
       ) : (
-        <button type="button" className="epb-post-featured-empty" onClick={onPick}>
+        <button type="button" className="av-web-studio-post-featured-empty" onClick={onPick}>
           <span aria-hidden="true">+</span>
           <span>Set featured image</span>
         </button>
@@ -195,20 +195,20 @@ export function PostOptionsPanel({
   const selectedTemplate = PAGE_TEMPLATE_OPTIONS.find((item) => item.value === options.page_template);
 
   return (
-    <div className="epb-post-options">
-      <div className="epb-post-options__header">
+    <div className="av-web-studio-post-options">
+      <div className="av-web-studio-post-options__header">
         <h3>{isPost ? "Post Settings" : "Page Settings"}</h3>
         <p>General WordPress settings for this {isPost ? "post" : "page"}.</p>
       </div>
 
-      <div className="epb-post-options__columns">
-        <section className="epb-post-options__col">
-          <h4 className="epb-post-options__section-title">
+      <div className="av-web-studio-post-options__columns">
+        <section className="av-web-studio-post-options__col">
+          <h4 className="av-web-studio-post-options__section-title">
             {isPage ? "Content & status" : "General settings"}
           </h4>
 
-          <label className="epb-seo-field">
-            <span className="epb-seo-field__label">Title</span>
+          <label className="av-web-studio-seo-field">
+            <span className="av-web-studio-seo-field__label">Title</span>
             <input
               type="text"
               value={pageTitle}
@@ -217,8 +217,8 @@ export function PostOptionsPanel({
             />
           </label>
 
-          <label className="epb-seo-field">
-            <span className="epb-seo-field__label">Status</span>
+          <label className="av-web-studio-seo-field">
+            <span className="av-web-studio-seo-field__label">Status</span>
             <select value={options.status} onChange={(e) => update({ status: e.target.value })}>
               {STATUS_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -234,8 +234,8 @@ export function PostOptionsPanel({
             onRemove={() => update({ featured_image_id: 0, featured_image_url: "" })}
           />
 
-          <label className="epb-seo-field">
-            <span className="epb-seo-field__label">Order</span>
+          <label className="av-web-studio-seo-field">
+            <span className="av-web-studio-seo-field__label">Order</span>
             <input
               type="number"
               min={0}
@@ -253,8 +253,8 @@ export function PostOptionsPanel({
 
           {isPost ? (
             <>
-              <label className="epb-seo-field">
-                <span className="epb-seo-field__label">URL slug</span>
+              <label className="av-web-studio-seo-field">
+                <span className="av-web-studio-seo-field__label">URL slug</span>
                 <input
                   type="text"
                   value={options.slug}
@@ -263,8 +263,8 @@ export function PostOptionsPanel({
                 />
               </label>
 
-              <label className="epb-seo-field">
-                <span className="epb-seo-field__label">Excerpt</span>
+              <label className="av-web-studio-seo-field">
+                <span className="av-web-studio-seo-field__label">Excerpt</span>
                 <textarea
                   rows={4}
                   value={options.excerpt}
@@ -276,8 +276,8 @@ export function PostOptionsPanel({
           ) : null}
         </section>
 
-        <section className="epb-post-options__col">
-          <h4 className="epb-post-options__section-title">
+        <section className="av-web-studio-post-options__col">
+          <h4 className="av-web-studio-post-options__section-title">
             {isPage ? "Layout & publishing" : "Taxonomy"}
           </h4>
 
@@ -290,8 +290,8 @@ export function PostOptionsPanel({
                 hint="Hide the theme page title on the front end."
               />
 
-              <label className="epb-seo-field">
-                <span className="epb-seo-field__label">Page layout</span>
+              <label className="av-web-studio-seo-field">
+                <span className="av-web-studio-seo-field__label">Page layout</span>
                 <select
                   value={options.page_template}
                   onChange={(e) => update({ page_template: e.target.value as PageTemplate })}
@@ -303,12 +303,12 @@ export function PostOptionsPanel({
                   ))}
                 </select>
                 {selectedTemplate ? (
-                  <span className="epb-seo-hint epb-seo-hint--italic">{selectedTemplate.description}</span>
+                  <span className="av-web-studio-seo-hint av-web-studio-seo-hint--italic">{selectedTemplate.description}</span>
                 ) : null}
               </label>
 
-              <label className="epb-seo-field">
-                <span className="epb-seo-field__label">URL slug</span>
+              <label className="av-web-studio-seo-field">
+                <span className="av-web-studio-seo-field__label">URL slug</span>
                 <input
                   type="text"
                   value={options.slug}
@@ -317,8 +317,8 @@ export function PostOptionsPanel({
                 />
               </label>
 
-              <label className="epb-seo-field">
-                <span className="epb-seo-field__label">Excerpt</span>
+              <label className="av-web-studio-seo-field">
+                <span className="av-web-studio-seo-field__label">Excerpt</span>
                 <textarea
                   rows={4}
                   value={options.excerpt}
@@ -327,8 +327,8 @@ export function PostOptionsPanel({
                 />
               </label>
 
-              <label className="epb-seo-field">
-                <span className="epb-seo-field__label">Parent page</span>
+              <label className="av-web-studio-seo-field">
+                <span className="av-web-studio-seo-field__label">Parent page</span>
                 <select
                   value={options.parent_id}
                   onChange={(e) => update({ parent_id: Number(e.target.value) })}
@@ -343,14 +343,14 @@ export function PostOptionsPanel({
             </>
           ) : (
             <>
-              <div className="epb-seo-field">
-                <span className="epb-seo-field__label">Categories</span>
+              <div className="av-web-studio-seo-field">
+                <span className="av-web-studio-seo-field__label">Categories</span>
                 {lists.categories.length === 0 ? (
-                  <p className="epb-seo-hint">
+                  <p className="av-web-studio-seo-hint">
                     No categories yet. Create them under Posts → Categories in WordPress.
                   </p>
                 ) : (
-                  <div className="epb-post-categories-wrap">
+                  <div className="av-web-studio-post-categories-wrap">
                     <CategoryTree
                       categories={lists.categories}
                       selected={options.category_ids}
@@ -360,8 +360,8 @@ export function PostOptionsPanel({
                 )}
               </div>
 
-              <label className="epb-seo-field">
-                <span className="epb-seo-field__label">Tags</span>
+              <label className="av-web-studio-seo-field">
+                <span className="av-web-studio-seo-field__label">Tags</span>
                 <input
                   type="text"
                   value={tagsInput}
@@ -375,7 +375,7 @@ export function PostOptionsPanel({
                     }
                   }}
                 />
-                <span className="epb-seo-hint">Comma-separated. Press Enter or click away to save.</span>
+                <span className="av-web-studio-seo-hint">Comma-separated. Press Enter or click away to save.</span>
               </label>
             </>
           )}

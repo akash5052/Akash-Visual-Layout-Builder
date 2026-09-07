@@ -4,20 +4,20 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class EPB_Renderer {
+class Av_Web_Studio_Renderer {
 
-	const META_HTML    = '_epb_html';
-	const META_CSS     = '_epb_css';
-	const META_JS      = '_epb_js';
-	const META_ENABLED = '_epb_enabled';
-	const META_LEGACY  = '_epb_code';
-	const META_EDIT_MODE = '_epb_edit_mode';
-	const META_VISUAL    = '_epb_visual';
+	const META_HTML    = '_av_web_studio_html';
+	const META_CSS     = '_av_web_studio_css';
+	const META_JS      = '_av_web_studio_js';
+	const META_ENABLED = '_av_web_studio_enabled';
+	const META_LEGACY  = '_av_web_studio_code';
+	const META_EDIT_MODE = '_av_web_studio_edit_mode';
+	const META_VISUAL    = '_av_web_studio_visual';
 
 	/**
 	 * Get editor mode for a page.
 	 *
-	 * The plugin is visual-only. Legacy `_epb_edit_mode` values are ignored.
+	 * The plugin is visual-only. Legacy `_av_web_studio_edit_mode` values are ignored.
 	 *
 	 * @param int $post_id Post ID.
 	 * @return string
@@ -64,7 +64,7 @@ class EPB_Renderer {
 			delete_post_meta($post_id, self::META_VISUAL);
 			return;
 		}
-		$doc = EPB_Output::scrub_visual($doc);
+		$doc = Av_Web_Studio_Output::scrub_visual($doc);
 		update_post_meta($post_id, self::META_VISUAL, wp_json_encode($doc));
 	}
 
@@ -176,7 +176,7 @@ class EPB_Renderer {
 		$visual = self::get_visual_document($post_id);
 
 		if (is_array($visual)) {
-			$clean = EPB_Output::compile_visual($visual);
+			$clean = Av_Web_Studio_Output::compile_visual($visual);
 		} else {
 			$clean = [
 				'html' => '',
@@ -218,15 +218,15 @@ class EPB_Renderer {
 			return '';
 		}
 
-		$html = EPB_Output::kses_html($html);
+		$html = Av_Web_Studio_Output::kses_html($html);
 
-		$html = EPB_Posts_Widget::hydrate_html($html, (int) $post_id);
+		$html = Av_Web_Studio_Posts_Widget::hydrate_html($html, (int) $post_id);
 
-		if (preg_match('/^<div[^>]*class="[^"]*epb-page[^"]*"/i', $html)) {
+		if (preg_match('/^<div[^>]*class="[^"]*av-web-studio-page[^"]*"/i', $html)) {
 			return $html;
 		}
 
-		$attrs = 'class="epb-page epb-page-' . esc_attr($post_id) . '" data-epb-page="' . esc_attr($post_id) . '"';
+		$attrs = 'class="av-web-studio-page av-web-studio-page-' . esc_attr($post_id) . '" data-av-web-studio-page="' . esc_attr($post_id) . '"';
 
 		return '<div ' . $attrs . '>' . $html . '</div>';
 	}
@@ -238,7 +238,7 @@ class EPB_Renderer {
 	 * @return string
 	 */
 	public static function render_css($code) {
-		return EPB_Output::sanitize_css(isset($code['css']) ? $code['css'] : '');
+		return Av_Web_Studio_Output::sanitize_css(isset($code['css']) ? $code['css'] : '');
 	}
 
 	/**

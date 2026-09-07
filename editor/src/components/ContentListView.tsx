@@ -141,15 +141,15 @@ export function ContentListView({ postType, onCreate, onOpen, onNotice }: Conten
   const allSelected = data.items.length > 0 && data.items.every((item) => selected.has(item.id));
 
   return (
-    <div className="epb-screen epb-screen--list">
-      <header className="epb-screen__header">
+    <div className="av-web-studio-screen av-web-studio-screen--list">
+      <header className="av-web-studio-screen__header">
         <div>
-          <h1 className="epb-screen__title">{label}</h1>
-          <p className="epb-screen__subtitle">
-            Manage your {label.toLowerCase()} built with WPVisualX.
+          <h1 className="av-web-studio-screen__title">{label}</h1>
+          <p className="av-web-studio-screen__subtitle">
+            Manage your {label.toLowerCase()} built with AV Web Studio.
           </p>
         </div>
-        <button type="button" className="epb-btn epb-btn--primary" onClick={() => setShowCreateModal(true)}>
+        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary" onClick={() => setShowCreateModal(true)}>
           + New {singular}
         </button>
       </header>
@@ -167,28 +167,28 @@ export function ContentListView({ postType, onCreate, onOpen, onNotice }: Conten
       />
 
       {loading ? (
-        <div className="epb-screen__empty">
+        <div className="av-web-studio-screen__empty">
           <p>Loading {label.toLowerCase()}…</p>
         </div>
       ) : data.items.length === 0 ? (
-        <div className="epb-screen__empty">
+        <div className="av-web-studio-screen__empty">
           <p>
             {statusFilter === "trash"
               ? `No ${label.toLowerCase()} in trash.`
               : `No ${label.toLowerCase()} yet.`}
           </p>
           {statusFilter !== "trash" && (
-            <button type="button" className="epb-btn epb-btn--ghost" onClick={() => setShowCreateModal(true)}>
+            <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost" onClick={() => setShowCreateModal(true)}>
               Create your first {singular}
             </button>
           )}
         </div>
       ) : (
-        <div className="epb-content-table-wrap">
-          <table className="epb-content-table">
+        <div className="av-web-studio-content-table-wrap">
+          <table className="av-web-studio-content-table">
             <thead>
               <tr>
-                <th className="epb-content-table__check">
+                <th className="av-web-studio-content-table__check">
                   <input
                     type="checkbox"
                     aria-label="Select all"
@@ -208,8 +208,8 @@ export function ContentListView({ postType, onCreate, onOpen, onNotice }: Conten
                 const busy = rowBusyId === item.id;
 
                 return (
-                  <tr key={item.id} className={selected.has(item.id) ? "epb-content-table__row--selected" : ""}>
-                    <td className="epb-content-table__check">
+                  <tr key={item.id} className={selected.has(item.id) ? "av-web-studio-content-table__row--selected" : ""}>
+                    <td className="av-web-studio-content-table__check">
                       <input
                         type="checkbox"
                         aria-label={`Select ${item.title || "item"}`}
@@ -219,27 +219,27 @@ export function ContentListView({ postType, onCreate, onOpen, onNotice }: Conten
                     </td>
                     <td>
                       {isTrashed ? (
-                        <span className="epb-content-table__title epb-content-table__title--static">
+                        <span className="av-web-studio-content-table__title av-web-studio-content-table__title--static">
                           {item.title || "(no title)"}
                         </span>
                       ) : (
-                        <button type="button" className="epb-content-table__title" onClick={() => onOpen(item.id)}>
+                        <button type="button" className="av-web-studio-content-table__title" onClick={() => onOpen(item.id)}>
                           {item.title || "(no title)"}
                         </button>
                       )}
                     </td>
                     <td>
-                      <span className={`epb-status epb-status--${statusClass(item.status)}`}>
+                      <span className={`av-web-studio-status av-web-studio-status--${statusClass(item.status)}`}>
                         {displayStatus(item.status)}
                       </span>
                     </td>
-                    <td className="epb-content-table__date">{formatListDate(item.modified)}</td>
-                    <td className="epb-content-table__actions">
+                    <td className="av-web-studio-content-table__date">{formatListDate(item.modified)}</td>
+                    <td className="av-web-studio-content-table__actions">
                       {isTrashed ? (
                         <>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
                             disabled={busy}
                             onClick={() => handleRowRestore(item)}
                           >
@@ -247,7 +247,7 @@ export function ContentListView({ postType, onCreate, onOpen, onNotice }: Conten
                           </button>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm epb-btn--danger"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-btn--danger"
                             disabled={busy}
                             onClick={() => handleRowDeletePermanent(item)}
                           >
@@ -258,14 +258,14 @@ export function ContentListView({ postType, onCreate, onOpen, onNotice }: Conten
                         <>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
                             onClick={() => setQuickEditItem(item)}
                           >
                             Quick Edit
                           </button>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
                             onClick={() => {
                               try {
                                 openContentView(item);
@@ -278,14 +278,14 @@ export function ContentListView({ postType, onCreate, onOpen, onNotice }: Conten
                           </button>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
                             onClick={() => onOpen(item.id)}
                           >
                             Edit
                           </button>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm epb-btn--danger"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-btn--danger"
                             disabled={busy}
                             onClick={() => handleRowTrash(item)}
                           >

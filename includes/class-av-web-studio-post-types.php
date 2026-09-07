@@ -7,10 +7,10 @@ if (!defined('ABSPATH')) {
 /**
  * Supported content types for the page builder.
  */
-class EPB_Post_Types {
+class Av_Web_Studio_Post_Types {
 
 	/**
-	 * Post types editable with WPVisualX.
+	 * Post types editable with AV Web Studio.
 	 *
 	 * @return string[]
 	 */

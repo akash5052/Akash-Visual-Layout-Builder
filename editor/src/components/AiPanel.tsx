@@ -22,7 +22,7 @@ interface AiPanelProps {
 
 function SparkleIcon() {
   return (
-    <svg className="epb-ai-toggle__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg className="av-web-studio-ai-toggle__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M12 2l1.4 4.2L17.6 8 13.4 9.4 12 13.6 10.6 9.4 6.4 8l4.2-1.8L12 2z"
         fill="currentColor"
@@ -91,31 +91,31 @@ export function AiPanel({
   ];
 
   return createPortal(
-    <div className={`epb-ai-panel ${isOpen ? "epb-ai-panel--open" : ""}`} data-theme={theme}>
+    <div className={`av-web-studio-ai-panel ${isOpen ? "av-web-studio-ai-panel--open" : ""}`} data-theme={theme}>
       {isOpen && (
-        <div className="epb-ai-content" role="dialog" aria-label="AI assistant">
-          <div className="epb-ai-content__accent" aria-hidden="true" />
+        <div className="av-web-studio-ai-content" role="dialog" aria-label="AI assistant">
+          <div className="av-web-studio-ai-content__accent" aria-hidden="true" />
 
-          <div className="epb-ai-header">
-            <div className="epb-ai-header__title">
-              <span className="epb-ai-header__icon" aria-hidden="true">
+          <div className="av-web-studio-ai-header">
+            <div className="av-web-studio-ai-header__title">
+              <span className="av-web-studio-ai-header__icon" aria-hidden="true">
                 <SparkleIcon />
               </span>
               <div>
                 <h4>AI Assistant</h4>
-                <p className="epb-ai-header__status">
-                  <span className={`epb-ai-status ${aiReady ? "epb-ai-status--ok" : "epb-ai-status--warn"}`}>
-                    <span className="epb-ai-status__dot" />
+                <p className="av-web-studio-ai-header__status">
+                  <span className={`av-web-studio-ai-status ${aiReady ? "av-web-studio-ai-status--ok" : "av-web-studio-ai-status--warn"}`}>
+                    <span className="av-web-studio-ai-status__dot" />
                     {aiReady ? "Ready" : "Setup required"}
                   </span>
                 </p>
               </div>
             </div>
-            <div className="epb-ai-header__actions">
+            <div className="av-web-studio-ai-header__actions">
               {history.length > 0 && (
                 <button
                   type="button"
-                  className="epb-ai-history-clear"
+                  className="av-web-studio-ai-history-clear"
                   onClick={onClearHistory}
                   disabled={!aiReady || isLoading}
                   title="Clear chat history"
@@ -125,7 +125,7 @@ export function AiPanel({
               )}
               <button
                 type="button"
-                className="epb-ai-close"
+                className="av-web-studio-ai-close"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close AI assistant"
               >
@@ -134,16 +134,16 @@ export function AiPanel({
             </div>
           </div>
 
-          <div className="epb-ai-body">
+          <div className="av-web-studio-ai-body">
             {!aiReady && (
-              <div className="epb-ai-history__empty epb-ai-history__empty--setup">
+              <div className="av-web-studio-ai-history__empty av-web-studio-ai-history__empty--setup">
                 <strong>Enable AI in Settings</strong>
                 <p>
                   Turn on the AI assistant in{" "}
                   {settingsUrl ? (
-                    <a href={settingsUrl}>WPVisualX → Settings</a>
+                    <a href={settingsUrl}>AV Web Studio → Settings</a>
                   ) : (
-                    "WPVisualX → Settings"
+                    "AV Web Studio → Settings"
                   )}
                   . Cloud models use{" "}
                   <strong>Settings → Connectors</strong> in WordPress 7.0+.
@@ -151,9 +151,9 @@ export function AiPanel({
               </div>
             )}
 
-            <div className="epb-ai-history" aria-label="AI chat history">
+            <div className="av-web-studio-ai-history" aria-label="AI chat history">
               {history.length === 0 && !pendingPrompt && aiReady && (
-                <div className="epb-ai-history__empty">
+                <div className="av-web-studio-ai-history__empty">
                   <strong>Ask anything about this page</strong>
                   <p>Generate sections, swap images, or add animations. You can restore any earlier version.</p>
                 </div>
@@ -162,20 +162,20 @@ export function AiPanel({
               {history.map((turn, index) => {
                 const isActive = turn.id === activeTurnId;
                 return (
-                  <div key={turn.id} className={`epb-ai-turn ${isActive ? "epb-ai-turn--active" : ""}`}>
-                    <div className="epb-ai-msg epb-ai-msg--user">
-                      <span className="epb-ai-msg__label">You</span>
+                  <div key={turn.id} className={`av-web-studio-ai-turn ${isActive ? "av-web-studio-ai-turn--active" : ""}`}>
+                    <div className="av-web-studio-ai-msg av-web-studio-ai-msg--user">
+                      <span className="av-web-studio-ai-msg__label">You</span>
                       <p>{turn.prompt}</p>
-                      <time className="epb-ai-msg__time">{formatTime(turn.createdAt)}</time>
+                      <time className="av-web-studio-ai-msg__time">{formatTime(turn.createdAt)}</time>
                     </div>
 
-                    <div className="epb-ai-msg epb-ai-msg--assistant">
-                      <span className="epb-ai-msg__label">Assistant</span>
+                    <div className="av-web-studio-ai-msg av-web-studio-ai-msg--assistant">
+                      <span className="av-web-studio-ai-msg__label">Assistant</span>
                       <p>{turn.explanation || "Page updated."}</p>
-                      <div className="epb-ai-turn__actions">
+                      <div className="av-web-studio-ai-turn__actions">
                         <button
                           type="button"
-                          className={`epb-ai-restore ${isActive ? "epb-ai-restore--active" : ""}`}
+                          className={`av-web-studio-ai-restore ${isActive ? "av-web-studio-ai-restore--active" : ""}`}
                           onClick={() => onRestore(turn.id)}
                           disabled={isLoading || isActive}
                           title="Restore page to this version"
@@ -185,7 +185,7 @@ export function AiPanel({
                         {index > 0 && (
                           <button
                             type="button"
-                            className="epb-ai-restore epb-ai-restore--ghost"
+                            className="av-web-studio-ai-restore av-web-studio-ai-restore--ghost"
                             onClick={() => onRestoreBefore(turn.id)}
                             disabled={!aiReady || isLoading}
                             title="Restore to state before this change"
@@ -200,13 +200,13 @@ export function AiPanel({
               })}
 
               {pendingPrompt && (
-                <div className="epb-ai-turn epb-ai-turn--pending">
-                  <div className="epb-ai-msg epb-ai-msg--user">
-                    <span className="epb-ai-msg__label">You</span>
+                <div className="av-web-studio-ai-turn av-web-studio-ai-turn--pending">
+                  <div className="av-web-studio-ai-msg av-web-studio-ai-msg--user">
+                    <span className="av-web-studio-ai-msg__label">You</span>
                     <p>{pendingPrompt}</p>
                   </div>
-                  <div className="epb-ai-msg epb-ai-msg--assistant epb-ai-msg--loading">
-                    <span className="epb-ai-generate__spinner" aria-hidden="true" />
+                  <div className="av-web-studio-ai-msg av-web-studio-ai-msg--assistant av-web-studio-ai-msg--loading">
+                    <span className="av-web-studio-ai-generate__spinner" aria-hidden="true" />
                     <span>Generating…</span>
                   </div>
                 </div>
@@ -216,14 +216,14 @@ export function AiPanel({
             </div>
 
             {aiReady && history.length === 0 && !isLoading && (
-              <div className="epb-ai-suggestions">
-                <span className="epb-ai-suggestions__label">Quick ideas</span>
-                <div className="epb-ai-suggestions__list">
+              <div className="av-web-studio-ai-suggestions">
+                <span className="av-web-studio-ai-suggestions__label">Quick ideas</span>
+                <div className="av-web-studio-ai-suggestions__list">
                   {suggestions.map((s) => (
                     <button
                       key={s.label}
                       type="button"
-                      className="epb-ai-chip"
+                      className="av-web-studio-ai-chip"
                       onClick={() => setPrompt(s.prompt)}
                       disabled={!aiReady || isLoading}
                       title={s.prompt}
@@ -235,8 +235,8 @@ export function AiPanel({
               </div>
             )}
 
-            <form className="epb-ai-composer" onSubmit={handleSubmit}>
-              <div className="epb-ai-composer__shell">
+            <form className="av-web-studio-ai-composer" onSubmit={handleSubmit}>
+              <div className="av-web-studio-ai-composer__shell">
                 <textarea
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -252,12 +252,12 @@ export function AiPanel({
                     }
                   }}
                 />
-                <div className="epb-ai-composer__footer">
-                  <span className="epb-ai-composer__hint">Enter to send · Shift+Enter for new line</span>
-                  <button type="submit" className="epb-ai-generate" disabled={!aiReady || isLoading || !prompt.trim()}>
+                <div className="av-web-studio-ai-composer__footer">
+                  <span className="av-web-studio-ai-composer__hint">Enter to send · Shift+Enter for new line</span>
+                  <button type="submit" className="av-web-studio-ai-generate" disabled={!aiReady || isLoading || !prompt.trim()}>
                     {isLoading ? (
                       <>
-                        <span className="epb-ai-generate__spinner" aria-hidden="true" />
+                        <span className="av-web-studio-ai-generate__spinner" aria-hidden="true" />
                         Generating
                       </>
                     ) : (
@@ -276,14 +276,14 @@ export function AiPanel({
 
       <button
         type="button"
-        className="epb-ai-toggle"
+        className="av-web-studio-ai-toggle"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label={isOpen ? "Close AI assistant" : "Open AI assistant"}
       >
-        <span className="epb-ai-toggle__glow" aria-hidden="true" />
+        <span className="av-web-studio-ai-toggle__glow" aria-hidden="true" />
         <SparkleIcon />
-        <span className="epb-ai-toggle__label">
+        <span className="av-web-studio-ai-toggle__label">
           {isOpen ? "Close" : history.length > 0 ? `AI (${history.length})` : "AI Assistant"}
         </span>
       </button>

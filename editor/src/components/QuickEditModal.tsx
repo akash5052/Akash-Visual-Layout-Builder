@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { quickEditPage, quickEditPopup } from "../api/wordpress";
-import type { ContentPostType, EpbPopup, PageSummary } from "../types";
+import type { ContentPostType, StudioPopup, PageSummary } from "../types";
 
 interface ModalShellProps {
   title: string;
@@ -22,27 +22,27 @@ function ModalShell({ title, subtitle, onClose, children, footer }: ModalShellPr
   }, [onClose]);
 
   return (
-    <div className="epb-quick-edit" role="presentation" onClick={onClose}>
+    <div className="av-web-studio-quick-edit" role="presentation" onClick={onClose}>
       <div
-        className="epb-quick-edit__dialog"
+        className="av-web-studio-quick-edit__dialog"
         role="dialog"
         aria-modal="true"
-        aria-labelledby="epb-quick-edit-title"
+        aria-labelledby="av-web-studio-quick-edit-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <header className="epb-quick-edit__header">
+        <header className="av-web-studio-quick-edit__header">
           <div>
-            <h2 id="epb-quick-edit-title" className="epb-quick-edit__title">
+            <h2 id="av-web-studio-quick-edit-title" className="av-web-studio-quick-edit__title">
               {title}
             </h2>
-            {subtitle && <p className="epb-quick-edit__subtitle">{subtitle}</p>}
+            {subtitle && <p className="av-web-studio-quick-edit__subtitle">{subtitle}</p>}
           </div>
-          <button type="button" className="epb-quick-edit__close" onClick={onClose} aria-label="Close">
+          <button type="button" className="av-web-studio-quick-edit__close" onClick={onClose} aria-label="Close">
             ×
           </button>
         </header>
-        <div className="epb-quick-edit__body">{children}</div>
-        <footer className="epb-quick-edit__footer">{footer}</footer>
+        <div className="av-web-studio-quick-edit__body">{children}</div>
+        <footer className="av-web-studio-quick-edit__footer">{footer}</footer>
       </div>
     </div>
   );
@@ -106,16 +106,16 @@ export function CreateContentModal({ postType, onClose, onCreate }: CreateConten
   return (
     <ModalShell
       title={`New ${singular}`}
-      subtitle={`Create a draft ${singular.toLowerCase()} and open it in WPVisualX.`}
+      subtitle={`Create a draft ${singular.toLowerCase()} and open it in AV Web Studio.`}
       onClose={handleClose}
       footer={
         <>
-          <button type="button" className="epb-btn epb-btn--ghost" onClick={handleClose} disabled={creating}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost" onClick={handleClose} disabled={creating}>
             Cancel
           </button>
           <button
             type="button"
-            className="epb-btn epb-btn--primary"
+            className="av-web-studio-btn av-web-studio-btn--primary"
             onClick={handleCreate}
             disabled={creating || !title.trim()}
           >
@@ -124,7 +124,7 @@ export function CreateContentModal({ postType, onClose, onCreate }: CreateConten
         </>
       }
     >
-      <label className="epb-quick-edit__field">
+      <label className="av-web-studio-quick-edit__field">
         <span>Title</span>
         <input
           type="text"
@@ -139,7 +139,7 @@ export function CreateContentModal({ postType, onClose, onCreate }: CreateConten
           autoFocus
           disabled={creating}
         />
-        <span className="epb-quick-edit__hint">You can change this later in the builder.</span>
+        <span className="av-web-studio-quick-edit__hint">You can change this later in the builder.</span>
       </label>
     </ModalShell>
   );
@@ -194,37 +194,37 @@ export function ContentQuickEditModal({
       onClose={onClose}
       footer={
         <>
-          <button type="button" className="epb-btn epb-btn--ghost" onClick={onClose} disabled={saving}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost" onClick={onClose} disabled={saving}>
             Cancel
           </button>
-          <button type="button" className="epb-btn epb-btn--primary" onClick={handleSave} disabled={saving}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--primary" onClick={handleSave} disabled={saving}>
             {saving ? "Updating…" : "Update"}
           </button>
         </>
       }
     >
-      <label className="epb-quick-edit__field">
+      <label className="av-web-studio-quick-edit__field">
         <span>Title</span>
         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} autoFocus />
       </label>
-      <label className="epb-quick-edit__field">
+      <label className="av-web-studio-quick-edit__field">
         <span>Status</span>
         <select value={status} onChange={(e) => setStatus(e.target.value as "publish" | "draft")}>
           <option value="publish">Published</option>
           <option value="draft">Draft</option>
         </select>
       </label>
-      <label className="epb-quick-edit__field">
+      <label className="av-web-studio-quick-edit__field">
         <span>Slug</span>
         <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} spellCheck={false} />
-        <span className="epb-quick-edit__hint">URL segment for this {postType === "post" ? "post" : "page"}.</span>
+        <span className="av-web-studio-quick-edit__hint">URL segment for this {postType === "post" ? "post" : "page"}.</span>
       </label>
     </ModalShell>
   );
 }
 
 interface PopupQuickEditModalProps {
-  popup: EpbPopup;
+  popup: StudioPopup;
   onClose: () => void;
   onSaved: () => void;
   onNotice: (type: "success" | "error", message: string) => void;
@@ -264,20 +264,20 @@ export function PopupQuickEditModal({ popup, onClose, onSaved, onNotice }: Popup
       onClose={onClose}
       footer={
         <>
-          <button type="button" className="epb-btn epb-btn--ghost" onClick={onClose} disabled={saving}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost" onClick={onClose} disabled={saving}>
             Cancel
           </button>
-          <button type="button" className="epb-btn epb-btn--primary" onClick={handleSave} disabled={saving}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--primary" onClick={handleSave} disabled={saving}>
             {saving ? "Updating…" : "Update"}
           </button>
         </>
       }
     >
-      <label className="epb-quick-edit__field">
+      <label className="av-web-studio-quick-edit__field">
         <span>Name</span>
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
       </label>
-      <label className="epb-quick-edit__field">
+      <label className="av-web-studio-quick-edit__field">
         <span>Status</span>
         <select value={status} onChange={(e) => setStatus(e.target.value as "publish" | "draft")}>
           <option value="publish">Published (enabled)</option>

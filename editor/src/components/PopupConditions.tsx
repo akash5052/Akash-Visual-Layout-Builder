@@ -1,9 +1,9 @@
-import type { EpbPopup, PageSummary, PopupFrequencyType, PopupScope, PopupTriggerType } from "../types";
+import type { StudioPopup, PageSummary, PopupFrequencyType, PopupScope, PopupTriggerType } from "../types";
 
 interface PopupConditionsProps {
-  popup: EpbPopup;
+  popup: StudioPopup;
   pages: PageSummary[];
-  onChange: (popup: EpbPopup) => void;
+  onChange: (popup: StudioPopup) => void;
 }
 
 const TRIGGERS: { value: PopupTriggerType; label: string }[] = [
@@ -29,7 +29,7 @@ const FREQUENCIES: { value: PopupFrequencyType; label: string }[] = [
 ];
 
 export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps) {
-  const update = (patch: Partial<EpbPopup>) => onChange({ ...popup, ...patch });
+  const update = (patch: Partial<StudioPopup>) => onChange({ ...popup, ...patch });
 
   const togglePageId = (id: number) => {
     const ids = popup.conditions.page_ids.includes(id)
@@ -41,8 +41,8 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
   };
 
   return (
-    <div className="epb-popup-conditions">
-      <label className="epb-layout-toggle">
+    <div className="av-web-studio-popup-conditions">
+      <label className="av-web-studio-layout-toggle">
         <input
           type="checkbox"
           checked={popup.enabled}
@@ -51,7 +51,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         <span>Popup enabled</span>
       </label>
 
-      <label className="epb-layout-mode">
+      <label className="av-web-studio-layout-mode">
         <span>Trigger</span>
         <select
           value={popup.trigger.type}
@@ -66,7 +66,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       </label>
 
       {(popup.trigger.type === "load" || popup.trigger.type === "inactivity") && (
-        <label className="epb-layout-mode">
+        <label className="av-web-studio-layout-mode">
           <span>Delay (seconds)</span>
           <input
             type="number"
@@ -80,7 +80,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       )}
 
       {popup.trigger.type === "scroll" && (
-        <label className="epb-layout-mode">
+        <label className="av-web-studio-layout-mode">
           <span>Scroll depth (%)</span>
           <input
             type="number"
@@ -95,7 +95,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       )}
 
       {popup.trigger.type === "click" && (
-        <label className="epb-layout-mode">
+        <label className="av-web-studio-layout-mode">
           <span>CSS selector</span>
           <input
             type="text"
@@ -108,7 +108,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         </label>
       )}
 
-      <label className="epb-layout-mode">
+      <label className="av-web-studio-layout-mode">
         <span>Display on</span>
         <select
           value={popup.conditions.scope}
@@ -123,11 +123,11 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       </label>
 
       {(popup.conditions.scope === "specific" || popup.conditions.scope === "exclude") && (
-        <div className="epb-popup-pages">
-          <span className="epb-popup-pages__label">Pages / posts</span>
-          <div className="epb-popup-pages__list">
+        <div className="av-web-studio-popup-pages">
+          <span className="av-web-studio-popup-pages__label">Pages / posts</span>
+          <div className="av-web-studio-popup-pages__list">
             {pages.map((p) => (
-              <label key={p.id} className="epb-popup-pages__item">
+              <label key={p.id} className="av-web-studio-popup-pages__item">
                 <input
                   type="checkbox"
                   checked={popup.conditions.page_ids.includes(p.id)}
@@ -140,7 +140,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         </div>
       )}
 
-      <label className="epb-layout-mode">
+      <label className="av-web-studio-layout-mode">
         <span>Show frequency</span>
         <select
           value={popup.frequency.type}
@@ -155,7 +155,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       </label>
 
       {popup.frequency.type === "days" && (
-        <label className="epb-layout-mode">
+        <label className="av-web-studio-layout-mode">
           <span>Days between shows</span>
           <input
             type="number"
@@ -168,7 +168,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         </label>
       )}
 
-      <label className="epb-layout-toggle">
+      <label className="av-web-studio-layout-toggle">
         <input
           type="checkbox"
           checked={popup.overlay_close}
@@ -177,7 +177,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         <span>Close on overlay click</span>
       </label>
 
-      <label className="epb-layout-toggle">
+      <label className="av-web-studio-layout-toggle">
         <input
           type="checkbox"
           checked={popup.esc_close}

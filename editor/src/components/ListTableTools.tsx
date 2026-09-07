@@ -9,7 +9,7 @@ const STATUS_FILTERS: { id: ListStatusFilter; label: string }[] = [
 ];
 
 export function getDefaultListStatus(): ListStatusFilter {
-  const value = window.epbBuilderData?.defaultListStatus;
+  const value = window.avWebStudioBuilderData?.defaultListStatus;
   if (value === "all" || value === "publish" || value === "draft" || value === "trash") {
     return value;
   }
@@ -23,14 +23,14 @@ interface ListStatusFiltersProps {
 
 export function ListStatusFilters({ value, onChange }: ListStatusFiltersProps) {
   return (
-    <div className="epb-list-filters" role="tablist" aria-label="Status filter">
+    <div className="av-web-studio-list-filters" role="tablist" aria-label="Status filter">
       {STATUS_FILTERS.map((filter) => (
         <button
           key={filter.id}
           type="button"
           role="tab"
           aria-selected={value === filter.id}
-          className={`epb-list-filters__btn ${value === filter.id ? "epb-list-filters__btn--active" : ""}`}
+          className={`av-web-studio-list-filters__btn ${value === filter.id ? "av-web-studio-list-filters__btn--active" : ""}`}
           onClick={() => {
             if (value !== filter.id) {
               onChange(filter.id);
@@ -55,7 +55,7 @@ interface ListPaginationProps {
 export function ListPagination({ page, totalPages, total, perPage, onPageChange }: ListPaginationProps) {
   if (total <= perPage) {
     return total > 0 ? (
-      <p className="epb-list-pagination__meta">{total} item{total !== 1 ? "s" : ""}</p>
+      <p className="av-web-studio-list-pagination__meta">{total} item{total !== 1 ? "s" : ""}</p>
     ) : null;
   }
 
@@ -63,25 +63,25 @@ export function ListPagination({ page, totalPages, total, perPage, onPageChange 
   const end = Math.min(page * perPage, total);
 
   return (
-    <div className="epb-list-pagination">
-      <p className="epb-list-pagination__meta">
+    <div className="av-web-studio-list-pagination">
+      <p className="av-web-studio-list-pagination__meta">
         Showing {start}–{end} of {total}
       </p>
-      <div className="epb-list-pagination__controls">
+      <div className="av-web-studio-list-pagination__controls">
         <button
           type="button"
-          className="epb-btn epb-btn--ghost epb-btn--sm"
+          className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
           disabled={page <= 1}
           onClick={() => onPageChange(page - 1)}
         >
           ← Previous
         </button>
-        <span className="epb-list-pagination__page">
+        <span className="av-web-studio-list-pagination__page">
           Page {page} of {totalPages}
         </span>
         <button
           type="button"
-          className="epb-btn epb-btn--ghost epb-btn--sm"
+          className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
           disabled={page >= totalPages}
           onClick={() => onPageChange(page + 1)}
         >
@@ -116,17 +116,17 @@ export function BulkActionBar({
   }
 
   return (
-    <div className="epb-bulk-bar">
-      <span className="epb-bulk-bar__count">{selectedCount} selected</span>
-      <div className="epb-bulk-bar__actions">
+    <div className="av-web-studio-bulk-bar">
+      <span className="av-web-studio-bulk-bar__count">{selectedCount} selected</span>
+      <div className="av-web-studio-bulk-bar__actions">
         {statusFilter === "trash" ? (
           <>
-            <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm" disabled={acting} onClick={onRestore}>
+            <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" disabled={acting} onClick={onRestore}>
               Restore
             </button>
             <button
               type="button"
-              className="epb-btn epb-btn--ghost epb-btn--sm epb-btn--danger"
+              className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-btn--danger"
               disabled={acting}
               onClick={onDeletePermanent}
             >
@@ -134,11 +134,11 @@ export function BulkActionBar({
             </button>
           </>
         ) : (
-          <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm epb-btn--danger" disabled={acting} onClick={onTrash}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-btn--danger" disabled={acting} onClick={onTrash}>
             Move to trash
           </button>
         )}
-        <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm" disabled={acting} onClick={onClear}>
+        <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" disabled={acting} onClick={onClear}>
           Clear selection
         </button>
       </div>

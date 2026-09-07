@@ -7,10 +7,10 @@ if (!defined('ABSPATH')) {
 /**
  * WordPress post/page options (categories, tags, excerpt, etc.).
  */
-class EPB_Post_Options {
+class Av_Web_Studio_Post_Options {
 
-	const META_PAGE_TEMPLATE = '_epb_page_template';
-	const META_HIDE_TITLE    = '_epb_hide_title';
+	const META_PAGE_TEMPLATE = '_av_web_studio_page_template';
+	const META_HIDE_TITLE    = '_av_web_studio_hide_title';
 
 	/**
 	 * Allowed page template values.
@@ -18,7 +18,7 @@ class EPB_Post_Options {
 	 * @return string[]
 	 */
 	public static function allowed_page_templates() {
-		return [ 'default', 'epb-full-width', 'epb-canvas', 'theme' ];
+		return [ 'default', 'av-web-studio-full-width', 'av-web-studio-canvas', 'theme' ];
 	}
 
 	/**
@@ -30,7 +30,7 @@ class EPB_Post_Options {
 	public static function get_page_template($post_id) {
 		$value = (string) get_post_meta($post_id, self::META_PAGE_TEMPLATE, true);
 		if ($value === '' || !in_array($value, self::allowed_page_templates(), true)) {
-			return 'epb-full-width';
+			return 'av-web-studio-full-width';
 		}
 		return $value;
 	}
@@ -107,7 +107,7 @@ class EPB_Post_Options {
 			'category_ids'       => [],
 			'tag_names'          => [],
 			'parent_id'          => 0,
-			'page_template'      => 'epb-full-width',
+			'page_template'      => 'av-web-studio-full-width',
 			'comment_status'     => 'closed',
 			'hide_title'         => true,
 			'menu_order'         => 0,
@@ -124,8 +124,8 @@ class EPB_Post_Options {
 	public static function save($post_id, $options) {
 		$post = get_post($post_id);
 
-		if (!$post || !EPB_Post_Types::is_supported($post)) {
-			return new WP_Error('epb_invalid_post', __('Invalid post.', 'wpvisualx'), [ 'status' => 400 ]);
+		if (!$post || !Av_Web_Studio_Post_Types::is_supported($post)) {
+			return new WP_Error('av_web_studio_invalid_post', __('Invalid post.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$update = [ 'ID' => $post_id ];
@@ -247,7 +247,7 @@ class EPB_Post_Options {
 			'objects'
 		);
 
-		$exclude = [ 'attachment', 'epb_popup' ];
+		$exclude = [ 'attachment', 'av_web_studio_popup' ];
 		$list    = [];
 
 		foreach ($types as $type) {

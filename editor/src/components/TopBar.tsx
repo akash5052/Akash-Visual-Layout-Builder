@@ -43,51 +43,51 @@ export function TopBar({
   onDevicePreviewChange,
 }: TopBarProps) {
   return (
-    <header className="epb-topbar epb-slide-down">
-      <div className="epb-topbar__left">
+    <header className="av-web-studio-topbar av-web-studio-slide-down">
+      <div className="av-web-studio-topbar__left">
         <Logo />
         {variant === "content-edit" && onBack && (
-          <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm epb-topbar__back" onClick={onBack}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-topbar__back" onClick={onBack}>
             ← Back
           </button>
         )}
         {variant === "workspace" && onBack && (
-          <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm epb-topbar__back" onClick={onBack}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-topbar__back" onClick={onBack}>
             ← Back
           </button>
         )}
         {variant === "workspace" && workspaceTitle && (
-          <span className="epb-topbar__workspace-title">{workspaceTitle}</span>
+          <span className="av-web-studio-topbar__workspace-title">{workspaceTitle}</span>
         )}
       </div>
 
-      <div className="epb-topbar__center">
+      <div className="av-web-studio-topbar__center">
         {variant === "content-edit" && (
           <>
-            <span className={`epb-type-badge epb-type-badge--${postType}`}>{typeLabel(postType)}</span>
+            <span className={`av-web-studio-type-badge av-web-studio-type-badge--${postType}`}>{typeLabel(postType)}</span>
             <input
-              className="epb-title-input"
+              className="av-web-studio-title-input"
               value={pageTitle}
               onChange={(e) => onTitleChange?.(e.target.value)}
               placeholder={`${typeLabel(postType)} title`}
             />
-            {pageStatus && <span className={`epb-status epb-status--${pageStatus}`}>{pageStatus}</span>}
-            {isSaving && <span className="epb-saving">Saving...</span>}
+            {pageStatus && <span className={`av-web-studio-status av-web-studio-status--${pageStatus}`}>{pageStatus}</span>}
+            {isSaving && <span className="av-web-studio-saving">Saving...</span>}
           </>
         )}
-        {variant === "workspace" && isSaving && <span className="epb-saving">Saving...</span>}
+        {variant === "workspace" && isSaving && <span className="av-web-studio-saving">Saving...</span>}
       </div>
 
-      <div className="epb-topbar__right">
+      <div className="av-web-studio-topbar__right">
         {onDevicePreviewChange && (
           <>
             <DeviceSwitcher value={devicePreview} onChange={onDevicePreviewChange} />
-            <span className="epb-topbar__divider" aria-hidden="true" />
+            <span className="av-web-studio-topbar__divider" aria-hidden="true" />
           </>
         )}
 
         <select
-          className="epb-select epb-theme-select"
+          className="av-web-studio-select av-web-studio-theme-select"
           value={theme}
           onChange={(e) => onThemeChange(e.target.value as EditorTheme)}
           title="Editor theme"
@@ -100,17 +100,17 @@ export function TopBar({
 
         {variant === "content-edit" && (
           <>
-            <button type="button" className="epb-btn epb-btn--ghost" onClick={onFullPagePreview} title="Preview changes">
+            <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost" onClick={onFullPagePreview} title="Preview changes">
               Preview changes
             </button>
-            <button type="button" className="epb-btn epb-btn--publish" onClick={onPublish} disabled={isPublishing}>
+            <button type="button" className="av-web-studio-btn av-web-studio-btn--publish" onClick={onPublish} disabled={isPublishing}>
               {isPublishing ? "Publishing..." : "Publish"}
             </button>
           </>
         )}
 
         {variant === "workspace" && onPublish && (
-          <button type="button" className="epb-btn epb-btn--publish" onClick={onPublish} disabled={isPublishing}>
+          <button type="button" className="av-web-studio-btn av-web-studio-btn--publish" onClick={onPublish} disabled={isPublishing}>
             {isPublishing ? "Publishing..." : "Publish"}
           </button>
         )}

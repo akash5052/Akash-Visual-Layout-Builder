@@ -5,7 +5,7 @@ import type {
   ContentPostType,
   GlobalLayout,
   PageLayout,
-  EpbPopup,
+  StudioPopup,
   PageSeo,
   PostOptions,
   PostMetaLists,
@@ -16,12 +16,12 @@ import type {
 function getHeaders(): HeadersInit {
   return {
     "Content-Type": "application/json",
-    "X-WP-Nonce": window.epbBuilderData.nonce,
+    "X-WP-Nonce": window.avWebStudioBuilderData.nonce,
   };
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${window.epbBuilderData.restUrl}${endpoint}`, {
+  const response = await fetch(`${window.avWebStudioBuilderData.restUrl}${endpoint}`, {
     ...options,
     headers: { ...getHeaders(), ...options.headers },
   });
@@ -201,8 +201,8 @@ export function saveGlobalLayout(layout: GlobalLayout): Promise<{ success: boole
   });
 }
 
-export function fetchPopups(params: FetchPopupsParams = {}): Promise<PaginatedResult<EpbPopup>> {
-  return request<PaginatedResult<EpbPopup>>(
+export function fetchPopups(params: FetchPopupsParams = {}): Promise<PaginatedResult<StudioPopup>> {
+  return request<PaginatedResult<StudioPopup>>(
     `popups${buildQuery({
       status: params.status,
       page: params.page,
@@ -211,14 +211,14 @@ export function fetchPopups(params: FetchPopupsParams = {}): Promise<PaginatedRe
   );
 }
 
-export function createPopup(name = "New Popup"): Promise<{ success: boolean; popup: EpbPopup }> {
+export function createPopup(name = "New Popup"): Promise<{ success: boolean; popup: StudioPopup }> {
   return request("popups", {
     method: "POST",
     body: JSON.stringify({ name }),
   });
 }
 
-export function savePopup(popup: EpbPopup): Promise<{ success: boolean; popup: EpbPopup; message: string }> {
+export function savePopup(popup: StudioPopup): Promise<{ success: boolean; popup: StudioPopup; message: string }> {
   return request(`popups/${popup.id}`, {
     method: "POST",
     body: JSON.stringify({ popup }),
@@ -239,7 +239,7 @@ export function restorePopup(id: string): Promise<{ success: boolean; id: string
 export function quickEditPopup(
   id: string,
   data: { name?: string; status?: "publish" | "draft" }
-): Promise<{ success: boolean; popup: EpbPopup; message: string }> {
+): Promise<{ success: boolean; popup: StudioPopup; message: string }> {
   return request(`popups/${id}/quick`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -264,8 +264,8 @@ export async function generateAiCode(
 ): Promise<{ success: boolean; code: PageCode; source: string; message: string; action: "append" | "replace" | "none" }> {
   // Secure admin-ajax.php proxy (nonce-verified, admin-only) — relays to Gemini server-side.
   const form = new FormData();
-  form.append("action", "epb_ai_generate");
-  form.append("nonce", window.epbBuilderData.aiNonce);
+  form.append("action", "av_web_studio_ai_generate");
+  form.append("nonce", window.avWebStudioBuilderData.aiNonce);
   form.append("prompt", prompt);
   if (title) form.append("title", title);
   if (code) {
@@ -274,7 +274,7 @@ export async function generateAiCode(
     form.append("code[js]", "");
   }
 
-  const response = await fetch(window.epbBuilderData.ajaxUrl, { method: "POST", body: form });
+  const response = await fetch(window.avWebStudioBuilderData.ajaxUrl, { method: "POST", body: form });
   const payload = await response.json();
 
   if (!response.ok || !payload?.success) {
@@ -325,9 +325,9 @@ export async function uploadTemplate(
   const form = new FormData();
   form.append("file", file);
 
-  const response = await fetch(`${window.epbBuilderData.restUrl}templates/upload`, {
+  const response = await fetch(`${window.avWebStudioBuilderData.restUrl}templates/upload`, {
     method: "POST",
-    headers: { "X-WP-Nonce": window.epbBuilderData.nonce },
+    headers: { "X-WP-Nonce": window.avWebStudioBuilderData.nonce },
     body: form,
   });
 
@@ -363,9 +363,9 @@ export async function uploadSvg(file: File): Promise<{ success: boolean; svg: im
   const form = new FormData();
   form.append("file", file);
 
-  const response = await fetch(`${window.epbBuilderData.restUrl}svg`, {
+  const response = await fetch(`${window.avWebStudioBuilderData.restUrl}svg`, {
     method: "POST",
-    headers: { "X-WP-Nonce": window.epbBuilderData.nonce },
+    headers: { "X-WP-Nonce": window.avWebStudioBuilderData.nonce },
     body: form,
   });
 
@@ -396,7 +396,7 @@ export function saveTracking(tracking: import("../types").TrackingSettings): Pro
 }
 
 export function getContentEditUrl(postType: ContentPostType, id: number): string {
-  const base = postType === "post" ? window.epbBuilderData.adminUrls.posts : window.epbBuilderData.adminUrls.pages;
+  const base = postType === "post" ? window.avWebStudioBuilderData.adminUrls.posts : window.avWebStudioBuilderData.adminUrls.pages;
   return `${base}&page_id=${id}`;
 }
 

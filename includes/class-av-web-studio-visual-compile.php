@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Compile a visual builder document to HTML / CSS / JS (mirrors editor compile).
  */
-class EPB_Visual_Compile {
+class Av_Web_Studio_Visual_Compile {
 
 	const BREAKPOINT_TABLET = 1024;
 	const BREAKPOINT_MOBILE = 767;
@@ -25,16 +25,16 @@ class EPB_Visual_Compile {
 			$html_parts[] = self::compile_section($section);
 		}
 
-		$html = "<div class=\"epb-visual-root\">\n" . implode("\n", $html_parts) . "\n</div>";
-		$css   = "/* WPVisualX — Visual mode */\n"
-			. ".epb-visual-root { width: 100%; }\n"
-			. ".epb-section { box-sizing: border-box; }\n"
-			. ".epb-col { min-width: 0; }\n"
-			. ".epb-w-heading, .epb-w-text, .epb-w-button, .epb-w-image, .epb-w-iconbox { word-break: break-word; }\n"
+		$html = "<div class=\"av-web-studio-visual-root\">\n" . implode("\n", $html_parts) . "\n</div>";
+		$css   = "/* AV Web Studio — Visual mode */\n"
+			. ".av-web-studio-visual-root { width: 100%; }\n"
+			. ".av-web-studio-section { box-sizing: border-box; }\n"
+			. ".av-web-studio-col { min-width: 0; }\n"
+			. ".av-web-studio-w-heading, .av-web-studio-w-text, .av-web-studio-w-button, .av-web-studio-w-image, .av-web-studio-w-iconbox { word-break: break-word; }\n"
 			. self::widget_css()
 			. "@media (max-width: 768px) {\n"
-			. "  .epb-container { flex-direction: column !important; }\n"
-			. "  .epb-col { flex: 1 1 100% !important; max-width: 100% !important; }\n"
+			. "  .av-web-studio-container { flex-direction: column !important; }\n"
+			. "  .av-web-studio-col { flex: 1 1 100% !important; max-width: 100% !important; }\n"
 			. "}\n"
 			. self::collect_responsive_css($doc);
 
@@ -104,7 +104,7 @@ class EPB_Visual_Compile {
 			if ($value === null || $value === '') {
 				return;
 			}
-			$value = EPB_Output::sanitize_css_value($value);
+			$value = Av_Web_Studio_Output::sanitize_css_value($value);
 			if ($value === '') {
 				return;
 			}
@@ -183,7 +183,7 @@ class EPB_Visual_Compile {
 			}
 		}
 		if (!empty($settings['backgroundImage'])) {
-			$raw = EPB_Output::sanitize_css_value((string) $settings['backgroundImage']);
+			$raw = Av_Web_Studio_Output::sanitize_css_value((string) $settings['backgroundImage']);
 			$raw = self::local_media_url($raw);
 			if (strpos($raw, 'gradient(') !== false || strpos($raw, 'url(') !== false) {
 				$parts[] = 'background-image:' . $raw;
@@ -197,7 +197,7 @@ class EPB_Visual_Compile {
 			$parts[] = 'background-position:center';
 		}
 		if (isset($settings['zIndex']) && trim((string) $settings['zIndex']) !== '') {
-			$z = EPB_Output::sanitize_css_value($settings['zIndex']);
+			$z = Av_Web_Studio_Output::sanitize_css_value($settings['zIndex']);
 			if ($z !== '') {
 				$parts[] = 'z-index:' . $z;
 				$parts[] = 'position:relative';
@@ -220,10 +220,10 @@ class EPB_Visual_Compile {
 		foreach (($section['columns'] ?? []) as $column) {
 			$cols[] = self::compile_column($column);
 		}
-		$container = '<div class="epb-container" style="max-width:' . esc_attr($max) . ';margin:0 auto;display:flex;flex-wrap:wrap;gap:' . esc_attr($gap) . ';width:100%;">'
+		$container = '<div class="av-web-studio-container" style="max-width:' . esc_attr($max) . ';margin:0 auto;display:flex;flex-wrap:wrap;gap:' . esc_attr($gap) . ';width:100%;">'
 			. implode("\n", $cols)
 			. '</div>';
-		return '<section class="epb-section" data-epb-id="' . esc_attr($section['id'] ?? '') . '" style="' . esc_attr(self::section_style($settings)) . '">' . $container . '</section>';
+		return '<section class="av-web-studio-section" data-av-web-studio-id="' . esc_attr($section['id'] ?? '') . '" style="' . esc_attr(self::section_style($settings)) . '">' . $container . '</section>';
 	}
 
 	/**
@@ -245,7 +245,7 @@ class EPB_Visual_Compile {
 			'box-sizing:border-box',
 			'display:flex',
 			'flex-direction:column',
-			'justify-content:' . EPB_Output::sanitize_css_value($justify),
+			'justify-content:' . Av_Web_Studio_Output::sanitize_css_value($justify),
 		]);
 		$body = [];
 		foreach (($column['children'] ?? []) as $child) {
@@ -255,7 +255,7 @@ class EPB_Visual_Compile {
 				$body[] = self::compile_widget($child);
 			}
 		}
-		return '<div class="epb-col" data-epb-id="' . esc_attr($column['id'] ?? '') . '" style="' . esc_attr(implode(';', $style)) . '">' . implode("\n", $body) . '</div>';
+		return '<div class="av-web-studio-col" data-av-web-studio-id="' . esc_attr($column['id'] ?? '') . '" style="' . esc_attr(implode(';', $style)) . '">' . implode("\n", $body) . '</div>';
 	}
 
 	/**
@@ -272,7 +272,7 @@ class EPB_Visual_Compile {
 		if (is_numeric($value)) {
 			return ((float) $value) . 'px';
 		}
-		$value = EPB_Output::sanitize_css_value((string) $value);
+		$value = Av_Web_Studio_Output::sanitize_css_value((string) $value);
 		if ($value === '' || !preg_match('/^-?[0-9.]+(px|em|rem|%|vh|vw|pt)?$/i', $value)) {
 			return $fallback;
 		}
@@ -287,7 +287,7 @@ class EPB_Visual_Compile {
 	 * @return string
 	 */
 	private static function css_decl($property, $value) {
-		$value = EPB_Output::sanitize_css_value($value);
+		$value = Av_Web_Studio_Output::sanitize_css_value($value);
 		if ($value === '') {
 			return '';
 		}
@@ -305,7 +305,7 @@ class EPB_Visual_Compile {
 	 * @return string
 	 */
 	private static function local_media_url($url) {
-		return EPB_Output::sanitize_media_src($url);
+		return Av_Web_Studio_Output::sanitize_media_src($url);
 	}
 
 	/**
@@ -352,7 +352,7 @@ class EPB_Visual_Compile {
 					'display'      => 'block',
 					'white-space'  => 'pre-line',
 				]);
-				return '<' . $tag . ' class="epb-w epb-w-heading" style="' . esc_attr($css) . '">' . self::esc_text($widget['content'] ?? '') . '</' . $tag . '>';
+				return '<' . $tag . ' class="av-web-studio-w av-web-studio-w-heading" style="' . esc_attr($css) . '">' . self::esc_text($widget['content'] ?? '') . '</' . $tag . '>';
 
 			case 'text':
 				$css = self::style_css($style, [
@@ -361,7 +361,7 @@ class EPB_Visual_Compile {
 					'display'     => 'block',
 					'white-space' => 'pre-line',
 				]);
-				return '<p class="epb-w epb-w-text" style="' . esc_attr($css) . '">' . self::esc_text($widget['content'] ?? '') . '</p>';
+				return '<p class="av-web-studio-w av-web-studio-w-text" style="' . esc_attr($css) . '">' . self::esc_text($widget['content'] ?? '') . '</p>';
 
 			case 'button':
 				$wrap = self::style_css(
@@ -380,18 +380,18 @@ class EPB_Visual_Compile {
 					'display:inline-flex',
 					'align-items:center',
 					'justify-content:center',
-					'padding:' . EPB_Output::sanitize_css_value($widget['paddingY'] ?? '12px') . ' ' . EPB_Output::sanitize_css_value($widget['paddingX'] ?? '24px'),
-					'border-radius:' . EPB_Output::sanitize_css_value($style['borderRadius'] ?? '0px'),
-					'background:' . EPB_Output::sanitize_css_value($widget['background'] ?? '#6366f1'),
-					'color:' . EPB_Output::sanitize_css_value($widget['textColor'] ?? '#ffffff'),
+					'padding:' . Av_Web_Studio_Output::sanitize_css_value($widget['paddingY'] ?? '12px') . ' ' . Av_Web_Studio_Output::sanitize_css_value($widget['paddingX'] ?? '24px'),
+					'border-radius:' . Av_Web_Studio_Output::sanitize_css_value($style['borderRadius'] ?? '0px'),
+					'background:' . Av_Web_Studio_Output::sanitize_css_value($widget['background'] ?? '#6366f1'),
+					'color:' . Av_Web_Studio_Output::sanitize_css_value($widget['textColor'] ?? '#ffffff'),
 					'text-decoration:none',
-					'font-weight:' . EPB_Output::sanitize_css_value($style['fontWeight'] ?? '700'),
-					'font-size:' . EPB_Output::sanitize_css_value($style['fontSize'] ?? '15px'),
+					'font-weight:' . Av_Web_Studio_Output::sanitize_css_value($style['fontWeight'] ?? '700'),
+					'font-size:' . Av_Web_Studio_Output::sanitize_css_value($style['fontSize'] ?? '15px'),
 				];
 				if (!empty($widget['fullWidth'])) {
 					$btn[] = 'width:100%';
 				}
-				return '<div class="epb-w epb-w-button" style="' . esc_attr($wrap) . '"><a href="' . self::esc_href($widget['url'] ?? '#') . '" style="' . esc_attr(implode(';', $btn)) . '">' . self::esc($widget['label'] ?? 'Button') . '</a></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-button" style="' . esc_attr($wrap) . '"><a href="' . self::esc_href($widget['url'] ?? '#') . '" style="' . esc_attr(implode(';', $btn)) . '">' . self::esc($widget['label'] ?? 'Button') . '</a></div>';
 
 			case 'image':
 				$wrap = self::style_css($style, [ 'text-align' => $widget['align'] ?? 'center' ]);
@@ -403,31 +403,31 @@ class EPB_Visual_Compile {
 					'border-radius:' . self::esc_attr_val($widget['borderRadius'] ?? ($style['borderRadius'] ?? '0')),
 					'object-fit:' . self::esc_attr_val($widget['objectFit'] ?? 'cover'),
 				];
-				return '<figure class="epb-w epb-w-image" style="' . esc_attr($wrap) . '"><img src="' . self::esc_src($widget['src'] ?? '') . '" alt="' . self::esc_attr_val($widget['alt'] ?? '') . '" style="' . esc_attr(implode(';', $img)) . '" loading="lazy" /></figure>';
+				return '<figure class="av-web-studio-w av-web-studio-w-image" style="' . esc_attr($wrap) . '"><img src="' . self::esc_src($widget['src'] ?? '') . '" alt="' . self::esc_attr_val($widget['alt'] ?? '') . '" style="' . esc_attr(implode(';', $img)) . '" loading="lazy" /></figure>';
 
 			case 'spacer':
 				$h = is_numeric($widget['height'] ?? 40) ? ((int) $widget['height']) . 'px' : (string) ($widget['height'] ?? '40px');
-				return '<div class="epb-w epb-w-spacer" style="' . esc_attr(self::style_css($style, [ 'height' => $h, 'margin-bottom' => '0' ])) . '" aria-hidden="true"></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-spacer" style="' . esc_attr(self::style_css($style, [ 'height' => $h, 'margin-bottom' => '0' ])) . '" aria-hidden="true"></div>';
 
 			case 'divider':
 				$wrap  = self::style_css($style, [ 'text-align' => $widget['align'] ?? 'center' ]);
 				$thick = is_numeric($widget['thickness'] ?? 1) ? ((int) $widget['thickness']) . 'px' : (string) ($widget['thickness'] ?? '1px');
-				return '<div class="epb-w epb-w-divider" style="' . esc_attr($wrap) . '"><hr style="border:none;border-top:' . esc_attr($thick) . ' solid ' . self::esc_attr_val($widget['color'] ?? '#e2e8f0') . ';width:' . self::esc_attr_val($widget['width'] ?? '100%') . ';margin:0 auto;display:inline-block;" /></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-divider" style="' . esc_attr($wrap) . '"><hr style="border:none;border-top:' . esc_attr($thick) . ' solid ' . self::esc_attr_val($widget['color'] ?? '#e2e8f0') . ';width:' . self::esc_attr_val($widget['width'] ?? '100%') . ';margin:0 auto;display:inline-block;" /></div>';
 
 			case 'icon-box':
 				$css = self::style_css($style, [ 'text-align' => $widget['align'] ?? 'center' ]);
-				return '<div class="epb-w epb-w-iconbox" style="' . esc_attr($css) . '"><div style="font-size:' . self::esc_attr_val($widget['iconSize'] ?? '28px') . ';margin-bottom:10px;line-height:1;">' . self::esc($widget['icon'] ?? '◆') . '</div><h3 style="margin:0 0 8px;font-size:1.1rem;color:' . self::esc_attr_val($widget['titleColor'] ?? '#0f172a') . ';">' . self::esc($widget['title'] ?? '') . '</h3><p style="margin:0;color:' . self::esc_attr_val($widget['textColor'] ?? '#64748b') . ';line-height:1.6;">' . self::esc($widget['text'] ?? '') . '</p></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-iconbox" style="' . esc_attr($css) . '"><div style="font-size:' . self::esc_attr_val($widget['iconSize'] ?? '28px') . ';margin-bottom:10px;line-height:1;">' . self::esc($widget['icon'] ?? '◆') . '</div><h3 style="margin:0 0 8px;font-size:1.1rem;color:' . self::esc_attr_val($widget['titleColor'] ?? '#0f172a') . ';">' . self::esc($widget['title'] ?? '') . '</h3><p style="margin:0;color:' . self::esc_attr_val($widget['textColor'] ?? '#64748b') . ';line-height:1.6;">' . self::esc($widget['text'] ?? '') . '</p></div>';
 
 			case 'counter':
 				$css = self::style_css($style, [ 'text-align' => $widget['align'] ?? 'center' ]);
-				return '<div class="epb-w epb-w-counter" data-epb-counter data-end="' . esc_attr((string) ($widget['end'] ?? 0)) . '" data-duration="' . esc_attr((string) ($widget['duration'] ?? 1500)) . '" style="' . esc_attr($css) . '"><div style="font-size:2.4rem;font-weight:800;line-height:1;color:' . self::esc_attr_val($widget['numberColor'] ?? '#0f172a') . ';">' . self::esc($widget['prefix'] ?? '') . '<span data-epb-counter-value>0</span>' . self::esc($widget['suffix'] ?? '') . '</div><div style="margin-top:8px;color:' . self::esc_attr_val($widget['titleColor'] ?? '#64748b') . ';">' . self::esc($widget['title'] ?? '') . '</div></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-counter" data-av-web-studio-counter data-end="' . esc_attr((string) ($widget['end'] ?? 0)) . '" data-duration="' . esc_attr((string) ($widget['duration'] ?? 1500)) . '" style="' . esc_attr($css) . '"><div style="font-size:2.4rem;font-weight:800;line-height:1;color:' . self::esc_attr_val($widget['numberColor'] ?? '#0f172a') . ';">' . self::esc($widget['prefix'] ?? '') . '<span data-av-web-studio-counter-value>0</span>' . self::esc($widget['suffix'] ?? '') . '</div><div style="margin-top:8px;color:' . self::esc_attr_val($widget['titleColor'] ?? '#64748b') . ';">' . self::esc($widget['title'] ?? '') . '</div></div>';
 
 			case 'testimonial':
 				$css = self::style_css($style, [ 'text-align' => $widget['align'] ?? 'left' ]);
 				$avatar = !empty($widget['avatar'])
 					? '<img src="' . self::esc_src($widget['avatar']) . '" alt="" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" loading="lazy" />'
 					: '';
-				return '<blockquote class="epb-w epb-w-testimonial" style="' . esc_attr($css) . '"><p style="margin:0 0 16px;font-size:1.05rem;line-height:1.7;">“' . self::esc($widget['content'] ?? '') . '”</p><footer style="display:flex;gap:12px;align-items:center;">' . $avatar . '<div><strong>' . self::esc($widget['name'] ?? '') . '</strong><div style="color:#64748b;font-size:0.9rem;">' . self::esc($widget['role'] ?? '') . '</div></div></footer></blockquote>';
+				return '<blockquote class="av-web-studio-w av-web-studio-w-testimonial" style="' . esc_attr($css) . '"><p style="margin:0 0 16px;font-size:1.05rem;line-height:1.7;">“' . self::esc($widget['content'] ?? '') . '”</p><footer style="display:flex;gap:12px;align-items:center;">' . $avatar . '<div><strong>' . self::esc($widget['name'] ?? '') . '</strong><div style="color:#64748b;font-size:0.9rem;">' . self::esc($widget['role'] ?? '') . '</div></div></footer></blockquote>';
 
 			case 'price-table':
 				$css = self::style_css($style, [
@@ -444,7 +444,7 @@ class EPB_Visual_Compile {
 				foreach ($features as $f) {
 					$lis .= '<li style="padding:8px 0;border-bottom:1px solid rgba(15,23,42,.08);">' . self::esc($f) . '</li>';
 				}
-				return '<div class="epb-w epb-w-pricetable" style="' . esc_attr($css) . '"><h3 style="margin:0 0 8px;">' . self::esc($widget['title'] ?? '') . '</h3><div style="font-size:2.4rem;font-weight:800;margin:8px 0;">' . self::esc($widget['price'] ?? '') . '<span style="font-size:0.95rem;font-weight:500;color:#64748b;"> ' . self::esc($widget['period'] ?? '') . '</span></div><ul style="list-style:none;margin:16px 0 24px;padding:0;text-align:left;">' . $lis . '</ul><a href="' . self::esc_href($widget['buttonUrl'] ?? '#') . '" style="display:inline-flex;padding:12px 22px;background:' . self::esc_attr_val($widget['buttonBackground'] ?? '#0f172a') . ';color:#fff;text-decoration:none;font-weight:700;border-radius:8px;">' . self::esc($widget['buttonLabel'] ?? 'Choose') . '</a></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-pricetable" style="' . esc_attr($css) . '"><h3 style="margin:0 0 8px;">' . self::esc($widget['title'] ?? '') . '</h3><div style="font-size:2.4rem;font-weight:800;margin:8px 0;">' . self::esc($widget['price'] ?? '') . '<span style="font-size:0.95rem;font-weight:500;color:#64748b;"> ' . self::esc($widget['period'] ?? '') . '</span></div><ul style="list-style:none;margin:16px 0 24px;padding:0;text-align:left;">' . $lis . '</ul><a href="' . self::esc_href($widget['buttonUrl'] ?? '#') . '" style="display:inline-flex;padding:12px 22px;background:' . self::esc_attr_val($widget['buttonBackground'] ?? '#0f172a') . ';color:#fff;text-decoration:none;font-weight:700;border-radius:8px;">' . self::esc($widget['buttonLabel'] ?? 'Choose') . '</a></div>';
 
 			case 'call-to-action':
 				$css = self::style_css($style, [
@@ -456,29 +456,29 @@ class EPB_Visual_Compile {
 					'border-radius'  => $style['borderRadius'] ?? '16px',
 					'color'          => '#ffffff',
 				]);
-				return '<div class="epb-w epb-w-cta" style="' . esc_attr($css) . '"><h3 style="margin:0 0 10px;font-size:1.6rem;">' . self::esc($widget['title'] ?? '') . '</h3><p style="margin:0 0 20px;opacity:.9;line-height:1.6;">' . self::esc($widget['text'] ?? '') . '</p><a href="' . self::esc_href($widget['buttonUrl'] ?? '#') . '" style="display:inline-flex;padding:12px 22px;background:#fff;color:#0f172a;text-decoration:none;font-weight:700;border-radius:8px;">' . self::esc($widget['buttonLabel'] ?? 'Get Started') . '</a></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-cta" style="' . esc_attr($css) . '"><h3 style="margin:0 0 10px;font-size:1.6rem;">' . self::esc($widget['title'] ?? '') . '</h3><p style="margin:0 0 20px;opacity:.9;line-height:1.6;">' . self::esc($widget['text'] ?? '') . '</p><a href="' . self::esc_href($widget['buttonUrl'] ?? '#') . '" style="display:inline-flex;padding:12px 22px;background:#fff;color:#0f172a;text-decoration:none;font-weight:700;border-radius:8px;">' . self::esc($widget['buttonLabel'] ?? 'Get Started') . '</a></div>';
 
 			case 'team':
 				$css = self::style_css($style, [ 'text-align' => $widget['align'] ?? 'center' ]);
 				$img = !empty($widget['image'])
 					? '<img src="' . self::esc_src($widget['image']) . '" alt="' . self::esc_attr_val($widget['name'] ?? '') . '" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto 14px;display:block;" loading="lazy" />'
 					: '';
-				return '<div class="epb-w epb-w-team" style="' . esc_attr($css) . '">' . $img . '<h3 style="margin:0 0 4px;">' . self::esc($widget['name'] ?? '') . '</h3><div style="color:#64748b;margin-bottom:10px;">' . self::esc($widget['role'] ?? '') . '</div><p style="margin:0;line-height:1.6;color:#475569;">' . self::esc($widget['bio'] ?? '') . '</p></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-team" style="' . esc_attr($css) . '">' . $img . '<h3 style="margin:0 0 4px;">' . self::esc($widget['name'] ?? '') . '</h3><div style="color:#64748b;margin-bottom:10px;">' . self::esc($widget['role'] ?? '') . '</div><p style="margin:0;line-height:1.6;color:#475569;">' . self::esc($widget['bio'] ?? '') . '</p></div>';
 
 			case 'dual-button':
 				$css = self::style_css($style, [ 'text-align' => $widget['align'] ?? 'center' ]);
 				$left = 'display:inline-flex;padding:12px 20px;background:' . self::esc_attr_val($widget['leftBackground'] ?? '#6366f1') . ';color:#fff;text-decoration:none;font-weight:700;border-radius:8px;margin:4px;';
 				$right = 'display:inline-flex;padding:12px 20px;background:' . self::esc_attr_val($widget['rightBackground'] ?? '#0f172a') . ';color:#fff;text-decoration:none;font-weight:700;border-radius:8px;margin:4px;';
-				return '<div class="epb-w epb-w-dualbutton" style="' . esc_attr($css) . '"><a href="' . self::esc_href($widget['leftUrl'] ?? '#') . '" style="' . esc_attr($left) . '">' . self::esc($widget['leftLabel'] ?? '') . '</a><a href="' . self::esc_href($widget['rightUrl'] ?? '#') . '" style="' . esc_attr($right) . '">' . self::esc($widget['rightLabel'] ?? '') . '</a></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-dualbutton" style="' . esc_attr($css) . '"><a href="' . self::esc_href($widget['leftUrl'] ?? '#') . '" style="' . esc_attr($left) . '">' . self::esc($widget['leftLabel'] ?? '') . '</a><a href="' . self::esc_href($widget['rightUrl'] ?? '#') . '" style="' . esc_attr($right) . '">' . self::esc($widget['rightLabel'] ?? '') . '</a></div>';
 
 			case 'accordion':
 				$css   = self::style_css($style);
 				$items = '';
 				foreach (($widget['items'] ?? []) as $i => $item) {
 					$id = 'acc_' . $i;
-					$items .= '<div style="border-bottom:1px solid #e2e8f0;"><button type="button" data-epb-acc="' . esc_attr($id) . '" style="width:100%;display:flex;justify-content:space-between;gap:12px;padding:14px 0;background:none;border:0;font:inherit;font-weight:600;cursor:pointer;text-align:left;"><span>' . self::esc($item['title'] ?? '') . '</span><span>+</span></button><div data-epb-acc-panel="' . esc_attr($id) . '" style="display:none;padding:0 0 14px;color:#475569;line-height:1.6;">' . self::esc($item['content'] ?? '') . '</div></div>';
+					$items .= '<div style="border-bottom:1px solid #e2e8f0;"><button type="button" data-av-web-studio-acc="' . esc_attr($id) . '" style="width:100%;display:flex;justify-content:space-between;gap:12px;padding:14px 0;background:none;border:0;font:inherit;font-weight:600;cursor:pointer;text-align:left;"><span>' . self::esc($item['title'] ?? '') . '</span><span>+</span></button><div data-av-web-studio-acc-panel="' . esc_attr($id) . '" style="display:none;padding:0 0 14px;color:#475569;line-height:1.6;">' . self::esc($item['content'] ?? '') . '</div></div>';
 				}
-				return '<div class="epb-w epb-w-accordion" data-epb-accordion style="' . esc_attr($css) . '">' . $items . '</div>';
+				return '<div class="av-web-studio-w av-web-studio-w-accordion" data-av-web-studio-accordion style="' . esc_attr($css) . '">' . $items . '</div>';
 
 			case 'gallery':
 				$css = self::style_css($style);
@@ -488,7 +488,7 @@ class EPB_Visual_Compile {
 				foreach (($widget['images'] ?? []) as $image) {
 					$imgs .= '<img src="' . self::esc_src($image['src'] ?? '') . '" alt="' . self::esc_attr_val($image['alt'] ?? '') . '" style="width:100%;height:180px;object-fit:cover;display:block;" loading="lazy" />';
 				}
-				return '<div class="epb-w epb-w-gallery" style="' . esc_attr($css) . '"><div style="display:grid;grid-template-columns:repeat(' . $cols . ',1fr);gap:' . esc_attr($gap) . ';">' . $imgs . '</div></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-gallery" style="' . esc_attr($css) . '"><div style="display:grid;grid-template-columns:repeat(' . $cols . ',1fr);gap:' . esc_attr($gap) . ';">' . $imgs . '</div></div>';
 
 			case 'price-list':
 				$css  = self::style_css($style);
@@ -499,7 +499,7 @@ class EPB_Visual_Compile {
 						. '<div style="opacity:.72;font-size:13px;margin-top:4px;line-height:1.45;">' . self::esc_text($item['description'] ?? '') . '</div></div>'
 						. '<div style="font-weight:800;white-space:nowrap;flex:0 0 auto;padding-left:12px;">' . self::esc_text($item['price'] ?? '') . '</div></div>';
 				}
-				return '<div class="epb-w epb-w-price-list" style="' . esc_attr($css) . '">' . $rows . '</div>';
+				return '<div class="av-web-studio-w av-web-studio-w-price-list" style="' . esc_attr($css) . '">' . $rows . '</div>';
 
 			case 'icon-list':
 				$css = self::style_css($style, [ 'color' => $widget['color'] ?? '#0f172a' ]);
@@ -507,19 +507,19 @@ class EPB_Visual_Compile {
 				foreach (($widget['items'] ?? []) as $item) {
 					$lis .= '<li style="display:flex;gap:10px;align-items:flex-start;margin:0 0 10px;"><span>' . self::esc($item['icon'] ?? '•') . '</span><span>' . self::esc($item['text'] ?? '') . '</span></li>';
 				}
-				return '<ul class="epb-w epb-w-iconlist" style="' . esc_attr($css) . 'list-style:none;margin:0;padding:0;">' . $lis . '</ul>';
+				return '<ul class="av-web-studio-w av-web-studio-w-iconlist" style="' . esc_attr($css) . 'list-style:none;margin:0;padding:0;">' . $lis . '</ul>';
 
 			case 'star-rating':
 				$css = self::style_css($style, [ 'text-align' => $widget['align'] ?? 'left' ]);
 				$rating = (float) ($widget['rating'] ?? 5);
 				$max    = max(1, (int) ($widget['max'] ?? 5));
-				$color  = EPB_Output::sanitize_css_value($widget['color'] ?? '#f59e0b');
+				$color  = Av_Web_Studio_Output::sanitize_css_value($widget['color'] ?? '#f59e0b');
 				$stars  = '';
 				for ($i = 1; $i <= $max; $i++) {
 					$fill = $i <= $rating ? $color : '#cbd5e1';
 					$stars .= '<span style="color:' . esc_attr($fill) . '">★</span>';
 				}
-				return '<div class="epb-w epb-w-stars" style="' . esc_attr($css) . '"><div style="font-size:1.4rem;letter-spacing:2px;">' . $stars . '</div><div style="margin-top:6px;color:#64748b;">' . self::esc($widget['title'] ?? '') . '</div></div>';
+				return '<div class="av-web-studio-w av-web-studio-w-stars" style="' . esc_attr($css) . '"><div style="font-size:1.4rem;letter-spacing:2px;">' . $stars . '</div><div style="margin-top:6px;color:#64748b;">' . self::esc($widget['title'] ?? '') . '</div></div>';
 
 			case 'business-hours':
 				$css = self::style_css($style);
@@ -527,7 +527,7 @@ class EPB_Visual_Compile {
 				foreach (($widget['items'] ?? []) as $item) {
 					$rows .= '<div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid #e2e8f0;"><strong>' . self::esc($item['day'] ?? '') . '</strong><span>' . self::esc($item['hours'] ?? '') . '</span></div>';
 				}
-				return '<div class="epb-w epb-w-hours" style="' . esc_attr($css) . '">' . $rows . '</div>';
+				return '<div class="av-web-studio-w av-web-studio-w-hours" style="' . esc_attr($css) . '">' . $rows . '</div>';
 
 			case 'html':
 				$css = self::style_css($style, [
@@ -536,11 +536,11 @@ class EPB_Visual_Compile {
 					'display'     => 'block',
 					'white-space' => 'pre-line',
 				]);
-				return '<p class="epb-w epb-w-text" style="' . esc_attr($css) . '">' . self::esc_text(wp_strip_all_tags((string) ($widget['content'] ?? ''))) . '</p>';
+				return '<p class="av-web-studio-w av-web-studio-w-text" style="' . esc_attr($css) . '">' . self::esc_text(wp_strip_all_tags((string) ($widget['content'] ?? ''))) . '</p>';
 
 			default:
 				$css = self::style_css($style);
-				return '<div class="epb-w" style="' . esc_attr($css) . '">' . self::esc($widget['content'] ?? $widget['title'] ?? $widget['label'] ?? ucfirst($type)) . '</div>';
+				return '<div class="av-web-studio-w" style="' . esc_attr($css) . '">' . self::esc($widget['content'] ?? $widget['title'] ?? $widget['label'] ?? ucfirst($type)) . '</div>';
 		}
 	}
 
@@ -556,7 +556,7 @@ class EPB_Visual_Compile {
 		if ($id === '' || $html === '') {
 			return $html;
 		}
-		return preg_replace('/^(<\w+)/', '$1 data-epb-id="' . esc_attr($id) . '"', $html, 1);
+		return preg_replace('/^(<\w+)/', '$1 data-av-web-studio-id="' . esc_attr($id) . '"', $html, 1);
 	}
 
 	/**
@@ -585,7 +585,7 @@ class EPB_Visual_Compile {
 			if (!is_array($widget) || empty($widget['id'])) {
 				return;
 			}
-			$selector = '[data-epb-id="' . esc_attr($widget['id']) . '"]';
+			$selector = '[data-av-web-studio-id="' . esc_attr($widget['id']) . '"]';
 			$overrides = $widget['styleOverrides'] ?? [];
 			if (!empty($overrides['tablet']) && is_array($overrides['tablet'])) {
 				$append($selector, 'tablet', self::widget_style_props($overrides['tablet']));
@@ -599,7 +599,7 @@ class EPB_Visual_Compile {
 			if (!is_array($column) || empty($column['id'])) {
 				return;
 			}
-			$selector = '[data-epb-id="' . esc_attr($column['id']) . '"]';
+			$selector = '[data-av-web-studio-id="' . esc_attr($column['id']) . '"]';
 			$overrides = $column['settingsOverrides'] ?? [];
 			if (!empty($overrides['tablet']) && is_array($overrides['tablet'])) {
 				$append($selector, 'tablet', self::column_settings_props($overrides['tablet']));
@@ -635,7 +635,7 @@ class EPB_Visual_Compile {
 		if (!is_array($section) || empty($section['id'])) {
 			return;
 		}
-		$selector = '[data-epb-id="' . esc_attr($section['id']) . '"]';
+		$selector = '[data-av-web-studio-id="' . esc_attr($section['id']) . '"]';
 		$overrides = $section['settingsOverrides'] ?? [];
 		if (!empty($overrides['tablet']) && is_array($overrides['tablet'])) {
 			$append($selector, 'tablet', self::section_settings_props($overrides['tablet']));
@@ -742,7 +742,7 @@ class EPB_Visual_Compile {
 		$out = [];
 		foreach ($props as $key => $value) {
 			$key   = preg_replace('/[^a-z0-9\-]/i', '', (string) $key);
-			$value = EPB_Output::sanitize_css_value($value);
+			$value = Av_Web_Studio_Output::sanitize_css_value($value);
 			if ($key === '' || $value === '') {
 				continue;
 			}
@@ -844,8 +844,8 @@ class EPB_Visual_Compile {
 	 * @return string
 	 */
 	private static function widget_css() {
-		return ".epb-flipbox:hover .epb-flipbox__inner, .epb-flipbox.is-flipped .epb-flipbox__inner { transform: rotateY(180deg); }\n"
-			. ".epb-headline-highlight { animation: epb-headline-pulse 2.4s ease-in-out infinite; }\n"
-			. "@keyframes epb-headline-pulse { 0%,100% { opacity: 1; } 50% { opacity: .72; } }\n";
+		return ".av-web-studio-flipbox:hover .av-web-studio-flipbox__inner, .av-web-studio-flipbox.is-flipped .av-web-studio-flipbox__inner { transform: rotateY(180deg); }\n"
+			. ".av-web-studio-headline-highlight { animation: av-web-studio-headline-pulse 2.4s ease-in-out infinite; }\n"
+			. "@keyframes av-web-studio-headline-pulse { 0%,100% { opacity: 1; } 50% { opacity: .72; } }\n";
 	}
 }

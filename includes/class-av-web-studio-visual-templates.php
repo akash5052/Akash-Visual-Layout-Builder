@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Built-in visual starter templates (sections / columns / widgets).
  */
-class EPB_Visual_Templates {
+class Av_Web_Studio_Visual_Templates {
 
 	/**
 	 * Active template id while assembling inner images.
@@ -232,7 +232,7 @@ class EPB_Visual_Templates {
 		}
 
 		$visual = self::build_document($id, $meta);
-		$code   = EPB_Visual_Compile::compile($visual);
+		$code   = Av_Web_Studio_Visual_Compile::compile($visual);
 
 		return [
 			'title'  => $meta['brand'],
@@ -320,7 +320,7 @@ class EPB_Visual_Templates {
 		$id   = sanitize_key((string) $id);
 		$slot = absint($slot);
 		if ($id === '') {
-			return EPB_PLUGIN_URL . 'assets/images/placeholder.svg';
+			return AV_WEB_STUDIO_PLUGIN_URL . 'assets/images/placeholder.svg';
 		}
 
 		$candidates = [
@@ -333,15 +333,15 @@ class EPB_Visual_Templates {
 		];
 
 		foreach ($candidates as $rel) {
-			if (file_exists(EPB_PLUGIN_DIR . $rel)) {
-				return EPB_PLUGIN_URL . $rel;
+			if (file_exists(AV_WEB_STUDIO_PLUGIN_DIR . $rel)) {
+				return AV_WEB_STUDIO_PLUGIN_URL . $rel;
 			}
 		}
 
-		return EPB_PLUGIN_URL . 'assets/images/placeholder.svg';
+		return AV_WEB_STUDIO_PLUGIN_URL . 'assets/images/placeholder.svg';
 	}
 
-	private static function uid($prefix = 'epb') {
+	private static function uid($prefix = 'av-web-studio') {
 		return $prefix . '_' . substr(md5(uniqid((string) wp_rand(), true)), 0, 8);
 	}
 
@@ -732,7 +732,7 @@ class EPB_Visual_Templates {
 		$legal = self::section(
 			[ self::column(100, [
 				self::divider('rgba(255,255,255,.15)', 1),
-				self::text('© ' . gmdate('Y') . ' ' . $brand . ' · Built with WPVisualX · All content is editable', 'center', $muted, [
+				self::text('© ' . gmdate('Y') . ' ' . $brand . ' · Built with AV Web Studio · All content is editable', 'center', $muted, [
 					'fontFamily' => $f, 'fontSize' => '13px', 'marginBottom' => '0px',
 				]),
 			]) ],

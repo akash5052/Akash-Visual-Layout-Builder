@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { bulkPopups, deletePopup, fetchPopups, restorePopup } from "../api/wordpress";
-import type { EpbPopup, ListStatusFilter, PaginatedResult } from "../types";
+import type { StudioPopup, ListStatusFilter, PaginatedResult } from "../types";
 import { PopupQuickEditModal } from "./QuickEditModal";
 import {
   BulkActionBar,
@@ -24,7 +24,7 @@ interface PopupsListViewProps {
 export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewProps) {
   const [statusFilter, setStatusFilter] = useState<ListStatusFilter>(getDefaultListStatus);
   const [page, setPage] = useState(1);
-  const [data, setData] = useState<PaginatedResult<EpbPopup>>({
+  const [data, setData] = useState<PaginatedResult<StudioPopup>>({
     items: [],
     total: 0,
     total_pages: 1,
@@ -34,7 +34,7 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
   const [loading, setLoading] = useState(true);
   const [acting, setActing] = useState(false);
   const [rowBusyId, setRowBusyId] = useState<string | null>(null);
-  const [quickEditPopup, setQuickEditPopup] = useState<EpbPopup | null>(null);
+  const [quickEditPopup, setQuickEditPopup] = useState<StudioPopup | null>(null);
   const { selected, selectedIds, toggle, toggleAll, clear } = useListSelection<string>();
 
   const load = useCallback(async () => {
@@ -87,7 +87,7 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
     }
   };
 
-  const handleRowTrash = async (popup: EpbPopup) => {
+  const handleRowTrash = async (popup: StudioPopup) => {
     if (!confirm(`Move "${popup.name}" to trash?`)) return;
 
     setRowBusyId(popup.id);
@@ -102,7 +102,7 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
     }
   };
 
-  const handleRowRestore = async (popup: EpbPopup) => {
+  const handleRowRestore = async (popup: StudioPopup) => {
     setRowBusyId(popup.id);
     try {
       const result = await restorePopup(popup.id);
@@ -115,7 +115,7 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
     }
   };
 
-  const handleRowDeletePermanent = async (popup: EpbPopup) => {
+  const handleRowDeletePermanent = async (popup: StudioPopup) => {
     if (!confirm(`Permanently delete "${popup.name}"? This cannot be undone.`)) return;
 
     setRowBusyId(popup.id);
@@ -133,13 +133,13 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
   const allSelected = data.items.length > 0 && data.items.every((item) => selected.has(item.id));
 
   return (
-    <div className="epb-screen epb-screen--list">
-      <header className="epb-screen__header">
+    <div className="av-web-studio-screen av-web-studio-screen--list">
+      <header className="av-web-studio-screen__header">
         <div>
-          <h1 className="epb-screen__title">Popups</h1>
-          <p className="epb-screen__subtitle">Manage popup campaigns, triggers, and display rules.</p>
+          <h1 className="av-web-studio-screen__title">Popups</h1>
+          <p className="av-web-studio-screen__subtitle">Manage popup campaigns, triggers, and display rules.</p>
         </div>
-        <button type="button" className="epb-btn epb-btn--primary" onClick={onCreate}>
+        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary" onClick={onCreate}>
           + New popup
         </button>
       </header>
@@ -157,24 +157,24 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
       />
 
       {loading ? (
-        <div className="epb-screen__empty">
+        <div className="av-web-studio-screen__empty">
           <p>Loading popups…</p>
         </div>
       ) : data.items.length === 0 ? (
-        <div className="epb-screen__empty">
+        <div className="av-web-studio-screen__empty">
           <p>{statusFilter === "trash" ? "No popups in trash." : "No popups yet."}</p>
           {statusFilter !== "trash" && (
-            <button type="button" className="epb-btn epb-btn--ghost" onClick={onCreate}>
+            <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost" onClick={onCreate}>
               Create your first popup
             </button>
           )}
         </div>
       ) : (
-        <div className="epb-content-table-wrap">
-          <table className="epb-content-table">
+        <div className="av-web-studio-content-table-wrap">
+          <table className="av-web-studio-content-table">
             <thead>
               <tr>
-                <th className="epb-content-table__check">
+                <th className="av-web-studio-content-table__check">
                   <input
                     type="checkbox"
                     aria-label="Select all"
@@ -194,8 +194,8 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
                 const busy = rowBusyId === popup.id;
 
                 return (
-                  <tr key={popup.id} className={selected.has(popup.id) ? "epb-content-table__row--selected" : ""}>
-                    <td className="epb-content-table__check">
+                  <tr key={popup.id} className={selected.has(popup.id) ? "av-web-studio-content-table__row--selected" : ""}>
+                    <td className="av-web-studio-content-table__check">
                       <input
                         type="checkbox"
                         aria-label={`Select ${popup.name}`}
@@ -205,25 +205,25 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
                     </td>
                     <td>
                       {isTrashed ? (
-                        <span className="epb-content-table__title epb-content-table__title--static">{popup.name}</span>
+                        <span className="av-web-studio-content-table__title av-web-studio-content-table__title--static">{popup.name}</span>
                       ) : (
-                        <button type="button" className="epb-content-table__title" onClick={() => onOpen(popup.id)}>
+                        <button type="button" className="av-web-studio-content-table__title" onClick={() => onOpen(popup.id)}>
                           {popup.name}
                         </button>
                       )}
                     </td>
                     <td>
-                      <span className={`epb-status epb-status--${statusClass(popup.status)}`}>
+                      <span className={`av-web-studio-status av-web-studio-status--${statusClass(popup.status)}`}>
                         {displayStatus(popup.status)}
                       </span>
                     </td>
-                    <td className="epb-content-table__date">{formatListDate(popup.modified)}</td>
-                    <td className="epb-content-table__actions">
+                    <td className="av-web-studio-content-table__date">{formatListDate(popup.modified)}</td>
+                    <td className="av-web-studio-content-table__actions">
                       {isTrashed ? (
                         <>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
                             disabled={busy}
                             onClick={() => handleRowRestore(popup)}
                           >
@@ -231,7 +231,7 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
                           </button>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm epb-btn--danger"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-btn--danger"
                             disabled={busy}
                             onClick={() => handleRowDeletePermanent(popup)}
                           >
@@ -242,21 +242,21 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
                         <>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
                             onClick={() => setQuickEditPopup(popup)}
                           >
                             Quick Edit
                           </button>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
                             onClick={() => onOpen(popup.id)}
                           >
                             Edit
                           </button>
                           <button
                             type="button"
-                            className="epb-btn epb-btn--ghost epb-btn--sm epb-btn--danger"
+                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-btn--danger"
                             disabled={busy}
                             onClick={() => handleRowTrash(popup)}
                           >

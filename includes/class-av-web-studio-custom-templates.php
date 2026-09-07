@@ -22,9 +22,9 @@ if (!defined('ABSPATH')) {
  *   "accent": "#6F4E37"
  * }
  */
-class EPB_Custom_Templates {
+class Av_Web_Studio_Custom_Templates {
 
-	const OPTION_KEY = 'epb_custom_templates';
+	const OPTION_KEY = 'av_web_studio_custom_templates';
 	const MAX_ZIP_BYTES = 5242880; // 5 MB
 	const ALLOWED_EXTENSIONS = [ 'json', 'jpg', 'jpeg', 'png', 'webp', 'gif', 'svg' ];
 
@@ -34,11 +34,11 @@ class EPB_Custom_Templates {
 	 * @return string[]
 	 */
 	public static function reserved_ids() {
-		if (class_exists('EPB_Visual_Templates')) {
-			return EPB_Visual_Templates::reserved_ids();
+		if (class_exists('Av_Web_Studio_Visual_Templates')) {
+			return Av_Web_Studio_Visual_Templates::reserved_ids();
 		}
 		$ids = [];
-		foreach (EPB_AI_Content::starter_catalog() as $item) {
+		foreach (Av_Web_Studio_AI_Content::starter_catalog() as $item) {
 			$ids[] = $item['id'];
 		}
 		return $ids;
@@ -52,14 +52,14 @@ class EPB_Custom_Templates {
 	public static function upload_dir() {
 		$uploads = wp_upload_dir();
 		if (!empty($uploads['error'])) {
-			return new WP_Error('epb_upload_dir', $uploads['error'], [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_upload_dir', $uploads['error'], [ 'status' => 500 ]);
 		}
 
-		$basedir = trailingslashit($uploads['basedir']) . 'epb-templates';
-		$baseurl = trailingslashit($uploads['baseurl']) . 'epb-templates';
+		$basedir = trailingslashit($uploads['basedir']) . 'av-web-studio-templates';
+		$baseurl = trailingslashit($uploads['baseurl']) . 'av-web-studio-templates';
 
 		if (!wp_mkdir_p($basedir)) {
-			return new WP_Error('epb_upload_dir', __('Could not create template uploads folder.', 'wpvisualx'), [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_upload_dir', __('Could not create template uploads folder.', 'av-web-studio'), [ 'status' => 500 ]);
 		}
 
 		return [
@@ -98,7 +98,7 @@ class EPB_Custom_Templates {
 			if (!empty($meta['preview'])) {
 				$preview = trailingslashit($dir['baseurl']) . $id . '/' . ltrim((string) $meta['preview'], '/');
 			} elseif (!empty($meta['topic'])) {
-				$preview = EPB_AI_Images::relevant_url((string) $meta['topic'], 960, 640, 0, (string) ($meta['brand'] ?? ''), 'hero', (string) ($meta['title'] ?? ''));
+				$preview = Av_Web_Studio_AI_Images::relevant_url((string) $meta['topic'], 960, 640, 0, (string) ($meta['brand'] ?? ''), 'hero', (string) ($meta['title'] ?? ''));
 			}
 
 			$items[] = [
@@ -161,7 +161,7 @@ class EPB_Custom_Templates {
 			if (is_array($decoded) && !empty($decoded['sections'])) {
 				$visual = $decoded;
 				// Prefer compiled output when a visual doc is present.
-				$code = array_merge($code, EPB_Output::compile_visual($visual));
+				$code = array_merge($code, Av_Web_Studio_Output::compile_visual($visual));
 			}
 		}
 
@@ -214,35 +214,35 @@ class EPB_Custom_Templates {
 	 */
 	public static function import_zip($file) {
 		if (!class_exists('ZipArchive')) {
-			return new WP_Error('epb_zip_unsupported', __('ZipArchive is not available on this server.', 'wpvisualx'), [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_zip_unsupported', __('ZipArchive is not available on this server.', 'av-web-studio'), [ 'status' => 500 ]);
 		}
 
 		if (empty($file['tmp_name']) || !file_exists($file['tmp_name'])) {
-			return new WP_Error('epb_zip_missing', __('No zip file uploaded.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_missing', __('No zip file uploaded.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$name = (string) ($file['name'] ?? '');
 		$ext  = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 		if ($ext !== 'zip') {
-			return new WP_Error('epb_zip_type', __('Please upload a .zip template pack.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_type', __('Please upload a .zip template pack.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$size = (int) ($file['size'] ?? 0);
 		if ($size <= 0 || $size > self::MAX_ZIP_BYTES) {
-			return new WP_Error('epb_zip_size', __('Zip must be under 5 MB.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_size', __('Zip must be under 5 MB.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$tmp_zip = $file['tmp_name'];
-		$extract = wp_normalize_path(trailingslashit(get_temp_dir()) . 'epb-tpl-' . wp_generate_password(8, false));
+		$extract = wp_normalize_path(trailingslashit(get_temp_dir()) . 'av-web-studio-tpl-' . wp_generate_password(8, false));
 		if (!wp_mkdir_p($extract)) {
-			return new WP_Error('epb_zip_tmp', __('Could not prepare temp folder.', 'wpvisualx'), [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_zip_tmp', __('Could not prepare temp folder.', 'av-web-studio'), [ 'status' => 500 ]);
 		}
 
 		$zip = new ZipArchive();
 		$opened = $zip->open($tmp_zip);
 		if ($opened !== true) {
 			self::rrmdir($extract);
-			return new WP_Error('epb_zip_open', __('Could not open the zip archive.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_open', __('Could not open the zip archive.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		for ($i = 0; $i < $zip->numFiles; $i++) {
@@ -261,7 +261,7 @@ class EPB_Custom_Templates {
 		if (!$zip->extractTo($extract)) {
 			$zip->close();
 			self::rrmdir($extract);
-			return new WP_Error('epb_zip_extract', __('Could not extract the zip archive.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_extract', __('Could not extract the zip archive.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 		$zip->close();
 
@@ -269,8 +269,8 @@ class EPB_Custom_Templates {
 		if (!$pack_root) {
 			self::rrmdir($extract);
 			return new WP_Error(
-				'epb_zip_manifest',
-				__('Zip must include a manifest.json plus document.json (visual builder document).', 'wpvisualx'),
+				'av_web_studio_zip_manifest',
+				__('Zip must include a manifest.json plus document.json (visual builder document).', 'av-web-studio'),
 				[ 'status' => 400 ]
 			);
 		}
@@ -279,7 +279,7 @@ class EPB_Custom_Templates {
 		$manifest     = json_decode((string) $manifest_raw, true);
 		if (!is_array($manifest)) {
 			self::rrmdir($extract);
-			return new WP_Error('epb_zip_manifest', __('manifest.json is invalid.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_manifest', __('manifest.json is invalid.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$id = sanitize_key($manifest['id'] ?? pathinfo($name, PATHINFO_FILENAME));
@@ -288,7 +288,7 @@ class EPB_Custom_Templates {
 		}
 		if (in_array($id, self::reserved_ids(), true)) {
 			self::rrmdir($extract);
-			return new WP_Error('epb_zip_reserved', __('That template id is reserved for a built-in template. Change "id" in manifest.json.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_reserved', __('That template id is reserved for a built-in template. Change "id" in manifest.json.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$visual_raw = self::read_first($pack_root, [ 'document.json', 'visual.json' ]);
@@ -299,7 +299,7 @@ class EPB_Custom_Templates {
 		}
 		if (!$has_visual) {
 			self::rrmdir($extract);
-			return new WP_Error('epb_zip_empty', __('Zip must include document.json (visual builder document).', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_empty', __('Zip must include document.json (visual builder document).', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$dir = self::upload_dir();
@@ -314,7 +314,7 @@ class EPB_Custom_Templates {
 		}
 		if (!wp_mkdir_p($dest)) {
 			self::rrmdir($extract);
-			return new WP_Error('epb_zip_dest', __('Could not create template folder.', 'wpvisualx'), [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_zip_dest', __('Could not create template folder.', 'av-web-studio'), [ 'status' => 500 ]);
 		}
 
 		$preview_name = self::copy_pack_files($pack_root, $dest);
@@ -358,7 +358,7 @@ class EPB_Custom_Templates {
 				'source'      => 'uploaded',
 				'can_delete'  => true,
 			],
-			'message'  => __('Template uploaded.', 'wpvisualx'),
+			'message'  => __('Template uploaded.', 'av-web-studio'),
 		];
 	}
 
@@ -372,7 +372,7 @@ class EPB_Custom_Templates {
 		$id = sanitize_key($id);
 		$all = self::all();
 		if ($id === '' || empty($all[ $id ])) {
-			return new WP_Error('epb_template_missing', __('Uploaded template not found.', 'wpvisualx'), [ 'status' => 404 ]);
+			return new WP_Error('av_web_studio_template_missing', __('Uploaded template not found.', 'av-web-studio'), [ 'status' => 404 ]);
 		}
 
 		$dir = self::upload_dir();
@@ -400,7 +400,7 @@ class EPB_Custom_Templates {
 			return true;
 		}
 		if (strpos($entry, '..') !== false || strpos($entry, "\0") !== false) {
-			return new WP_Error('epb_zip_unsafe', __('Zip contains an unsafe path.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_zip_unsafe', __('Zip contains an unsafe path.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 		$ext = strtolower(pathinfo($entry, PATHINFO_EXTENSION));
 		if ($ext === '') {
@@ -408,10 +408,10 @@ class EPB_Custom_Templates {
 		}
 		if (in_array($ext, [ 'js', 'css', 'php', 'html', 'htm' ], true)) {
 			return new WP_Error(
-				'epb_zip_filetype',
+				'av_web_studio_zip_filetype',
 				sprintf(
 					/* translators: %s: file extension. */
-					__('Zip contains a disallowed file type (.%s).', 'wpvisualx'),
+					__('Zip contains a disallowed file type (.%s).', 'av-web-studio'),
 					$ext
 				),
 				[ 'status' => 400 ]
@@ -419,10 +419,10 @@ class EPB_Custom_Templates {
 		}
 		if (!in_array($ext, self::ALLOWED_EXTENSIONS, true)) {
 			return new WP_Error(
-				'epb_zip_filetype',
+				'av_web_studio_zip_filetype',
 				sprintf(
 					/* translators: %s: file extension. */
-					__('Zip contains a disallowed file type (.%s).', 'wpvisualx'),
+					__('Zip contains a disallowed file type (.%s).', 'av-web-studio'),
 					$ext
 				),
 				[ 'status' => 400 ]

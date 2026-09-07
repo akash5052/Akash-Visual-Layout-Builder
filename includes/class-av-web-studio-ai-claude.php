@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
  * The AI Client does not generate pixels; it suggests visual prompts.
  * Image slots use bundled local files from this plugin.
  */
-class EPB_AI_Claude {
+class Av_Web_Studio_AI_Claude {
 
 	/**
 	 * Suggest images for a page / section from context.
@@ -24,7 +24,7 @@ class EPB_AI_Claude {
 	public static function suggest_images($user_prompt, $context = null, $page_title = '', $count = 4) {
 		$count   = max(1, min(8, absint($count)));
 		$payload = self::build_suggestion_request($user_prompt, $context, $page_title, $count);
-		$mode    = EPB_Settings::image_suggestions_mode();
+		$mode    = Av_Web_Studio_Settings::image_suggestions_mode();
 
 		if ($mode === 'local') {
 			return [
@@ -35,7 +35,7 @@ class EPB_AI_Claude {
 		}
 
 		// Prefer a cloud suggestion when the WordPress AI Client has a provider.
-		if (($mode === 'claude' || $mode === 'gemini' || $mode === 'auto') && EPB_Settings::has_cloud_ai()) {
+		if (($mode === 'claude' || $mode === 'gemini' || $mode === 'auto') && Av_Web_Studio_Settings::has_cloud_ai()) {
 			$result = self::call_ai_client($payload['system'], $payload['user'], $mode);
 			if (!is_wp_error($result)) {
 				$suggestions = self::parse_suggestions($result, $count);
@@ -74,7 +74,7 @@ class EPB_AI_Claude {
 		}
 
 		if ($target === 'all') {
-			$sections = EPB_AI_Editor::get_sections($html);
+			$sections = Av_Web_Studio_AI_Editor::get_sections($html);
 			if (!empty($sections)) {
 				$i = 0;
 				foreach ($sections as $sec) {
@@ -91,23 +91,23 @@ class EPB_AI_Claude {
 			}
 		}
 
-		$section = EPB_AI_Editor::get_section($html, $target);
+		$section = Av_Web_Studio_AI_Editor::get_section($html, $target);
 		if (!$section) {
 			// Build a dedicated Claude image gallery section.
 			$cards = '';
 			foreach ($suggestions as $i => $sug) {
-				$url  = EPB_AI_Images::url_from_suggestion($sug['prompt'], $sug['width'], $sug['height'], $i, $sug['section'] ?? '', '');
+				$url  = Av_Web_Studio_AI_Images::url_from_suggestion($sug['prompt'], $sug['width'], $sug['height'], $i, $sug['section'] ?? '', '');
 				$alt  = esc_attr($sug['alt']);
 				$cap  = esc_html($sug['alt']);
-				$cards .= '<figure class="epb-claude-imgs__item">'
-					. '<img class="epb-claude-imgs__img" src="' . esc_url($url) . '" alt="' . $alt . '" width="' . absint($sug['width']) . '" height="' . absint($sug['height']) . '" loading="lazy" decoding="async" />'
+				$cards .= '<figure class="av-web-studio-claude-imgs__item">'
+					. '<img class="av-web-studio-claude-imgs__img" src="' . esc_url($url) . '" alt="' . $alt . '" width="' . absint($sug['width']) . '" height="' . absint($sug['height']) . '" loading="lazy" decoding="async" />'
 					. '<figcaption>' . $cap . '</figcaption></figure>';
 			}
-			$new = '<section class="epb-claude-imgs" data-epb-source="claude">'
-				. '<div class="epb-claude-imgs__inner">'
+			$new = '<section class="av-web-studio-claude-imgs" data-av-web-studio-source="claude">'
+				. '<div class="av-web-studio-claude-imgs__inner">'
 				. '<h2>Images suggested by Claude</h2>'
-				. '<p class="epb-claude-imgs__sub">Curated visual concepts matched to your page</p>'
-				. '<div class="epb-claude-imgs__grid">' . $cards . '</div>'
+				. '<p class="av-web-studio-claude-imgs__sub">Curated visual concepts matched to your page</p>'
+				. '<div class="av-web-studio-claude-imgs__grid">' . $cards . '</div>'
 				. '</div></section>';
 
 			return [
@@ -128,28 +128,28 @@ class EPB_AI_Claude {
 				'/<img\b[^>]*>/i',
 				function () use ($suggestions, &$i) {
 					$sug = $suggestions[ $i % count($suggestions) ];
-					$url = esc_url(EPB_AI_Images::placeholder_url());
+					$url = esc_url(Av_Web_Studio_AI_Images::placeholder_url());
 					$alt = esc_attr($sug['alt']);
-					$tag = '<img class="epb-claude-suggested" src="' . $url . '" alt="' . $alt . '" width="' . absint($sug['width']) . '" height="' . absint($sug['height']) . '" loading="lazy" decoding="async" data-epb-source="claude" />';
+					$tag = '<img class="av-web-studio-claude-suggested" src="' . $url . '" alt="' . $alt . '" width="' . absint($sug['width']) . '" height="' . absint($sug['height']) . '" loading="lazy" decoding="async" data-av-web-studio-source="claude" />';
 					$i++;
 					return $tag;
 				},
 				$updated
 			);
-			$updated = EPB_AI_Images::replace_remote_stock_urls(
+			$updated = Av_Web_Studio_AI_Images::replace_remote_stock_urls(
 				$updated,
 				function () use ($suggestions, &$i) {
 					$sug = $suggestions[ $i % count($suggestions) ];
-					$url = EPB_AI_Images::url_from_suggestion($sug['prompt'] ?? '', $sug['width'] ?? 1200, $sug['height'] ?? 700, $i, $sug['section'] ?? '');
+					$url = Av_Web_Studio_AI_Images::url_from_suggestion($sug['prompt'] ?? '', $sug['width'] ?? 1200, $sug['height'] ?? 700, $i, $sug['section'] ?? '');
 					$i++;
 					return $url;
 				}
 			);
 		} else {
 			$sug = $suggestions[0];
-			$url = esc_url(EPB_AI_Images::placeholder_url());
+			$url = esc_url(Av_Web_Studio_AI_Images::placeholder_url());
 			$alt = esc_attr($sug['alt']);
-			$img = '<div class="epb-ai-img-wrap"><img class="epb-claude-suggested" src="' . $url . '" alt="' . $alt . '" width="' . absint($sug['width']) . '" height="' . absint($sug['height']) . '" loading="lazy" decoding="async" data-epb-source="claude" /></div>';
+			$img = '<div class="av-web-studio-ai-img-wrap"><img class="av-web-studio-claude-suggested" src="' . $url . '" alt="' . $alt . '" width="' . absint($sug['width']) . '" height="' . absint($sug['height']) . '" loading="lazy" decoding="async" data-av-web-studio-source="claude" /></div>';
 			$updated = preg_replace('/(<section[^>]*>)(\s*)/i', '$1$2' . $img, $updated, 1);
 		}
 
@@ -191,7 +191,7 @@ class EPB_AI_Claude {
 			'via'         => 'local',
 		];
 
-		if (EPB_Settings::has_cloud_ai()) {
+		if (Av_Web_Studio_Settings::has_cloud_ai()) {
 			$cloud = self::suggest_images($prompt, $context, $page_title, $count);
 			if ($cloud && !empty($cloud['suggestions']) && ( $cloud['via'] ?? '' ) !== 'local') {
 				$pack = $cloud;
@@ -199,8 +199,8 @@ class EPB_AI_Claude {
 		}
 
 		$code = self::apply_suggestions($context, $pack['suggestions'], $target);
-		$topic = $intent['topic'] ?: EPB_AI_Intent::extract_image_topic($prompt) ?: $page_title;
-		$code  = EPB_AI_Images::align_code_images($code, $topic, $page_title);
+		$topic = $intent['topic'] ?: Av_Web_Studio_AI_Intent::extract_image_topic($prompt) ?: $page_title;
+		$code  = Av_Web_Studio_AI_Images::align_code_images($code, $topic, $page_title);
 
 		$n   = count($pack['suggestions']);
 		$msg = sprintf(
@@ -244,7 +244,7 @@ class EPB_AI_Claude {
 			$i = 0;
 			foreach ($matches[0] as $section) {
 				$sug  = $pack['suggestions'][ $i % count($pack['suggestions']) ];
-				$type = EPB_AI_Images::detect_section_type_from_html($section);
+				$type = Av_Web_Studio_AI_Images::detect_section_type_from_html($section);
 				if ($type) {
 					$sug['section'] = $type;
 				}
@@ -274,32 +274,32 @@ class EPB_AI_Claude {
 		$prompt = $sug['prompt'] ?? '';
 		$alt    = $sug['alt'] ?? 'Claude suggested image';
 		$type   = $sug['section'] ?? '';
-		$url    = EPB_AI_Images::url_from_suggestion($prompt, $sug['width'] ?? 1200, $sug['height'] ?? 700, $index, $type);
+		$url    = Av_Web_Studio_AI_Images::url_from_suggestion($prompt, $sug['width'] ?? 1200, $sug['height'] ?? 700, $index, $type);
 		$n      = 0;
 
 		if (stripos($section, '<img') !== false) {
 			$section = preg_replace_callback(
 				'/<img\b[^>]*>/i',
 				function () use ($prompt, $alt, $index, $type, &$n) {
-					$src = EPB_AI_Images::url_from_suggestion($prompt, 800, 500, $index + $n, $type);
+					$src = Av_Web_Studio_AI_Images::url_from_suggestion($prompt, 800, 500, $index + $n, $type);
 					$n++;
-					return '<img class="epb-claude-suggested" src="' . esc_url($src) . '" alt="' . esc_attr($alt) . '" loading="lazy" decoding="async" data-epb-source="claude" />';
+					return '<img class="av-web-studio-claude-suggested" src="' . esc_url($src) . '" alt="' . esc_attr($alt) . '" loading="lazy" decoding="async" data-av-web-studio-source="claude" />';
 				},
 				$section
 			);
 		}
 
-		$section = EPB_AI_Images::replace_remote_stock_urls(
+		$section = Av_Web_Studio_AI_Images::replace_remote_stock_urls(
 			$section,
 			function () use ($prompt, $index, $type, &$n) {
-				$src = EPB_AI_Images::url_from_suggestion($prompt, 1200, 700, $index + $n, $type);
+				$src = Av_Web_Studio_AI_Images::url_from_suggestion($prompt, 1200, 700, $index + $n, $type);
 				$n++;
 				return $src;
 			}
 		);
 
 		if (stripos($section, '<img') === false && stripos($section, 'background-image') === false) {
-			$img = '<div class="epb-ai-img-wrap"><img class="epb-claude-suggested" src="' . esc_url($url) . '" alt="' . esc_attr($alt) . '" loading="lazy" decoding="async" data-epb-source="claude" /></div>';
+			$img = '<div class="av-web-studio-ai-img-wrap"><img class="av-web-studio-claude-suggested" src="' . esc_url($url) . '" alt="' . esc_attr($alt) . '" loading="lazy" decoding="async" data-av-web-studio-source="claude" /></div>';
 			$section = preg_replace('/(<section[^>]*>)(\s*)/i', '$1$2' . $img, $section, 1);
 		}
 
@@ -314,22 +314,22 @@ class EPB_AI_Claude {
 	 * @return array{system:string,user:string}
 	 */
 	private static function build_suggestion_request($user_prompt, $context, $page_title, $count) {
-		$topic    = EPB_AI_Images::resolve_topic(
-			EPB_AI_Intent::extract_image_topic($user_prompt) ?: EPB_AI_Intent::extract_topic($user_prompt),
+		$topic    = Av_Web_Studio_AI_Images::resolve_topic(
+			Av_Web_Studio_AI_Intent::extract_image_topic($user_prompt) ?: Av_Web_Studio_AI_Intent::extract_topic($user_prompt),
 			$page_title,
 			null,
 			$context['html'] ?? ''
 		);
-		$industry = EPB_AI_Images::industry_for_topic($topic, $page_title);
-		$label    = EPB_AI_Images::industry_label($industry);
+		$industry = Av_Web_Studio_AI_Images::industry_for_topic($topic, $page_title);
+		$label    = Av_Web_Studio_AI_Images::industry_label($industry);
 
 		$sections_brief = '';
 		if (!empty($context['html'])) {
-			$sections = EPB_AI_Editor::get_sections($context['html']);
+			$sections = Av_Web_Studio_AI_Editor::get_sections($context['html']);
 			foreach (array_slice($sections, 0, 8) as $i => $sec) {
-				$h = EPB_AI_Editor::extract_heading($sec);
-				$t = EPB_AI_Images::detect_section_type_from_html($sec) ?: 'section';
-				$b = EPB_AI_Images::extract_section_text($sec);
+				$h = Av_Web_Studio_AI_Editor::extract_heading($sec);
+				$t = Av_Web_Studio_AI_Images::detect_section_type_from_html($sec) ?: 'section';
+				$b = Av_Web_Studio_AI_Images::extract_section_text($sec);
 				$sections_brief .= ( $i + 1 ) . ". [{$t}] {$h} — " . mb_substr($b, 0, 120) . "\n";
 			}
 		}
@@ -362,15 +362,15 @@ class EPB_AI_Claude {
 	 * @return string|WP_Error Raw text.
 	 */
 	private static function call_ai_client($system, $user, $mode = 'auto') {
-		return EPB_AI_Client::generate_text(
+		return Av_Web_Studio_AI_Client::generate_text(
 			$user,
 			$system,
 			[
 				'temperature' => 0.4,
 				'max_tokens'  => 2048,
 				'timeout'     => 60,
-				'models'      => EPB_AI_Client::preferred_models($mode === 'local' ? 'auto' : $mode),
-				'json_schema' => EPB_AI_Client::image_suggestion_schema(),
+				'models'      => Av_Web_Studio_AI_Client::preferred_models($mode === 'local' ? 'auto' : $mode),
+				'json_schema' => Av_Web_Studio_AI_Client::image_suggestion_schema(),
 			]
 		);
 	}
@@ -433,8 +433,8 @@ class EPB_AI_Claude {
 	 * @return array
 	 */
 	private static function local_suggestions($user_prompt, $context, $page_title, $count) {
-		$topic = EPB_AI_Images::resolve_topic(
-			EPB_AI_Intent::extract_image_topic($user_prompt) ?: EPB_AI_Intent::extract_topic($user_prompt),
+		$topic = Av_Web_Studio_AI_Images::resolve_topic(
+			Av_Web_Studio_AI_Intent::extract_image_topic($user_prompt) ?: Av_Web_Studio_AI_Intent::extract_topic($user_prompt),
 			$page_title,
 			null,
 			$context['html'] ?? ''
@@ -447,21 +447,21 @@ class EPB_AI_Claude {
 			$heading = '';
 			$body    = '';
 			if (!empty($context['html'])) {
-				$sections = EPB_AI_Editor::get_sections($context['html']);
+				$sections = Av_Web_Studio_AI_Editor::get_sections($context['html']);
 				if (!empty($sections[ $i % max(1, count($sections)) ])) {
 					$sec     = $sections[ $i % count($sections) ];
-					$heading = EPB_AI_Editor::extract_heading($sec);
-					$body    = EPB_AI_Images::extract_section_text($sec);
-					$detected = EPB_AI_Images::detect_section_type_from_html($sec);
+					$heading = Av_Web_Studio_AI_Editor::extract_heading($sec);
+					$body    = Av_Web_Studio_AI_Images::extract_section_text($sec);
+					$detected = Av_Web_Studio_AI_Images::detect_section_type_from_html($sec);
 					if ($detected) {
 						$role = $detected;
 					}
 				}
 			}
-			$prompt = EPB_AI_Images::build_visual_prompt($topic, $page_title, $role, $heading, $body, $i);
+			$prompt = Av_Web_Studio_AI_Images::build_visual_prompt($topic, $page_title, $role, $heading, $body, $i);
 			$out[]  = [
 				'prompt'  => $prompt,
-				'alt'     => EPB_AI_Images::descriptive_alt($topic, '', $i, $heading ?: $role),
+				'alt'     => Av_Web_Studio_AI_Images::descriptive_alt($topic, '', $i, $heading ?: $role),
 				'section' => $role,
 				'width'   => $role === 'team' ? 400 : 1200,
 				'height'  => $role === 'team' ? 400 : 700,
@@ -475,20 +475,20 @@ class EPB_AI_Claude {
 	 * @return string
 	 */
 	private static function ensure_css($css) {
-		if (strpos($css, 'epb-claude-imgs') !== false) {
+		if (strpos($css, 'av-web-studio-claude-imgs') !== false) {
 			return trim($css);
 		}
 		return trim($css . "/* --- Claude suggested images --- */
-.epb-claude-imgs { padding: 64px 20px; background: #0f172a; width: 100%; color: #fff; }
-.epb-claude-imgs__inner { max-width: 1100px; margin: 0 auto; }
-.epb-claude-imgs h2 { margin: 0 0 8px; font-size: 2rem; text-align: center; }
-.epb-claude-imgs__sub { margin: 0 0 36px; text-align: center; color: #94a3b8; }
-.epb-claude-imgs__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
-.epb-claude-imgs__item { margin: 0; border-radius: 14px; overflow: hidden; background: #1e293b; }
-.epb-claude-imgs__img { width: 100%; height: 200px; object-fit: cover; display: block; }
-.epb-claude-imgs__item figcaption { padding: 12px 14px; font-size: .9rem; color: #cbd5e1; }
-.epb-claude-suggested { width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px; }
-.epb-ai-img-wrap { margin-bottom: 24px; }"
+.av-web-studio-claude-imgs { padding: 64px 20px; background: #0f172a; width: 100%; color: #fff; }
+.av-web-studio-claude-imgs__inner { max-width: 1100px; margin: 0 auto; }
+.av-web-studio-claude-imgs h2 { margin: 0 0 8px; font-size: 2rem; text-align: center; }
+.av-web-studio-claude-imgs__sub { margin: 0 0 36px; text-align: center; color: #94a3b8; }
+.av-web-studio-claude-imgs__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+.av-web-studio-claude-imgs__item { margin: 0; border-radius: 14px; overflow: hidden; background: #1e293b; }
+.av-web-studio-claude-imgs__img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.av-web-studio-claude-imgs__item figcaption { padding: 12px 14px; font-size: .9rem; color: #cbd5e1; }
+.av-web-studio-claude-suggested { width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px; }
+.av-web-studio-ai-img-wrap { margin-bottom: 24px; }"
 		);
 	}
 }

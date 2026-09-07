@@ -1,4 +1,4 @@
-=== WPVisualX ===
+=== AV Web Studio ===
 Contributors: akash5052
 Tags: page builder, visual editor, landing page, popups, seo
 Requires at least: 6.0
@@ -12,7 +12,7 @@ Build WordPress pages with a visual drag-and-drop editor. Live preview, SEO, lay
 
 == Description ==
 
-**WPVisualX** is a visual page builder for WordPress. After you activate it, you can create pages, posts, and popups using sections, columns, and widgets — no coding and no extra plugins required.
+**AV Web Studio** is a visual page builder for WordPress. After you activate it, you can create pages, posts, and popups using sections, columns, and widgets — no coding and no extra plugins required.
 
 = Features =
 
@@ -31,9 +31,9 @@ Starter templates include local preview and section images. They do not load rem
 
 = How to use (fresh install) =
 
-1. Activate **WPVisualX** from the **Plugins** screen.
-2. Open **WPVisualX** in the WordPress admin menu.
-3. Go to **Pages** (or **Posts**), create a new item, or click **Build with WPVisualX** on an existing page/post.
+1. Activate **AV Web Studio** from the **Plugins** screen.
+2. Open **AV Web Studio** in the WordPress admin menu.
+3. Go to **Pages** (or **Posts**), create a new item, or click **Build with AV Web Studio** on an existing page/post.
 4. Add sections, columns, and widgets on the live canvas. Use the desktop / tablet / mobile controls to check each breakpoint.
 5. Open **Layout** to set header and footer behavior, then **SEO** for search and social metadata.
 6. Save or publish. The page is live with no API keys or third-party accounts required.
@@ -47,7 +47,7 @@ Optional screens (all off until you turn them on):
 
 AI features are **off by default**. To use them:
 
-1. Open **WPVisualX → Settings** and enable AI.
+1. Open **AV Web Studio → Settings** and enable AI.
 2. On WordPress 7.0 or later, install an AI provider plugin (Google, Anthropic, or OpenAI) and add its key under **Settings → Connectors**.
 
 Those providers are third-party SaaS products. This plugin does not store their API keys. It sends prompts through `wp_ai_client_prompt()` only when AI is enabled and a site administrator has configured a connector. On WordPress 6.x, or when no provider is configured, the assistant uses local templates only.
@@ -61,13 +61,13 @@ Those providers are third-party SaaS products. This plugin does not store their 
 
 == External services ==
 
-WPVisualX can connect to the third-party services below. Each connection is optional and off by default until a site administrator enables it. The plugin does not accept pasted tracking snippets; official vendor scripts are enqueued from the IDs you enter.
+AV Web Studio can connect to the third-party services below. Each connection is optional and off by default until a site administrator enables it. The plugin does not accept pasted tracking snippets; official vendor scripts are enqueued from the IDs you enter.
 
 **WordPress AI Client** (optional AI content generation)
 
 Why: to generate or edit visual-builder content when an editor uses Generate.
 
-When: a site administrator enables AI in WPVisualX, WordPress 7.0+ has an AI provider configured under **Settings → Connectors**, and an editor submits a Generate request.
+When: a site administrator enables AI in AV Web Studio, WordPress 7.0+ has an AI provider configured under **Settings → Connectors**, and an editor submits a Generate request.
 
 Data sent: the editor prompt, page title, and the current page content needed to apply the change. The request is made from your WordPress server through Core's AI Client to whichever provider the site owner connected (typically Google, Anthropic, or OpenAI). Visitor browsers do not call those APIs.
 
@@ -81,7 +81,7 @@ Privacy Policy: [Google Privacy Policy](https://policies.google.com/privacy), [A
 
 Why: to load the font families selected in a design so published pages and the editor preview can render those typefaces.
 
-When: a site administrator enables **Load Google Fonts** in **WPVisualX → Settings**, and a design uses those families.
+When: a site administrator enables **Load Google Fonts** in **AV Web Studio → Settings**, and a design uses those families.
 
 Data sent: the font family names in the stylesheet URL. The visitor's (or editor's) browser then requests CSS and font files from Google, which receives standard request data such as IP address and user agent.
 
@@ -151,19 +151,19 @@ Privacy Policy: [Meta Privacy Policy](https://www.facebook.com/privacy/policy/)
 
 = Source code =
 
-The public repository is [EP-Builder on GitHub](https://github.com/akash5052/EP-Builder). Compiled editor assets are shipped in `assets/build/`. The React/TypeScript source is included in the `editor/` directory of this plugin.
+The public repository is [AV Web Studio on GitHub](https://github.com/akash5052/AV-Web-Studio). Compiled editor assets are shipped in `assets/build/`. The React/TypeScript source is included in the `editor/` directory of this plugin.
 
 == Installation ==
 
-1. Upload the `wpvisualx` folder to `/wp-content/plugins/`, or install the zip via **Plugins → Add New → Upload Plugin**.
-2. Activate **WPVisualX** through the **Plugins** screen.
-3. Open **WPVisualX** in the admin menu and create a page with the visual builder.
+1. Upload the `av-web-studio` folder to `/wp-content/plugins/`, or install the zip via **Plugins → Add New → Upload Plugin**.
+2. Activate **AV Web Studio** through the **Plugins** screen.
+3. Open **AV Web Studio** in the admin menu and create a page with the visual builder.
 
 == Frequently Asked Questions ==
 
 = Can I paste custom CSS or JavaScript? =
 
-No. WPVisualX is a visual editor. Styles come from widget and layout settings. Tracking uses account ID fields that load official Google and Meta scripts. There is no HTML, CSS, or JavaScript editor.
+No. AV Web Studio is a visual editor. Styles come from widget and layout settings. Tracking uses account ID fields that load official Google and Meta scripts. There is no HTML, CSS, or JavaScript editor.
 
 = Do I need an API key to use the plugin? =
 
@@ -179,11 +179,11 @@ No. AI is optional and disabled by default.
 
 = Do pages load Google Fonts automatically? =
 
-No. Enable **Load Google Fonts** in **WPVisualX → Settings** if you want those families fetched from Google.
+No. Enable **Load Google Fonts** in **AV Web Studio → Settings** if you want those families fetched from Google.
 
 = Where do I configure AI? =
 
-Enable AI in **WPVisualX → Settings**. On WordPress 7.0+, add a provider under **Settings → Connectors**. This plugin does not collect Gemini or Claude API keys.
+Enable AI in **AV Web Studio → Settings**. On WordPress 7.0+, add a provider under **Settings → Connectors**. This plugin does not collect Gemini or Claude API keys.
 
 == Changelog ==
 
@@ -201,6 +201,6 @@ Initial public release.
 
 == Development ==
 
-Repository: https://github.com/akash5052/EP-Builder
+Repository: https://github.com/akash5052/AV-Web-Studio
 Editor UI source: `editor/` (build with `npm install && npm run build` inside that folder).
 Packaging helper: `./package.sh` (development only; not required on production sites).

@@ -4,9 +4,9 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class EPB_REST {
+class Av_Web_Studio_REST {
 
-	const NAMESPACE = 'wpvisualx/v1';
+	const NAMESPACE = 'av-web-studio/v1';
 
 	public function __construct() {
 		add_action('rest_api_init', [$this, 'register_routes']);
@@ -215,7 +215,7 @@ class EPB_REST {
 	 * @return bool
 	 */
 	public function can_edit() {
-		return EPB_Post_Types::user_can_use_builder();
+		return Av_Web_Studio_Post_Types::user_can_use_builder();
 	}
 
 	/**
@@ -224,7 +224,7 @@ class EPB_REST {
 	 * @return bool
 	 */
 	public function can_use_ai() {
-		return EPB_Settings::current_user_can_use_ai() && EPB_Post_Types::user_can_use_builder();
+		return Av_Web_Studio_Settings::current_user_can_use_ai() && Av_Web_Studio_Post_Types::user_can_use_builder();
 	}
 
 	/**
@@ -233,7 +233,7 @@ class EPB_REST {
 	 * @return bool
 	 */
 	public function can_manage_settings() {
-		return EPB_Settings::current_user_can_manage();
+		return Av_Web_Studio_Settings::current_user_can_manage();
 	}
 
 	/**
@@ -242,7 +242,7 @@ class EPB_REST {
 	 * @return bool
 	 */
 	public function can_upload() {
-		return current_user_can('upload_files') && EPB_Post_Types::user_can_use_builder();
+		return current_user_can('upload_files') && Av_Web_Studio_Post_Types::user_can_use_builder();
 	}
 
 	/**
@@ -252,12 +252,12 @@ class EPB_REST {
 	 * @return true|WP_Error
 	 */
 	private function ensure_editable_post($post) {
-		if (!$post || !EPB_Post_Types::is_supported($post)) {
-			return new WP_Error('epb_not_found', __('Content not found.', 'wpvisualx'), [ 'status' => 404 ]);
+		if (!$post || !Av_Web_Studio_Post_Types::is_supported($post)) {
+			return new WP_Error('av_web_studio_not_found', __('Content not found.', 'av-web-studio'), [ 'status' => 404 ]);
 		}
 
-		if (!EPB_Post_Types::user_can_edit($post->ID)) {
-			return new WP_Error('epb_forbidden', __('You cannot edit this content.', 'wpvisualx'), [ 'status' => 403 ]);
+		if (!Av_Web_Studio_Post_Types::user_can_edit($post->ID)) {
+			return new WP_Error('av_web_studio_forbidden', __('You cannot edit this content.', 'av-web-studio'), [ 'status' => 403 ]);
 		}
 
 		return true;
@@ -276,8 +276,8 @@ class EPB_REST {
 		$page      = max(1, (int) $request->get_param('page'));
 		$per_page  = min(100, max(1, (int) ($request->get_param('per_page') ?: 20)));
 
-		$types = EPB_Post_Types::types();
-		if ($post_type !== 'all' && EPB_Post_Types::is_supported_type($post_type)) {
+		$types = Av_Web_Studio_Post_Types::types();
+		if ($post_type !== 'all' && Av_Web_Studio_Post_Types::is_supported_type($post_type)) {
 			$types = [ $post_type ];
 		}
 
@@ -312,7 +312,7 @@ class EPB_REST {
 
 		$items = [];
 		foreach ($query->posts as $post) {
-			if (!EPB_Post_Types::user_can_edit($post->ID)) {
+			if (!Av_Web_Studio_Post_Types::user_can_edit($post->ID)) {
 				continue;
 			}
 			$items[] = $this->format_page_summary($post);
@@ -338,16 +338,16 @@ class EPB_REST {
 		$title  = sanitize_text_field($request->get_param('title') ?: ($params['title'] ?? ''));
 		$type   = sanitize_key($request->get_param('post_type') ?: ($params['post_type'] ?? 'page'));
 
-		if (!EPB_Post_Types::is_supported_type($type)) {
-			return new WP_Error('epb_invalid_type', __('Unsupported content type.', 'wpvisualx'), [ 'status' => 400 ]);
+		if (!Av_Web_Studio_Post_Types::is_supported_type($type)) {
+			return new WP_Error('av_web_studio_invalid_type', __('Unsupported content type.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
-		if (!EPB_Post_Types::user_can_create($type)) {
-			return new WP_Error('epb_forbidden', __('You cannot create this content type.', 'wpvisualx'), [ 'status' => 403 ]);
+		if (!Av_Web_Studio_Post_Types::user_can_create($type)) {
+			return new WP_Error('av_web_studio_forbidden', __('You cannot create this content type.', 'av-web-studio'), [ 'status' => 403 ]);
 		}
 
 		if (empty($title)) {
-			$title = EPB_Post_Types::default_title($type);
+			$title = Av_Web_Studio_Post_Types::default_title($type);
 		}
 
 		$page_id = wp_insert_post([
@@ -360,8 +360,8 @@ class EPB_REST {
 			return $page_id;
 		}
 
-		update_post_meta($page_id, '_epb_enabled', '1');
-		EPB_Renderer::save_page_code($page_id, EPB_Renderer::default_code($title));
+		update_post_meta($page_id, '_av_web_studio_enabled', '1');
+		Av_Web_Studio_Renderer::save_page_code($page_id, Av_Web_Studio_Renderer::default_code($title));
 
 		$page = get_post($page_id);
 
@@ -402,8 +402,8 @@ class EPB_REST {
 		$params = $request->get_json_params();
 		$visual = isset($params['visual']) && is_array($params['visual']) ? $params['visual'] : null;
 
-		if (!is_array($visual) && !EPB_Renderer::get_visual_document($page->ID)) {
-			return new WP_Error('epb_invalid_code', __('Invalid builder data.', 'wpvisualx'), ['status' => 400]);
+		if (!is_array($visual) && !Av_Web_Studio_Renderer::get_visual_document($page->ID)) {
+			return new WP_Error('av_web_studio_invalid_code', __('Invalid builder data.', 'av-web-studio'), ['status' => 400]);
 		}
 
 		$title = isset($params['title']) ? $params['title'] : $request->get_param('title');
@@ -416,23 +416,23 @@ class EPB_REST {
 		}
 
 		if (is_array($visual)) {
-			EPB_Renderer::save_visual_and_compile($page->ID, $visual);
+			Av_Web_Studio_Renderer::save_visual_and_compile($page->ID, $visual);
 		} else {
-			EPB_Renderer::save_page_code($page->ID, []);
+			Av_Web_Studio_Renderer::save_page_code($page->ID, []);
 		}
 
-		EPB_Renderer::save_edit_mode($page->ID);
+		Av_Web_Studio_Renderer::save_edit_mode($page->ID);
 
 		if (isset($params['layout']) && is_array($params['layout'])) {
-			EPB_Layout::save_page($page->ID, $params['layout']);
+			Av_Web_Studio_Layout::save_page($page->ID, $params['layout']);
 		}
 
 		if (isset($params['seo']) && is_array($params['seo'])) {
-			EPB_SEO::save_page($page->ID, $params['seo']);
+			Av_Web_Studio_SEO::save_page($page->ID, $params['seo']);
 		}
 
 		if (isset($params['post_options']) && is_array($params['post_options'])) {
-			EPB_Post_Options::save($page->ID, $params['post_options']);
+			Av_Web_Studio_Post_Options::save($page->ID, $params['post_options']);
 		}
 
 		wp_cache_delete($page->ID, 'post_meta');
@@ -443,8 +443,8 @@ class EPB_REST {
 		return rest_ensure_response([
 			'success'          => true,
 			'page'             => $this->format_page_detail($page),
-			'full_preview_url' => EPB_Preview::get_url($page->ID),
-			'message'          => __('Draft saved.', 'wpvisualx'),
+			'full_preview_url' => Av_Web_Studio_Preview::get_url($page->ID),
+			'message'          => __('Draft saved.', 'av-web-studio'),
 		]);
 	}
 
@@ -469,7 +469,7 @@ class EPB_REST {
 		if (array_key_exists('title', $params)) {
 			$title = sanitize_text_field($params['title']);
 			if ($title === '') {
-				return new WP_Error('epb_invalid_title', __('Title cannot be empty.', 'wpvisualx'), [ 'status' => 400 ]);
+				return new WP_Error('av_web_studio_invalid_title', __('Title cannot be empty.', 'av-web-studio'), [ 'status' => 400 ]);
 			}
 			$update['post_title'] = $title;
 			$changed               = true;
@@ -479,7 +479,7 @@ class EPB_REST {
 			$status = sanitize_key($params['status']);
 			$allowed = [ 'publish', 'draft', 'pending', 'private' ];
 			if (!in_array($status, $allowed, true)) {
-				return new WP_Error('epb_invalid_status', __('Invalid status.', 'wpvisualx'), [ 'status' => 400 ]);
+				return new WP_Error('av_web_studio_invalid_status', __('Invalid status.', 'av-web-studio'), [ 'status' => 400 ]);
 			}
 			$update['post_status'] = $status;
 			$changed               = true;
@@ -488,14 +488,14 @@ class EPB_REST {
 		if (array_key_exists('slug', $params)) {
 			$slug = sanitize_title($params['slug']);
 			if ($slug === '') {
-				return new WP_Error('epb_invalid_slug', __('Slug cannot be empty.', 'wpvisualx'), [ 'status' => 400 ]);
+				return new WP_Error('av_web_studio_invalid_slug', __('Slug cannot be empty.', 'av-web-studio'), [ 'status' => 400 ]);
 			}
 			$update['post_name'] = $slug;
 			$changed             = true;
 		}
 
 		if (!$changed) {
-			return new WP_Error('epb_no_changes', __('No changes provided.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_no_changes', __('No changes provided.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$result = wp_update_post($update, true);
@@ -512,8 +512,8 @@ class EPB_REST {
 			'page'    => $this->format_page_summary($page),
 			'message' => sprintf(
 				/* translators: %s: content type label (Page or Post). */
-				__('%s updated.', 'wpvisualx'),
-				EPB_Post_Types::label($page->post_type)
+				__('%s updated.', 'av-web-studio'),
+				Av_Web_Studio_Post_Types::label($page->post_type)
 			),
 		]);
 	}
@@ -532,8 +532,8 @@ class EPB_REST {
 			return $check;
 		}
 
-		if (!EPB_Post_Types::user_can_delete($page->ID)) {
-			return new WP_Error('epb_forbidden', __('You cannot delete this content.', 'wpvisualx'), [ 'status' => 403 ]);
+		if (!Av_Web_Studio_Post_Types::user_can_delete($page->ID)) {
+			return new WP_Error('av_web_studio_forbidden', __('You cannot delete this content.', 'av-web-studio'), [ 'status' => 403 ]);
 		}
 
 		$params = $request->get_json_params();
@@ -542,10 +542,10 @@ class EPB_REST {
 		$result = wp_delete_post($page->ID, (bool) $force);
 
 		if (!$result) {
-			return new WP_Error('epb_delete_failed', __('Could not delete content.', 'wpvisualx'), [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_delete_failed', __('Could not delete content.', 'av-web-studio'), [ 'status' => 500 ]);
 		}
 
-		$label = EPB_Post_Types::label($page->post_type);
+		$label = Av_Web_Studio_Post_Types::label($page->post_type);
 
 		return rest_ensure_response([
 			'success' => true,
@@ -553,12 +553,12 @@ class EPB_REST {
 			'message' => $force
 				? sprintf(
 					/* translators: %s: content type label (Page or Post). */
-					__('%s permanently deleted.', 'wpvisualx'),
+					__('%s permanently deleted.', 'av-web-studio'),
 					$label
 				)
 				: sprintf(
 					/* translators: %s: content type label (Page or Post). */
-					__('%s moved to trash.', 'wpvisualx'),
+					__('%s moved to trash.', 'av-web-studio'),
 					$label
 				),
 		]);
@@ -579,27 +579,27 @@ class EPB_REST {
 		}
 
 		if ($page->post_status !== 'trash') {
-			return new WP_Error('epb_not_trashed', __('Content is not in trash.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_not_trashed', __('Content is not in trash.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
-		if (!EPB_Post_Types::user_can_delete($page->ID)) {
-			return new WP_Error('epb_forbidden', __('You cannot restore this content.', 'wpvisualx'), [ 'status' => 403 ]);
+		if (!Av_Web_Studio_Post_Types::user_can_delete($page->ID)) {
+			return new WP_Error('av_web_studio_forbidden', __('You cannot restore this content.', 'av-web-studio'), [ 'status' => 403 ]);
 		}
 
 		$restored = wp_untrash_post($page->ID);
 
 		if (!$restored) {
-			return new WP_Error('epb_restore_failed', __('Could not restore content.', 'wpvisualx'), [ 'status' => 500 ]);
+			return new WP_Error('av_web_studio_restore_failed', __('Could not restore content.', 'av-web-studio'), [ 'status' => 500 ]);
 		}
 
-		$label = EPB_Post_Types::label($page->post_type);
+		$label = Av_Web_Studio_Post_Types::label($page->post_type);
 
 		return rest_ensure_response([
 			'success' => true,
 			'id'      => (int) $page->ID,
 			'message' => sprintf(
 				/* translators: %s: content type label (Page or Post). */
-				__('%s restored from trash.', 'wpvisualx'),
+				__('%s restored from trash.', 'av-web-studio'),
 				$label
 			),
 		]);
@@ -618,11 +618,11 @@ class EPB_REST {
 		$force  = !empty($params['force']) || $request->get_param('force');
 
 		if (!in_array($action, [ 'trash', 'restore', 'delete' ], true)) {
-			return new WP_Error('epb_invalid_action', __('Invalid bulk action.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_invalid_action', __('Invalid bulk action.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		if (empty($ids)) {
-			return new WP_Error('epb_empty_ids', __('No items selected.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_empty_ids', __('No items selected.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$processed = 0;
@@ -632,7 +632,7 @@ class EPB_REST {
 			$page = get_post($id);
 			$check = $this->ensure_accessible_post($page, true);
 
-			if (is_wp_error($check) || !EPB_Post_Types::user_can_delete($page->ID)) {
+			if (is_wp_error($check) || !Av_Web_Studio_Post_Types::user_can_delete($page->ID)) {
 				$errors++;
 				continue;
 			}
@@ -660,7 +660,7 @@ class EPB_REST {
 			'errors'    => $errors,
 			'message'   => sprintf(
 				/* translators: %d: number of items. */
-				_n('%d item updated.', '%d items updated.', $processed, 'wpvisualx'),
+				_n('%d item updated.', '%d items updated.', $processed, 'av-web-studio'),
 				$processed
 			),
 		]);
@@ -674,16 +674,16 @@ class EPB_REST {
 	 * @return true|WP_Error
 	 */
 	private function ensure_accessible_post($post, $allow_trashed = false) {
-		if (!$post || !EPB_Post_Types::is_supported($post)) {
-			return new WP_Error('epb_not_found', __('Content not found.', 'wpvisualx'), [ 'status' => 404 ]);
+		if (!$post || !Av_Web_Studio_Post_Types::is_supported($post)) {
+			return new WP_Error('av_web_studio_not_found', __('Content not found.', 'av-web-studio'), [ 'status' => 404 ]);
 		}
 
 		if ($post->post_status === 'trash' && !$allow_trashed) {
-			return new WP_Error('epb_trashed', __('Content is in trash.', 'wpvisualx'), [ 'status' => 410 ]);
+			return new WP_Error('av_web_studio_trashed', __('Content is in trash.', 'av-web-studio'), [ 'status' => 410 ]);
 		}
 
-		if (!EPB_Post_Types::user_can_edit($post->ID)) {
-			return new WP_Error('epb_forbidden', __('You cannot edit this content.', 'wpvisualx'), [ 'status' => 403 ]);
+		if (!Av_Web_Studio_Post_Types::user_can_edit($post->ID)) {
+			return new WP_Error('av_web_studio_forbidden', __('You cannot edit this content.', 'av-web-studio'), [ 'status' => 403 ]);
 		}
 
 		return true;
@@ -705,14 +705,14 @@ class EPB_REST {
 
 		$publish_cap = $page->post_type === 'post' ? 'publish_posts' : 'publish_pages';
 		if (!current_user_can($publish_cap)) {
-			return new WP_Error('epb_cannot_publish', __('You do not have permission to publish this content.', 'wpvisualx'), [ 'status' => 403 ]);
+			return new WP_Error('av_web_studio_cannot_publish', __('You do not have permission to publish this content.', 'av-web-studio'), [ 'status' => 403 ]);
 		}
 
 		$params = $request->get_json_params();
 		$visual = isset($params['visual']) && is_array($params['visual']) ? $params['visual'] : null;
 
-		if (!is_array($visual) && !EPB_Renderer::get_visual_document($page->ID)) {
-			return new WP_Error('epb_invalid_code', __('Invalid builder data.', 'wpvisualx'), ['status' => 400]);
+		if (!is_array($visual) && !Av_Web_Studio_Renderer::get_visual_document($page->ID)) {
+			return new WP_Error('av_web_studio_invalid_code', __('Invalid builder data.', 'av-web-studio'), ['status' => 400]);
 		}
 
 		$title = isset($params['title']) ? $params['title'] : $request->get_param('title');
@@ -733,33 +733,33 @@ class EPB_REST {
 		}
 
 		if (is_array($visual)) {
-			EPB_Renderer::save_visual_and_compile($page->ID, $visual);
+			Av_Web_Studio_Renderer::save_visual_and_compile($page->ID, $visual);
 		} else {
-			EPB_Renderer::save_page_code($page->ID, []);
+			Av_Web_Studio_Renderer::save_page_code($page->ID, []);
 		}
 
-		EPB_Renderer::save_edit_mode($page->ID);
+		Av_Web_Studio_Renderer::save_edit_mode($page->ID);
 
 		if (isset($params['layout']) && is_array($params['layout'])) {
-			EPB_Layout::save_page($page->ID, $params['layout']);
+			Av_Web_Studio_Layout::save_page($page->ID, $params['layout']);
 		}
 
 		if (isset($params['seo']) && is_array($params['seo'])) {
-			EPB_SEO::save_page($page->ID, $params['seo']);
+			Av_Web_Studio_SEO::save_page($page->ID, $params['seo']);
 		}
 
 		if (isset($params['post_options']) && is_array($params['post_options'])) {
 			$opts            = $params['post_options'];
 			$opts['status']  = 'publish';
-			EPB_Post_Options::save($page->ID, $opts);
+			Av_Web_Studio_Post_Options::save($page->ID, $opts);
 		}
 
-		$stored = EPB_Renderer::get_page_code($page->ID);
+		$stored = Av_Web_Studio_Renderer::get_page_code($page->ID);
 
 		$result = wp_update_post([
 			'ID'           => $page->ID,
 			'post_status'  => 'publish',
-			'post_content' => EPB_Renderer::render_for_post_content($stored, $page->ID),
+			'post_content' => Av_Web_Studio_Renderer::render_for_post_content($stored, $page->ID),
 		], true);
 
 		if (is_wp_error($result)) {
@@ -777,8 +777,8 @@ class EPB_REST {
 			'preview_url' => get_permalink($page->ID),
 			'message'     => sprintf(
 				/* translators: %s: content type label (Page or Post). */
-				__('%s published successfully.', 'wpvisualx'),
-				EPB_Post_Types::label($page->post_type)
+				__('%s published successfully.', 'av-web-studio'),
+				Av_Web_Studio_Post_Types::label($page->post_type)
 			),
 		]);
 	}
@@ -793,14 +793,14 @@ class EPB_REST {
 		$prompt = sanitize_textarea_field($request->get_param('prompt'));
 
 		if (empty($prompt)) {
-			return new WP_Error('epb_empty_prompt', __('Prompt is required.', 'wpvisualx'), ['status' => 400]);
+			return new WP_Error('av_web_studio_empty_prompt', __('Prompt is required.', 'av-web-studio'), ['status' => 400]);
 		}
 
 		$code_param = $request->get_param('code');
-		$context    = is_array($code_param) ? EPB_Renderer::normalize_code($code_param) : null;
+		$context    = is_array($code_param) ? Av_Web_Studio_Renderer::normalize_code($code_param) : null;
 		$page_title = sanitize_text_field($request->get_param('title') ?? '');
 
-		$result = EPB_AI::generate($prompt, EPB_Settings::get_ai_settings(), $context, $page_title);
+		$result = Av_Web_Studio_AI::generate($prompt, Av_Web_Studio_Settings::get_ai_settings(), $context, $page_title);
 		$code   = is_array($result['code'] ?? null) ? $result['code'] : [];
 
 		return rest_ensure_response([
@@ -826,7 +826,7 @@ class EPB_REST {
 	public function get_post_meta_lists($request) {
 		$post_id = absint($request->get_param('post_id'));
 
-		return rest_ensure_response(EPB_Post_Options::get_editor_lists($post_id));
+		return rest_ensure_response(Av_Web_Studio_Post_Options::get_editor_lists($post_id));
 	}
 
 	/**
@@ -841,11 +841,11 @@ class EPB_REST {
 		$post_id = absint($params['post_id'] ?? 0);
 
 		if (empty($config)) {
-			return new WP_Error('epb_invalid_posts_config', __('Invalid posts widget config.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_invalid_posts_config', __('Invalid posts widget config.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		return rest_ensure_response([
-			'html' => EPB_Posts_Widget::render($config, $post_id),
+			'html' => Av_Web_Studio_Posts_Widget::render($config, $post_id),
 		]);
 	}
 
@@ -856,7 +856,7 @@ class EPB_REST {
 	 */
 	public function get_global_layout() {
 		return rest_ensure_response([
-			'layout' => EPB_Layout::format_global(EPB_Layout::get_global()),
+			'layout' => Av_Web_Studio_Layout::format_global(Av_Web_Studio_Layout::get_global()),
 		]);
 	}
 
@@ -871,15 +871,15 @@ class EPB_REST {
 		$layout = isset($params['layout']) && is_array($params['layout']) ? $params['layout'] : $params;
 
 		if (!is_array($layout)) {
-			return new WP_Error('epb_invalid_layout', __('Invalid layout data.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_invalid_layout', __('Invalid layout data.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
-		EPB_Layout::save_global($layout);
+		Av_Web_Studio_Layout::save_global($layout);
 
 		return rest_ensure_response([
 			'success' => true,
-			'layout'  => EPB_Layout::format_global(EPB_Layout::get_global()),
-			'message' => __('Site layout saved.', 'wpvisualx'),
+			'layout'  => Av_Web_Studio_Layout::format_global(Av_Web_Studio_Layout::get_global()),
+			'message' => __('Site layout saved.', 'av-web-studio'),
 		]);
 	}
 
@@ -894,7 +894,7 @@ class EPB_REST {
 		$page     = max(1, (int) $request->get_param('page'));
 		$per_page = min(100, max(1, (int) ($request->get_param('per_page') ?: 20)));
 
-		$result = EPB_Popups::query([
+		$result = Av_Web_Studio_Popups::query([
 			'status'   => $status,
 			'page'     => $page,
 			'per_page' => $per_page,
@@ -912,7 +912,7 @@ class EPB_REST {
 	public function create_popup($request) {
 		$params = $request->get_json_params();
 		$name   = sanitize_text_field($params['name'] ?? $request->get_param('name') ?? 'New Popup');
-		$popup  = EPB_Popups::save(EPB_Popups::default_popup($name));
+		$popup  = Av_Web_Studio_Popups::save(Av_Web_Studio_Popups::default_popup($name));
 
 		return rest_ensure_response([
 			'success' => true,
@@ -931,16 +931,16 @@ class EPB_REST {
 		$popup  = isset($params['popup']) && is_array($params['popup']) ? $params['popup'] : $params;
 
 		if (!is_array($popup)) {
-			return new WP_Error('epb_invalid_popup', __('Invalid popup data.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_invalid_popup', __('Invalid popup data.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$popup['id'] = sanitize_key($request['id']);
-		$saved       = EPB_Popups::save($popup);
+		$saved       = Av_Web_Studio_Popups::save($popup);
 
 		return rest_ensure_response([
 			'success' => true,
 			'popup'   => $saved,
-			'message' => __('Popup saved.', 'wpvisualx'),
+			'message' => __('Popup saved.', 'av-web-studio'),
 		]);
 	}
 
@@ -952,14 +952,14 @@ class EPB_REST {
 	 */
 	public function quick_edit_popup($request) {
 		$id    = sanitize_key($request['id']);
-		$popup = EPB_Popups::get($id);
+		$popup = Av_Web_Studio_Popups::get($id);
 
 		if (!$popup) {
-			return new WP_Error('epb_not_found', __('Popup not found.', 'wpvisualx'), [ 'status' => 404 ]);
+			return new WP_Error('av_web_studio_not_found', __('Popup not found.', 'av-web-studio'), [ 'status' => 404 ]);
 		}
 
-		if (EPB_Popups::get_status($popup) === 'trash') {
-			return new WP_Error('epb_trashed', __('Restore the popup before editing.', 'wpvisualx'), [ 'status' => 410 ]);
+		if (Av_Web_Studio_Popups::get_status($popup) === 'trash') {
+			return new WP_Error('av_web_studio_trashed', __('Restore the popup before editing.', 'av-web-studio'), [ 'status' => 410 ]);
 		}
 
 		$params  = $request->get_json_params();
@@ -968,7 +968,7 @@ class EPB_REST {
 		if (array_key_exists('name', $params)) {
 			$name = sanitize_text_field($params['name']);
 			if ($name === '') {
-				return new WP_Error('epb_invalid_name', __('Name cannot be empty.', 'wpvisualx'), [ 'status' => 400 ]);
+				return new WP_Error('av_web_studio_invalid_name', __('Name cannot be empty.', 'av-web-studio'), [ 'status' => 400 ]);
 			}
 			$popup['name'] = $name;
 			$changed       = true;
@@ -977,7 +977,7 @@ class EPB_REST {
 		if (array_key_exists('status', $params)) {
 			$status = sanitize_key($params['status']);
 			if (!in_array($status, [ 'publish', 'draft' ], true)) {
-				return new WP_Error('epb_invalid_status', __('Invalid status.', 'wpvisualx'), [ 'status' => 400 ]);
+				return new WP_Error('av_web_studio_invalid_status', __('Invalid status.', 'av-web-studio'), [ 'status' => 400 ]);
 			}
 			$popup['status']  = $status;
 			$popup['enabled'] = $status === 'publish';
@@ -985,15 +985,15 @@ class EPB_REST {
 		}
 
 		if (!$changed) {
-			return new WP_Error('epb_no_changes', __('No changes provided.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_no_changes', __('No changes provided.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
-		$saved = EPB_Popups::save($popup);
+		$saved = Av_Web_Studio_Popups::save($popup);
 
 		return rest_ensure_response([
 			'success' => true,
 			'popup'   => $saved,
-			'message' => __('Popup updated.', 'wpvisualx'),
+			'message' => __('Popup updated.', 'av-web-studio'),
 		]);
 	}
 
@@ -1008,14 +1008,14 @@ class EPB_REST {
 		$params = $request->get_json_params();
 		$force  = !empty($params['force']) || $request->get_param('force');
 
-		if (!EPB_Popups::delete($id, (bool) $force)) {
-			return new WP_Error('epb_not_found', __('Popup not found.', 'wpvisualx'), [ 'status' => 404 ]);
+		if (!Av_Web_Studio_Popups::delete($id, (bool) $force)) {
+			return new WP_Error('av_web_studio_not_found', __('Popup not found.', 'av-web-studio'), [ 'status' => 404 ]);
 		}
 
 		return rest_ensure_response([
 			'success' => true,
 			'id'      => $id,
-			'message' => $force ? __('Popup permanently deleted.', 'wpvisualx') : __('Popup moved to trash.', 'wpvisualx'),
+			'message' => $force ? __('Popup permanently deleted.', 'av-web-studio') : __('Popup moved to trash.', 'av-web-studio'),
 		]);
 	}
 
@@ -1028,14 +1028,14 @@ class EPB_REST {
 	public function restore_popup($request) {
 		$id = sanitize_key($request['id']);
 
-		if (!EPB_Popups::restore($id)) {
-			return new WP_Error('epb_restore_failed', __('Could not restore popup.', 'wpvisualx'), [ 'status' => 400 ]);
+		if (!Av_Web_Studio_Popups::restore($id)) {
+			return new WP_Error('av_web_studio_restore_failed', __('Could not restore popup.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		return rest_ensure_response([
 			'success' => true,
 			'id'      => $id,
-			'message' => __('Popup restored from trash.', 'wpvisualx'),
+			'message' => __('Popup restored from trash.', 'av-web-studio'),
 		]);
 	}
 
@@ -1052,11 +1052,11 @@ class EPB_REST {
 		$force  = !empty($params['force']) || $request->get_param('force');
 
 		if (!in_array($action, [ 'trash', 'restore', 'delete' ], true)) {
-			return new WP_Error('epb_invalid_action', __('Invalid bulk action.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_invalid_action', __('Invalid bulk action.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		if (empty($ids)) {
-			return new WP_Error('epb_empty_ids', __('No items selected.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_empty_ids', __('No items selected.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
 		$processed = 0;
@@ -1066,11 +1066,11 @@ class EPB_REST {
 			$result = false;
 
 			if ($action === 'trash') {
-				$result = EPB_Popups::trash($id);
+				$result = Av_Web_Studio_Popups::trash($id);
 			} elseif ($action === 'restore') {
-				$result = EPB_Popups::restore($id);
+				$result = Av_Web_Studio_Popups::restore($id);
 			} elseif ($action === 'delete') {
-				$result = EPB_Popups::delete($id, (bool) $force);
+				$result = Av_Web_Studio_Popups::delete($id, (bool) $force);
 			}
 
 			if ($result) {
@@ -1086,7 +1086,7 @@ class EPB_REST {
 			'errors'    => $errors,
 			'message'   => sprintf(
 				/* translators: %d: number of popups. */
-				_n('%d popup updated.', '%d popups updated.', $processed, 'wpvisualx'),
+				_n('%d popup updated.', '%d popups updated.', $processed, 'av-web-studio'),
 				$processed
 			),
 		]);
@@ -1098,10 +1098,10 @@ class EPB_REST {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_settings() {
-		if (EPB_Settings::current_user_can_manage()) {
-			return rest_ensure_response(EPB_Settings::admin_settings());
+		if (Av_Web_Studio_Settings::current_user_can_manage()) {
+			return rest_ensure_response(Av_Web_Studio_Settings::admin_settings());
 		}
-		return rest_ensure_response(EPB_Settings::public_settings());
+		return rest_ensure_response(Av_Web_Studio_Settings::public_settings());
 	}
 
 	/**
@@ -1111,8 +1111,8 @@ class EPB_REST {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function save_settings($request) {
-		if (!EPB_Settings::current_user_can_manage()) {
-			return new WP_Error('epb_forbidden', __('You are not allowed to manage plugin settings.', 'wpvisualx'), [ 'status' => 403 ]);
+		if (!Av_Web_Studio_Settings::current_user_can_manage()) {
+			return new WP_Error('av_web_studio_forbidden', __('You are not allowed to manage plugin settings.', 'av-web-studio'), [ 'status' => 403 ]);
 		}
 
 		$params = $request->get_json_params();
@@ -1120,7 +1120,7 @@ class EPB_REST {
 			$params = $request->get_params();
 		}
 
-		$result = EPB_Settings::save($params);
+		$result = Av_Web_Studio_Settings::save($params);
 		return rest_ensure_response($result);
 	}
 
@@ -1131,7 +1131,7 @@ class EPB_REST {
 	 */
 	public function get_templates() {
 		$built_in = [];
-		foreach (EPB_Visual_Templates::catalog() as $item) {
+		foreach (Av_Web_Studio_Visual_Templates::catalog() as $item) {
 			$item['source']     = 'builtin';
 			$item['can_delete'] = false;
 			$item['format']     = 'visual';
@@ -1139,7 +1139,7 @@ class EPB_REST {
 		}
 
 		return rest_ensure_response([
-			'templates' => array_merge($built_in, EPB_Custom_Templates::catalog()),
+			'templates' => array_merge($built_in, Av_Web_Studio_Custom_Templates::catalog()),
 		]);
 	}
 
@@ -1154,10 +1154,10 @@ class EPB_REST {
 		$file  = $files['file'] ?? null;
 
 		if (!$file || empty($file['name'])) {
-			return new WP_Error('epb_template_missing', __('No template zip uploaded.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_template_missing', __('No template zip uploaded.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
-		$result = EPB_Custom_Templates::import_zip($file);
+		$result = Av_Web_Studio_Custom_Templates::import_zip($file);
 		if (is_wp_error($result)) {
 			return $result;
 		}
@@ -1173,7 +1173,7 @@ class EPB_REST {
 	 */
 	public function delete_template($request) {
 		$id     = sanitize_key($request['id'] ?? '');
-		$result = EPB_Custom_Templates::delete($id);
+		$result = Av_Web_Studio_Custom_Templates::delete($id);
 
 		if (is_wp_error($result)) {
 			return $result;
@@ -1181,7 +1181,7 @@ class EPB_REST {
 
 		return rest_ensure_response([
 			'success' => true,
-			'message' => __('Template deleted.', 'wpvisualx'),
+			'message' => __('Template deleted.', 'av-web-studio'),
 		]);
 	}
 
@@ -1199,10 +1199,10 @@ class EPB_REST {
 
 		$id = sanitize_key($params['id'] ?? '');
 		if ($id === '') {
-			return new WP_Error('epb_invalid_template', __('Template id is required.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_invalid_template', __('Template id is required.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
-		$pack = EPB_Visual_Templates::get($id);
+		$pack = Av_Web_Studio_Visual_Templates::get($id);
 		$visual = null;
 		$title  = '';
 
@@ -1210,7 +1210,7 @@ class EPB_REST {
 			$visual = $pack['visual'];
 			$title  = $pack['title'];
 		} else {
-			$custom = EPB_Custom_Templates::get_pack($id);
+			$custom = Av_Web_Studio_Custom_Templates::get_pack($id);
 			if ($custom) {
 				$visual = $custom['visual'] ?? null;
 				$title  = $custom['title'] ?? 'New Page';
@@ -1218,15 +1218,15 @@ class EPB_REST {
 		}
 
 		if (!$visual || empty($visual['sections'])) {
-			return new WP_Error('epb_unknown_template', __('Template not found.', 'wpvisualx'), [ 'status' => 404 ]);
+			return new WP_Error('av_web_studio_unknown_template', __('Template not found.', 'av-web-studio'), [ 'status' => 404 ]);
 		}
 
 		$type = sanitize_key($params['post_type'] ?? 'page');
-		if (!EPB_Post_Types::is_supported_type($type)) {
+		if (!Av_Web_Studio_Post_Types::is_supported_type($type)) {
 			$type = 'page';
 		}
-		if (!EPB_Post_Types::user_can_create($type)) {
-			return new WP_Error('epb_forbidden', __('You cannot create this content type.', 'wpvisualx'), [ 'status' => 403 ]);
+		if (!Av_Web_Studio_Post_Types::user_can_create($type)) {
+			return new WP_Error('av_web_studio_forbidden', __('You cannot create this content type.', 'av-web-studio'), [ 'status' => 403 ]);
 		}
 
 		$title   = sanitize_text_field($params['title'] ?? $title ?: 'New Page');
@@ -1240,9 +1240,9 @@ class EPB_REST {
 			return $page_id;
 		}
 
-		update_post_meta($page_id, '_epb_enabled', '1');
-		EPB_Renderer::save_visual_and_compile($page_id, $visual);
-		EPB_Renderer::save_edit_mode($page_id, 'visual');
+		update_post_meta($page_id, '_av_web_studio_enabled', '1');
+		Av_Web_Studio_Renderer::save_visual_and_compile($page_id, $visual);
+		Av_Web_Studio_Renderer::save_edit_mode($page_id, 'visual');
 
 		$page = get_post($page_id);
 		return rest_ensure_response($this->format_page_detail($page));
@@ -1263,9 +1263,9 @@ class EPB_REST {
 			'slug'             => $page->post_name,
 			'modified'         => $page->post_modified,
 			'preview_url'      => get_preview_post_link($page),
-			'full_preview_url' => EPB_Preview::get_url($page->ID),
+			'full_preview_url' => Av_Web_Studio_Preview::get_url($page->ID),
 			'permalink'        => get_permalink($page->ID),
-			'epb_enabled'      => get_post_meta($page->ID, '_epb_enabled', true) === '1',
+			'av_web_studio_enabled'      => get_post_meta($page->ID, '_av_web_studio_enabled', true) === '1',
 		];
 	}
 
@@ -1284,15 +1284,15 @@ class EPB_REST {
 			'slug'             => $page->post_name,
 			'modified'         => $page->post_modified,
 			'preview_url'      => get_preview_post_link($page),
-			'full_preview_url' => EPB_Preview::get_url($page->ID),
+			'full_preview_url' => Av_Web_Studio_Preview::get_url($page->ID),
 			'permalink'        => get_permalink($page->ID),
-			'epb_enabled'      => get_post_meta($page->ID, '_epb_enabled', true) === '1',
-			'code'             => EPB_Renderer::get_page_code($page->ID),
-			'edit_mode'        => EPB_Renderer::get_edit_mode($page->ID),
-			'visual'           => EPB_Renderer::get_visual_document($page->ID),
-			'layout'           => EPB_Layout::format_page(EPB_Layout::get_page($page->ID)),
-			'seo'              => EPB_SEO::format(EPB_SEO::get_page($page->ID)),
-			'post_options'     => EPB_Post_Options::get($page->ID),
+			'av_web_studio_enabled'      => get_post_meta($page->ID, '_av_web_studio_enabled', true) === '1',
+			'code'             => Av_Web_Studio_Renderer::get_page_code($page->ID),
+			'edit_mode'        => Av_Web_Studio_Renderer::get_edit_mode($page->ID),
+			'visual'           => Av_Web_Studio_Renderer::get_visual_document($page->ID),
+			'layout'           => Av_Web_Studio_Layout::format_page(Av_Web_Studio_Layout::get_page($page->ID)),
+			'seo'              => Av_Web_Studio_SEO::format(Av_Web_Studio_SEO::get_page($page->ID)),
+			'post_options'     => Av_Web_Studio_Post_Options::get($page->ID),
 		];
 	}
 
@@ -1303,7 +1303,7 @@ class EPB_REST {
 	 */
 	public function get_svgs() {
 		return rest_ensure_response([
-			'svgs' => EPB_SVG::get_library(),
+			'svgs' => Av_Web_Studio_SVG::get_library(),
 		]);
 	}
 
@@ -1318,10 +1318,10 @@ class EPB_REST {
 		$file  = $files['file'] ?? null;
 
 		if (!$file || empty($file['name'])) {
-			return new WP_Error('epb_svg_missing', __('No SVG file uploaded.', 'wpvisualx'), [ 'status' => 400 ]);
+			return new WP_Error('av_web_studio_svg_missing', __('No SVG file uploaded.', 'av-web-studio'), [ 'status' => 400 ]);
 		}
 
-		$result = EPB_SVG::upload($file);
+		$result = Av_Web_Studio_SVG::upload($file);
 
 		if (is_wp_error($result)) {
 			return $result;
@@ -1338,7 +1338,7 @@ class EPB_REST {
 	 */
 	public function delete_svg($request) {
 		$id     = (int) $request['id'];
-		$result = EPB_SVG::delete($id);
+		$result = Av_Web_Studio_SVG::delete($id);
 
 		if (is_wp_error($result)) {
 			return $result;
@@ -1346,7 +1346,7 @@ class EPB_REST {
 
 		return rest_ensure_response([
 			'success' => true,
-			'message' => __('SVG deleted.', 'wpvisualx'),
+			'message' => __('SVG deleted.', 'av-web-studio'),
 		]);
 	}
 
@@ -1357,7 +1357,7 @@ class EPB_REST {
 	 */
 	public function get_tracking() {
 		return rest_ensure_response([
-			'tracking' => EPB_Tracking::format(),
+			'tracking' => Av_Web_Studio_Tracking::format(),
 		]);
 	}
 
@@ -1370,12 +1370,12 @@ class EPB_REST {
 	public function save_tracking($request) {
 		$params   = $request->get_json_params();
 		$tracking = isset($params['tracking']) && is_array($params['tracking']) ? $params['tracking'] : $params;
-		$saved    = EPB_Tracking::save($tracking);
+		$saved    = Av_Web_Studio_Tracking::save($tracking);
 
 		return rest_ensure_response([
 			'success'  => true,
 			'tracking' => $saved,
-			'message'  => __('Tracking settings saved.', 'wpvisualx'),
+			'message'  => __('Tracking settings saved.', 'av-web-studio'),
 		]);
 	}
 }

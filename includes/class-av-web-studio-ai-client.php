@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
  * Cloud AI goes through Core's provider-agnostic client so site owners
  * configure keys once under Settings → Connectors.
  */
-class EPB_AI_Client {
+class Av_Web_Studio_AI_Client {
 
 	/**
 	 * Whether Core exposes the AI Client API (WordPress 7.0+).
@@ -63,8 +63,8 @@ class EPB_AI_Client {
 	public static function generate_text($user, $system = '', $args = []) {
 		if (!self::core_available()) {
 			return new WP_Error(
-				'epb_ai_client_missing',
-				__('Cloud AI requires WordPress 7.0 or later with an AI provider configured under Settings → Connectors.', 'wpvisualx')
+				'av_web_studio_ai_client_missing',
+				__('Cloud AI requires WordPress 7.0 or later with an AI provider configured under Settings → Connectors.', 'av-web-studio')
 			);
 		}
 
@@ -87,9 +87,9 @@ class EPB_AI_Client {
 	 * @return array<int,string>
 	 */
 	public static function preferred_models($mode = 'auto') {
-		$settings = EPB_Settings::get_ai_settings();
-		$gemini   = !empty($settings['gemini_model']) ? (string) $settings['gemini_model'] : EPB_Settings::DEFAULT_GEMINI_MODEL;
-		$claude   = !empty($settings['claude_model']) ? (string) $settings['claude_model'] : EPB_Settings::DEFAULT_CLAUDE_MODEL;
+		$settings = Av_Web_Studio_Settings::get_ai_settings();
+		$gemini   = !empty($settings['gemini_model']) ? (string) $settings['gemini_model'] : Av_Web_Studio_Settings::DEFAULT_GEMINI_MODEL;
+		$claude   = !empty($settings['claude_model']) ? (string) $settings['claude_model'] : Av_Web_Studio_Settings::DEFAULT_CLAUDE_MODEL;
 
 		if ($mode === 'claude') {
 			return array_values(array_unique([ $claude, $gemini ]));
@@ -169,8 +169,8 @@ class EPB_AI_Client {
 
 		if (!is_object($builder) || !method_exists($builder, 'generate_text')) {
 			return new WP_Error(
-				'epb_ai_client_missing',
-				__('The WordPress AI Client is not available.', 'wpvisualx')
+				'av_web_studio_ai_client_missing',
+				__('The WordPress AI Client is not available.', 'av-web-studio')
 			);
 		}
 
@@ -205,8 +205,8 @@ class EPB_AI_Client {
 		$text = is_string($text) ? trim($text) : '';
 		if ($text === '') {
 			return new WP_Error(
-				'epb_ai_client_empty',
-				__('The AI provider returned an empty response.', 'wpvisualx')
+				'av_web_studio_ai_client_empty',
+				__('The AI provider returned an empty response.', 'av-web-studio')
 			);
 		}
 

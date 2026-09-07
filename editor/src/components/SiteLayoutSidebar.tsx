@@ -20,23 +20,23 @@ export function SiteLayoutSidebar({
   const regionLabel = activeScope === "global-footer" ? "footer" : "header";
 
   return (
-    <aside className="epb-side-panel">
-      <div className="epb-side-panel__header">
+    <aside className="av-web-studio-side-panel">
+      <div className="av-web-studio-side-panel__header">
         <h3>Site layout</h3>
         <p>Global header &amp; footer</p>
       </div>
 
       <button
         type="button"
-        className={`epb-file ${activeScope === "global-header" ? "epb-file--active" : ""}`}
+        className={`av-web-studio-file ${activeScope === "global-header" ? "av-web-studio-file--active" : ""}`}
         onClick={() => onSelectScope("global-header")}
       >
-        <span className="epb-file__icon">⬆</span>
-        <span className="epb-file__path">Global Header</span>
+        <span className="av-web-studio-file__icon">⬆</span>
+        <span className="av-web-studio-file__path">Global Header</span>
       </button>
 
       {activeScope === "global-header" && (
-        <label className="epb-layout-toggle">
+        <label className="av-web-studio-layout-toggle">
           <input
             type="checkbox"
             checked={globalLayout.header_enabled}
@@ -48,15 +48,15 @@ export function SiteLayoutSidebar({
 
       <button
         type="button"
-        className={`epb-file ${activeScope === "global-footer" ? "epb-file--active" : ""}`}
+        className={`av-web-studio-file ${activeScope === "global-footer" ? "av-web-studio-file--active" : ""}`}
         onClick={() => onSelectScope("global-footer")}
       >
-        <span className="epb-file__icon">⬇</span>
-        <span className="epb-file__path">Global Footer</span>
+        <span className="av-web-studio-file__icon">⬇</span>
+        <span className="av-web-studio-file__path">Global Footer</span>
       </button>
 
       {activeScope === "global-footer" && (
-        <label className="epb-layout-toggle">
+        <label className="av-web-studio-layout-toggle">
           <input
             type="checkbox"
             checked={globalLayout.footer_enabled}
@@ -66,13 +66,13 @@ export function SiteLayoutSidebar({
         </label>
       )}
 
-      <p className="epb-side-panel__hint">
+      <p className="av-web-studio-side-panel__hint">
         Visual builder is active for the global {regionLabel}. Use Desktop / Tablet / Mobile in the top bar for
         responsive editing.
       </p>
 
-      <div className="epb-side-panel__footer">
-        <button type="button" className="epb-btn epb-btn--primary epb-btn--block" disabled={isSaving} onClick={onSave}>
+      <div className="av-web-studio-side-panel__footer">
+        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary av-web-studio-btn--block" disabled={isSaving} onClick={onSave}>
           {isSaving ? "Saving…" : "Save site layout"}
         </button>
       </div>

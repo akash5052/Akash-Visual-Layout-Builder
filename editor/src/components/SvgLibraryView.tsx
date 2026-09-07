@@ -69,15 +69,15 @@ export function SvgLibraryView({ onNotice }: SvgLibraryViewProps) {
   };
 
   return (
-    <div className="epb-screen epb-screen--svg">
-      <header className="epb-screen__header">
+    <div className="av-web-studio-screen av-web-studio-screen--svg">
+      <header className="av-web-studio-screen__header">
         <div>
-          <h1 className="epb-screen__title">SVG Library</h1>
-          <p className="epb-screen__subtitle">
+          <h1 className="av-web-studio-screen__title">SVG Library</h1>
+          <p className="av-web-studio-screen__subtitle">
             Upload SVG files and copy snippets into your page HTML. SVG uploads are sanitized for safety.
           </p>
         </div>
-        <div className="epb-screen__actions">
+        <div className="av-web-studio-screen__actions">
           <input
             ref={fileInputRef}
             type="file"
@@ -88,7 +88,7 @@ export function SvgLibraryView({ onNotice }: SvgLibraryViewProps) {
           />
           <button
             type="button"
-            className="epb-btn epb-btn--primary"
+            className="av-web-studio-btn av-web-studio-btn--primary"
             disabled={uploading}
             onClick={() => fileInputRef.current?.click()}
           >
@@ -98,31 +98,31 @@ export function SvgLibraryView({ onNotice }: SvgLibraryViewProps) {
       </header>
 
       {loading ? (
-        <div className="epb-screen__empty">
-          <div className="epb-spinner" />
+        <div className="av-web-studio-screen__empty">
+          <div className="av-web-studio-spinner" />
         </div>
       ) : svgs.length === 0 ? (
-        <div className="epb-screen__empty">
+        <div className="av-web-studio-screen__empty">
           <p>No SVG files yet. Upload your first icon or illustration.</p>
         </div>
       ) : (
-        <div className="epb-svg-grid">
+        <div className="av-web-studio-svg-grid">
           {svgs.map((svg) => (
-            <article key={svg.id} className="epb-svg-card">
-              <div className="epb-svg-card__preview">
+            <article key={svg.id} className="av-web-studio-svg-card">
+              <div className="av-web-studio-svg-card__preview">
                 <img src={svg.url} alt={svg.title || svg.filename} />
               </div>
-              <div className="epb-svg-card__body">
-                <h3 className="epb-svg-card__title">{svg.title || svg.filename}</h3>
-                <p className="epb-svg-card__meta">{svg.filename}</p>
-                <div className="epb-svg-card__actions">
-                  <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm" onClick={() => copySnippet(svg.url, "img")}>
+              <div className="av-web-studio-svg-card__body">
+                <h3 className="av-web-studio-svg-card__title">{svg.title || svg.filename}</h3>
+                <p className="av-web-studio-svg-card__meta">{svg.filename}</p>
+                <div className="av-web-studio-svg-card__actions">
+                  <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={() => copySnippet(svg.url, "img")}>
                     Copy &lt;img&gt;
                   </button>
-                  <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm" onClick={() => copySnippet(svg.url, "url")}>
+                  <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={() => copySnippet(svg.url, "url")}>
                     Copy URL
                   </button>
-                  <button type="button" className="epb-btn epb-btn--ghost epb-btn--sm" onClick={() => handleDelete(svg.id)}>
+                  <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={() => handleDelete(svg.id)}>
                     Delete
                   </button>
                 </div>

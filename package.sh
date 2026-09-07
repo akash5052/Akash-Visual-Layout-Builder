@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-SLUG="wpvisualx"
+SLUG="av-web-studio"
 STAGE="$(mktemp -d)"
 cleanup() { rm -rf "$STAGE"; }
 trap cleanup EXIT
@@ -17,7 +17,7 @@ if [[ ! -f "$ROOT/assets/build/index.php" ]]; then
   printf '%s\n' '<?php' '// Silence is golden.' > "$ROOT/assets/build/index.php"
 fi
 
-echo "Creating WPVisualX zip..."
+echo "Creating AV Web Studio zip..."
 mkdir -p "$STAGE/$SLUG"
 rsync -a \
   --exclude 'editor/node_modules/' \

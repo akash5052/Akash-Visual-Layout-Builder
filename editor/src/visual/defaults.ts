@@ -18,7 +18,7 @@ import {
 import { DEFAULT_POSTS_DISPLAY, DEFAULT_POSTS_QUERY } from "./postsWidget";
 
 export function placeholderSrc(): string {
-  const base = typeof window !== "undefined" ? window.epbBuilderData?.pluginUrl || "" : "";
+  const base = typeof window !== "undefined" ? window.avWebStudioBuilderData?.pluginUrl || "" : "";
   return base ? `${base}assets/images/placeholder.svg` : "";
 }
 
@@ -381,7 +381,7 @@ export function createWidget(type: WidgetType): VisualWidget {
         type,
         ...LINK_DEFAULTS,
         title: "Ready to get started?",
-        text: "Build beautiful pages faster with WPVisualX.",
+        text: "Build beautiful pages faster with AV Web Studio.",
         buttonLabel: "Start Now",
         buttonUrl: "#",
         background: "#0f172a",

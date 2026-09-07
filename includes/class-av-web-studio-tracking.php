@@ -10,9 +10,9 @@ if (!defined('ABSPATH')) {
  * Only account IDs are stored. Official vendor scripts are enqueued;
  * users cannot paste arbitrary CSS, JavaScript, or PHP.
  */
-class EPB_Tracking {
+class Av_Web_Studio_Tracking {
 
-	const OPTION_KEY = 'epb_tracking';
+	const OPTION_KEY = 'av_web_studio_tracking';
 
 	public function __construct() {
 		add_action('wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 1);
@@ -39,54 +39,54 @@ class EPB_Tracking {
 			$ga_ids = array_values(array_filter([ $settings['ga4_id'], $settings['google_ads_id'] ]));
 		}
 
-		$js_file = EPB_PLUGIN_DIR . 'assets/js/tracking.js';
+		$js_file = AV_WEB_STUDIO_PLUGIN_DIR . 'assets/js/tracking.js';
 		wp_register_script(
-			'wpvisualx-tracking',
-			EPB_PLUGIN_URL . 'assets/js/tracking.js',
+			'av-web-studio-tracking',
+			AV_WEB_STUDIO_PLUGIN_URL . 'assets/js/tracking.js',
 			[],
-			file_exists($js_file) ? filemtime($js_file) : EPB_VERSION,
+			file_exists($js_file) ? filemtime($js_file) : AV_WEB_STUDIO_VERSION,
 			false
 		);
 		wp_localize_script(
-			'wpvisualx-tracking',
-			'epbTracking',
+			'av-web-studio-tracking',
+			'avWebStudioTracking',
 			[
 				'gtmId'   => $gtm_id,
 				'gaIds'   => $ga_ids,
 				'pixelId' => $pixel,
 			]
 		);
-		wp_enqueue_script('wpvisualx-tracking');
+		wp_enqueue_script('av-web-studio-tracking');
 
 		if ($gtm_id !== '') {
 			wp_enqueue_script(
-				'wpvisualx-gtm',
+				'av-web-studio-gtm',
 				'https://www.googletagmanager.com/gtm.js?id=' . rawurlencode($gtm_id),
-				[ 'wpvisualx-tracking' ],
-				EPB_VERSION,
+				[ 'av-web-studio-tracking' ],
+				AV_WEB_STUDIO_VERSION,
 				false
 			);
-			wp_script_add_data('wpvisualx-gtm', 'async', true);
+			wp_script_add_data('av-web-studio-gtm', 'async', true);
 		} elseif (!empty($ga_ids)) {
 			wp_enqueue_script(
-				'wpvisualx-google-gtag',
+				'av-web-studio-google-gtag',
 				'https://www.googletagmanager.com/gtag/js?id=' . rawurlencode($ga_ids[0]),
-				[ 'wpvisualx-tracking' ],
-				EPB_VERSION,
+				[ 'av-web-studio-tracking' ],
+				AV_WEB_STUDIO_VERSION,
 				false
 			);
-			wp_script_add_data('wpvisualx-google-gtag', 'async', true);
+			wp_script_add_data('av-web-studio-google-gtag', 'async', true);
 		}
 
 		if ($pixel !== '') {
 			wp_enqueue_script(
-				'wpvisualx-meta-pixel',
+				'av-web-studio-meta-pixel',
 				'https://connect.facebook.net/en_US/fbevents.js',
-				[ 'wpvisualx-tracking' ],
-				EPB_VERSION,
+				[ 'av-web-studio-tracking' ],
+				AV_WEB_STUDIO_VERSION,
 				false
 			);
-			wp_script_add_data('wpvisualx-meta-pixel', 'async', true);
+			wp_script_add_data('av-web-studio-meta-pixel', 'async', true);
 		}
 	}
 
@@ -117,7 +117,9 @@ class EPB_Tracking {
 			$stored = [];
 		}
 
-		return wp_parse_args($stored, self::defaults());
+		$settings = wp_parse_args($stored, self::defaults());
+
+		return $settings;
 	}
 
 	/**
@@ -130,7 +132,7 @@ class EPB_Tracking {
 		$current = self::get();
 		$scope   = sanitize_key($input['scope'] ?? $current['scope']);
 
-		if (!in_array($scope, [ 'entire_site', 'epb_only' ], true)) {
+		if (!in_array($scope, [ 'entire_site', 'av_web_studio_only' ], true)) {
 			$scope = 'entire_site';
 		}
 
@@ -209,9 +211,9 @@ class EPB_Tracking {
 			return false;
 		}
 
-		if ($settings['scope'] === 'epb_only') {
-			$post_id = is_singular(EPB_Post_Types::types()) ? get_queried_object_id() : 0;
-			if (!$post_id || get_post_meta($post_id, EPB_Renderer::META_ENABLED, true) !== '1') {
+		if ($settings['scope'] === 'av_web_studio_only') {
+			$post_id = is_singular(Av_Web_Studio_Post_Types::types()) ? get_queried_object_id() : 0;
+			if (!$post_id || get_post_meta($post_id, Av_Web_Studio_Renderer::META_ENABLED, true) !== '1') {
 				return false;
 			}
 		}

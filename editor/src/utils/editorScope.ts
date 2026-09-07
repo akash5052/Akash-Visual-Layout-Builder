@@ -1,7 +1,7 @@
 import type {
   CodeFileType,
   EditorScope,
-  EpbPopup,
+  StudioPopup,
   GlobalLayout,
   LayoutPart,
   PageCode,
@@ -14,7 +14,7 @@ export function getScopePart(
   code: PageCode,
   globalLayout: GlobalLayout,
   pageLayout: PageLayout,
-  popup: EpbPopup | null
+  popup: StudioPopup | null
 ): LayoutPart | PageCode {
   if (scope === "popup" && popup) {
     return { html: popup.html, css: popup.css, js: popup.js };
@@ -40,7 +40,7 @@ export function getScopeValue(
   code: PageCode,
   globalLayout: GlobalLayout,
   pageLayout: PageLayout,
-  popup: EpbPopup | null
+  popup: StudioPopup | null
 ): string {
   const part = getScopePart(scope, code, globalLayout, pageLayout, popup);
   return part[file] ?? "";
@@ -53,8 +53,8 @@ export function applyScopeValue(
   code: PageCode,
   globalLayout: GlobalLayout,
   pageLayout: PageLayout,
-  popup: EpbPopup | null
-): { code: PageCode; globalLayout: GlobalLayout; pageLayout: PageLayout; popup: EpbPopup | null } {
+  popup: StudioPopup | null
+): { code: PageCode; globalLayout: GlobalLayout; pageLayout: PageLayout; popup: StudioPopup | null } {
   if (scope === "popup" && popup) {
     return {
       code,

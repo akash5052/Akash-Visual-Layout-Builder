@@ -1,14 +1,14 @@
-import type { EpbPopup, PageSummary } from "../types";
+import type { StudioPopup, PageSummary } from "../types";
 import { PopupConditions } from "./PopupConditions";
 
 interface PopupsSidebarProps {
-  popups: EpbPopup[];
+  popups: StudioPopup[];
   activePopupId: string | null;
   pages: PageSummary[];
   onSelectPopup: (id: string) => void;
   onCreatePopup: () => void;
   onDeletePopup: (id: string) => void;
-  onPopupChange: (popup: EpbPopup) => void;
+  onPopupChange: (popup: StudioPopup) => void;
 }
 
 export function PopupsSidebar({
@@ -23,11 +23,11 @@ export function PopupsSidebar({
   const activePopup = popups.find((p) => p.id === activePopupId) ?? null;
 
   return (
-    <aside className="epb-side-panel">
-      <div className="epb-side-panel__header">
-        <div className="epb-filetree__label-row">
+    <aside className="av-web-studio-side-panel">
+      <div className="av-web-studio-side-panel__header">
+        <div className="av-web-studio-filetree__label-row">
           <h3>Popups</h3>
-          <button type="button" className="epb-filetree__add" onClick={onCreatePopup} title="New popup">
+          <button type="button" className="av-web-studio-filetree__add" onClick={onCreatePopup} title="New popup">
             +
           </button>
         </div>
@@ -35,22 +35,22 @@ export function PopupsSidebar({
       </div>
 
       {popups.length === 0 ? (
-        <p className="epb-filetree__empty">No popups yet</p>
+        <p className="av-web-studio-filetree__empty">No popups yet</p>
       ) : (
-        <div className="epb-popup-list">
+        <div className="av-web-studio-popup-list">
           {popups.map((popup) => (
             <div
               key={popup.id}
-              className={`epb-popup-item ${activePopupId === popup.id ? "epb-popup-item--active" : ""}`}
+              className={`av-web-studio-popup-item ${activePopupId === popup.id ? "av-web-studio-popup-item--active" : ""}`}
             >
-              <button type="button" className="epb-popup-item__btn" onClick={() => onSelectPopup(popup.id)}>
-                <span className="epb-file__icon">◉</span>
-                <span className="epb-popup-item__name">{popup.name}</span>
-                {!popup.enabled && <span className="epb-popup-item__badge">off</span>}
+              <button type="button" className="av-web-studio-popup-item__btn" onClick={() => onSelectPopup(popup.id)}>
+                <span className="av-web-studio-file__icon">◉</span>
+                <span className="av-web-studio-popup-item__name">{popup.name}</span>
+                {!popup.enabled && <span className="av-web-studio-popup-item__badge">off</span>}
               </button>
               <button
                 type="button"
-                className="epb-popup-item__delete"
+                className="av-web-studio-popup-item__delete"
                 onClick={() => onDeletePopup(popup.id)}
                 title="Move popup to trash"
               >
@@ -63,7 +63,7 @@ export function PopupsSidebar({
 
       {activePopup && (
         <>
-          <label className="epb-layout-mode">
+          <label className="av-web-studio-layout-mode">
             <span>Popup name</span>
             <input
               type="text"
@@ -71,7 +71,7 @@ export function PopupsSidebar({
               onChange={(e) => onPopupChange({ ...activePopup, name: e.target.value })}
             />
           </label>
-          <label className="epb-layout-toggle">
+          <label className="av-web-studio-layout-toggle">
             <input
               type="checkbox"
               checked={activePopup.enabled}

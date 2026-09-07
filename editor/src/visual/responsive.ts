@@ -166,7 +166,7 @@ function appendResponsiveRules(
 }
 
 function visitWidget(widget: VisualWidget, rules: string[]) {
-  const selector = `[data-epb-id="${widget.id}"]`;
+  const selector = `[data-av-web-studio-id="${widget.id}"]`;
   if (widget.styleOverrides?.tablet) {
     appendResponsiveRules(rules, selector, "tablet", widgetStyleToCssProperties(widget.styleOverrides.tablet));
   }
@@ -176,7 +176,7 @@ function visitWidget(widget: VisualWidget, rules: string[]) {
 }
 
 function visitColumn(column: VisualColumn, rules: string[]) {
-  const selector = `[data-epb-id="${column.id}"]`;
+  const selector = `[data-av-web-studio-id="${column.id}"]`;
   if (column.settingsOverrides?.tablet) {
     appendResponsiveRules(
       rules,
@@ -197,7 +197,7 @@ function visitColumn(column: VisualColumn, rules: string[]) {
 }
 
 function visitInnerSection(section: InnerSection, rules: string[]) {
-  const selector = `[data-epb-id="${section.id}"]`;
+  const selector = `[data-av-web-studio-id="${section.id}"]`;
   if (section.settingsOverrides?.tablet) {
     appendResponsiveRules(
       rules,
@@ -226,7 +226,7 @@ function visitChild(child: ColumnChild, rules: string[]) {
 }
 
 function visitSection(section: VisualSection, rules: string[]) {
-  const selector = `[data-epb-id="${section.id}"]`;
+  const selector = `[data-av-web-studio-id="${section.id}"]`;
   if (section.settingsOverrides?.tablet) {
     appendResponsiveRules(
       rules,

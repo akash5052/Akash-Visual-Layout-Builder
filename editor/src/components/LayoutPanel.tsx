@@ -62,23 +62,23 @@ export function LayoutPanel({
   const canEditFooter = pageLayout.footer_mode !== "none";
 
   return (
-    <aside className="epb-side-panel epb-layout-sidebar">
-      <div className="epb-side-panel__header">
+    <aside className="av-web-studio-side-panel av-web-studio-layout-sidebar">
+      <div className="av-web-studio-side-panel__header">
         <h3>Page layout</h3>
         <p>Page header &amp; footer</p>
       </div>
 
       <button
         type="button"
-        className={`epb-file ${layoutCodePart === "page-header" ? "epb-file--active" : ""}`}
+        className={`av-web-studio-file ${layoutCodePart === "page-header" ? "av-web-studio-file--active" : ""}`}
         disabled={!canEditHeader}
         onClick={() => onLayoutCodePartChange("page-header")}
       >
-        <span className="epb-file__icon">⬆</span>
-        <span className="epb-file__path">Page Header</span>
+        <span className="av-web-studio-file__icon">⬆</span>
+        <span className="av-web-studio-file__path">Page Header</span>
       </button>
 
-      <label className="epb-layout-mode epb-layout-mode--sidebar">
+      <label className="av-web-studio-layout-mode av-web-studio-layout-mode--sidebar">
         <span>Header mode</span>
         <select
           value={pageLayout.header_mode}
@@ -91,19 +91,19 @@ export function LayoutPanel({
           ))}
         </select>
       </label>
-      <p className="epb-side-panel__hint">{regionHint("header", pageLayout.header_mode, globalLayout.header_enabled)}</p>
+      <p className="av-web-studio-side-panel__hint">{regionHint("header", pageLayout.header_mode, globalLayout.header_enabled)}</p>
 
       <button
         type="button"
-        className={`epb-file ${layoutCodePart === "page-footer" ? "epb-file--active" : ""}`}
+        className={`av-web-studio-file ${layoutCodePart === "page-footer" ? "av-web-studio-file--active" : ""}`}
         disabled={!canEditFooter}
         onClick={() => onLayoutCodePartChange("page-footer")}
       >
-        <span className="epb-file__icon">⬇</span>
-        <span className="epb-file__path">Page Footer</span>
+        <span className="av-web-studio-file__icon">⬇</span>
+        <span className="av-web-studio-file__path">Page Footer</span>
       </button>
 
-      <label className="epb-layout-mode epb-layout-mode--sidebar">
+      <label className="av-web-studio-layout-mode av-web-studio-layout-mode--sidebar">
         <span>Footer mode</span>
         <select
           value={pageLayout.footer_mode}
@@ -116,14 +116,14 @@ export function LayoutPanel({
           ))}
         </select>
       </label>
-      <p className="epb-side-panel__hint">{regionHint("footer", pageLayout.footer_mode, globalLayout.footer_enabled)}</p>
+      <p className="av-web-studio-side-panel__hint">{regionHint("footer", pageLayout.footer_mode, globalLayout.footer_enabled)}</p>
 
-      <p className="epb-side-panel__hint">
+      <p className="av-web-studio-side-panel__hint">
         Visual builder is active for the page {regionLabel}. Use Desktop / Tablet / Mobile for responsive editing.
       </p>
 
-      <div className="epb-side-panel__footer">
-        <button type="button" className="epb-btn epb-btn--primary epb-btn--block" disabled={isSaving} onClick={onSave}>
+      <div className="av-web-studio-side-panel__footer">
+        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary av-web-studio-btn--block" disabled={isSaving} onClick={onSave}>
           {isSaving ? "Saving…" : "Save layout"}
         </button>
       </div>

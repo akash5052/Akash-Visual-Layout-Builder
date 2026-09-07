@@ -70,37 +70,37 @@ export function DashboardView({ activeView, pageCount, postCount, popupCount }: 
   const counts = { pageCount, postCount, popupCount };
 
   return (
-    <div className="epb-screen epb-screen--dashboard">
-      <header className="epb-screen__header">
+    <div className="av-web-studio-screen av-web-studio-screen--dashboard">
+      <header className="av-web-studio-screen__header">
         <div>
-          <h1 className="epb-screen__title">Welcome back</h1>
-          <p className="epb-screen__subtitle">
+          <h1 className="av-web-studio-screen__title">Welcome back</h1>
+          <p className="av-web-studio-screen__subtitle">
             Choose a section below. Pages and posts each have their own workspace.
-            <span className="epb-screen__version"> v{window.epbBuilderData.version}</span>
+            <span className="av-web-studio-screen__version"> v{window.avWebStudioBuilderData.version}</span>
           </p>
         </div>
       </header>
 
-      <div className="epb-dashboard-grid">
+      <div className="av-web-studio-dashboard-grid">
         {CARDS.map((card) => {
           const count = card.countKey ? counts[card.countKey] : null;
-          const href = window.epbBuilderData.adminUrls[card.hrefKey as keyof typeof window.epbBuilderData.adminUrls];
+          const href = window.avWebStudioBuilderData.adminUrls[card.hrefKey as keyof typeof window.avWebStudioBuilderData.adminUrls];
           if (!href) return null;
           return (
             <a
               key={card.hrefKey}
               href={href}
-              className="epb-dashboard-card"
+              className="av-web-studio-dashboard-card"
               onClick={(event) => {
                 if (card.view === activeView) {
                   event.preventDefault();
                 }
               }}
             >
-              <h2 className="epb-dashboard-card__title">{card.title}</h2>
-              {count !== null && <span className="epb-dashboard-card__count">{count}</span>}
-              <p className="epb-dashboard-card__text">{card.description}</p>
-              <span className="epb-dashboard-card__cta">Open →</span>
+              <h2 className="av-web-studio-dashboard-card__title">{card.title}</h2>
+              {count !== null && <span className="av-web-studio-dashboard-card__count">{count}</span>}
+              <p className="av-web-studio-dashboard-card__text">{card.description}</p>
+              <span className="av-web-studio-dashboard-card__cta">Open →</span>
             </a>
           );
         })}

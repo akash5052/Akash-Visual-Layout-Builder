@@ -41,7 +41,7 @@ export function BuilderContextMenu({ x, y, items, onClose }: BuilderContextMenuP
 
   return createPortal(
     <div
-      className="epb-context-menu"
+      className="av-web-studio-context-menu"
       style={{ top, left }}
       role="menu"
       onContextMenu={(e) => e.preventDefault()}
@@ -49,13 +49,13 @@ export function BuilderContextMenu({ x, y, items, onClose }: BuilderContextMenuP
     >
       {items.map((item) =>
         item.separator ? (
-          <div key={item.id} className="epb-context-menu__sep" role="separator" />
+          <div key={item.id} className="av-web-studio-context-menu__sep" role="separator" />
         ) : (
           <button
             key={item.id}
             type="button"
             role="menuitem"
-            className={`epb-context-menu__item${item.danger ? " epb-context-menu__item--danger" : ""}`}
+            className={`av-web-studio-context-menu__item${item.danger ? " av-web-studio-context-menu__item--danger" : ""}`}
             disabled={item.disabled}
             onClick={() => {
               item.onClick?.();
@@ -63,7 +63,7 @@ export function BuilderContextMenu({ x, y, items, onClose }: BuilderContextMenuP
             }}
           >
             <span>{item.label}</span>
-            {item.shortcut ? <span className="epb-context-menu__shortcut">{item.shortcut}</span> : null}
+            {item.shortcut ? <span className="av-web-studio-context-menu__shortcut">{item.shortcut}</span> : null}
           </button>
         )
       )}

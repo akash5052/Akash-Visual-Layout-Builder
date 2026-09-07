@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Industry-aware copy, features, and design tokens for relevant AI output.
  */
-class EPB_AI_Profiles {
+class Av_Web_Studio_AI_Profiles {
 
 	/**
 	 * Detect industry from prompt / page title.
@@ -96,11 +96,11 @@ class EPB_AI_Profiles {
 	 * @return string
 	 */
 	public static function brand($page_title, $topic, $industry = '') {
-		if ($page_title && ! EPB_AI_Intent::is_bad_title($page_title)) {
+		if ($page_title && ! Av_Web_Studio_AI_Intent::is_bad_title($page_title)) {
 			return esc_html(trim($page_title));
 		}
 		$t = trim($topic);
-		if ($t && ! EPB_AI_Intent::is_bad_title($t) && strlen($t) < 50) {
+		if ($t && ! Av_Web_Studio_AI_Intent::is_bad_title($t) && strlen($t) < 50) {
 			return esc_html(ucwords($t));
 		}
 		$labels = [

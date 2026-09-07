@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
  * Front-end preview URLs. Preview uses the normal WordPress request so styles
  * and scripts are enqueued instead of printing a standalone HTML document.
  */
-class EPB_Preview {
+class Av_Web_Studio_Preview {
 
 	public function __construct() {
 		add_action('template_redirect', [ $this, 'maybe_redirect_legacy' ], 0);
@@ -81,36 +81,36 @@ class EPB_Preview {
 	}
 
 	/**
-	 * Redirect legacy ?epb_preview= URLs to the WordPress preview/permalink.
+	 * Redirect legacy ?av_web_studio_preview= URLs to the WordPress preview/permalink.
 	 */
 	public function maybe_redirect_legacy() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if (!isset($_GET['epb_preview'])) {
+		if (!isset($_GET['av_web_studio_preview'])) {
 			return;
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$page_id = absint(wp_unslash($_GET['epb_preview']));
+		$page_id = absint(wp_unslash($_GET['av_web_studio_preview']));
 
 		if ($page_id < 1) {
-			wp_die(esc_html__('Invalid preview.', 'wpvisualx'), '', [ 'response' => 400 ]);
+			wp_die(esc_html__('Invalid preview.', 'av-web-studio'), '', [ 'response' => 400 ]);
 		}
 
 		$page = get_post($page_id);
 
-		if (!$page || !EPB_Post_Types::is_supported($page)) {
-			wp_die(esc_html__('Content not found.', 'wpvisualx'), '', [ 'response' => 404 ]);
+		if (!$page || !Av_Web_Studio_Post_Types::is_supported($page)) {
+			wp_die(esc_html__('Content not found.', 'av-web-studio'), '', [ 'response' => 404 ]);
 		}
 
-		if (!EPB_Post_Types::user_can_edit($page_id)) {
-			wp_die(esc_html__('You do not have permission to preview this content.', 'wpvisualx'), '', [ 'response' => 403 ]);
+		if (!Av_Web_Studio_Post_Types::user_can_edit($page_id)) {
+			wp_die(esc_html__('You do not have permission to preview this content.', 'av-web-studio'), '', [ 'response' => 403 ]);
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$nonce = isset($_GET['epb_nonce']) ? sanitize_text_field(wp_unslash($_GET['epb_nonce'])) : '';
+		$nonce = isset($_GET['av_web_studio_nonce']) ? sanitize_text_field(wp_unslash($_GET['av_web_studio_nonce'])) : '';
 
-		if (!wp_verify_nonce($nonce, 'epb_preview_' . $page_id)) {
-			wp_die(esc_html__('Preview link expired. Open Full Page preview again from the editor.', 'wpvisualx'), '', [ 'response' => 403 ]);
+		if (!wp_verify_nonce($nonce, 'av_web_studio_preview_' . $page_id)) {
+			wp_die(esc_html__('Preview link expired. Open Full Page preview again from the editor.', 'av-web-studio'), '', [ 'response' => 403 ]);
 		}
 
 		wp_safe_redirect(self::get_url($page_id));

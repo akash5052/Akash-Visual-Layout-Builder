@@ -32,7 +32,7 @@ import { TemplatesView } from "./components/TemplatesView";
 import { TopBar } from "./components/TopBar";
 import { useEditorTheme } from "./hooks/useEditorTheme";
 import type { DevicePreview } from "./devicePreview";
-import type { AiChatTurn, AppView, ContentTab, PageCode, PageDetail, PageSummary, ContentPostType, EditorScope, GlobalLayout, PageLayout, EpbPopup, PageSeo, PostOptions } from "./types";
+import type { AiChatTurn, AppView, ContentTab, PageCode, PageDetail, PageSummary, ContentPostType, EditorScope, GlobalLayout, PageLayout, StudioPopup, PageSeo, PostOptions } from "./types";
 import { VisualBuilder } from "./components/VisualBuilder";
 import { compileVisualDocument, mergeVisualCompile } from "./visual/compile";
 import { createEmptyDocument, documentFromHtml, normalizeDocument } from "./visual/defaults";
@@ -46,7 +46,7 @@ import { replaceAdminQuery } from "./utils/adminNav";
 
 export default function App() {
   const { theme, setTheme, resolved } = useEditorTheme();
-  const appView: AppView = window.epbBuilderData?.initialView || "dashboard";
+  const appView: AppView = window.avWebStudioBuilderData?.initialView || "dashboard";
   const [pickerPages, setPickerPages] = useState<PageSummary[]>([]);
   const [contentStats, setContentStats] = useState({ pages: 0, posts: 0, popups: 0 });
   const [pageId, setPageId] = useState<number | null>(null);
@@ -65,7 +65,7 @@ export default function App() {
   const [pageSeo, setPageSeo] = useState<PageSeo>(EMPTY_PAGE_SEO);
   const [postOptions, setPostOptions] = useState<PostOptions>(EMPTY_POST_OPTIONS);
   const [permalink, setPermalink] = useState("");
-  const [popups, setPopups] = useState<EpbPopup[]>([]);
+  const [popups, setPopups] = useState<StudioPopup[]>([]);
   const [activePopupId, setActivePopupId] = useState<string | null>(null);
   const [editorScope, setEditorScope] = useState<EditorScope>("content");
   const [contentTab, setContentTab] = useState<ContentTab>("builder");
@@ -108,8 +108,8 @@ export default function App() {
   const titleRef = useRef("");
   const globalSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const popupSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const popupsRef = useRef<EpbPopup[]>([]);
-  const activePopupRef = useRef<EpbPopup | null>(null);
+  const popupsRef = useRef<StudioPopup[]>([]);
+  const activePopupRef = useRef<StudioPopup | null>(null);
   const pageLoadSeqRef = useRef(0);
   const pageIdRef = useRef<number | null>(null);
   /** Serialize page saves so an older in-flight draft cannot overwrite newer visual edits. */
@@ -309,7 +309,7 @@ export default function App() {
       const expectedType: ContentPostType = appView === "posts" ? "post" : "page";
       if (page.post_type !== expectedType) {
         const base =
-          page.post_type === "post" ? window.epbBuilderData.adminUrls.posts : window.epbBuilderData.adminUrls.pages;
+          page.post_type === "post" ? window.avWebStudioBuilderData.adminUrls.posts : window.avWebStudioBuilderData.adminUrls.pages;
         window.location.href = `${base}&page_id=${page.id}`;
         return;
       }
@@ -351,7 +351,7 @@ export default function App() {
         const normalizedGlobal = normalizeGlobalLayout(layout);
         setGlobalLayout(normalizedGlobal);
         globalLayoutRef.current = normalizedGlobal;
-        const initialId = Math.max(0, Number(window.epbBuilderData?.initialPageId) || 0);
+        const initialId = Math.max(0, Number(window.avWebStudioBuilderData?.initialPageId) || 0);
         if (initialId > 0 && (appView === "pages" || appView === "posts")) {
           await loadPage(initialId);
         } else {
@@ -484,7 +484,7 @@ export default function App() {
     saveNowRef.current = saveNow;
   }, [saveNow]);
 
-  const syncPopupFromVisual = useCallback((popup: EpbPopup): EpbPopup => {
+  const syncPopupFromVisual = useCallback((popup: StudioPopup): StudioPopup => {
     const merged = {
       ...mergeVisualCompile(
         { html: popup.html, css: popup.css, js: popup.js },
@@ -503,7 +503,7 @@ export default function App() {
   }, []);
 
   const savePopupNow = useCallback(
-    async (popup: EpbPopup) => {
+    async (popup: StudioPopup) => {
       if (popupSaveTimer.current) {
         clearTimeout(popupSaveTimer.current);
         popupSaveTimer.current = null;
@@ -528,7 +528,7 @@ export default function App() {
   );
 
   const autoSavePopup = useCallback(
-    (popup: EpbPopup) => {
+    (popup: StudioPopup) => {
       if (popupSaveTimer.current) clearTimeout(popupSaveTimer.current);
       popupSaveTimer.current = setTimeout(async () => {
         try {
@@ -616,7 +616,7 @@ export default function App() {
   );
 
   const handlePopupChange = useCallback(
-    (updated: EpbPopup) => {
+    (updated: StudioPopup) => {
       setPopups((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
       activePopupRef.current = updated;
       autoSavePopup(updated);
@@ -1034,7 +1034,7 @@ export default function App() {
         replaceAdminQuery({ page_id: String(item.id) });
         return;
       }
-      const editBase = type === "post" ? window.epbBuilderData.adminUrls.posts : window.epbBuilderData.adminUrls.pages;
+      const editBase = type === "post" ? window.avWebStudioBuilderData.adminUrls.posts : window.avWebStudioBuilderData.adminUrls.pages;
       window.location.href = `${editBase}&page_id=${item.id}`;
     } catch (err) {
       showNotice("error", err instanceof Error ? err.message : `Failed to create ${label}`);
@@ -1048,8 +1048,8 @@ export default function App() {
   const handleOpenPopup = handleSelectPopup;
 
   const handleAiGenerate = async (prompt: string) => {
-    if (!window.epbBuilderData?.aiReady) {
-      showNotice("error", "Enable AI in WPVisualX → Settings.");
+    if (!window.avWebStudioBuilderData?.aiReady) {
+      showNotice("error", "Enable AI in AV Web Studio → Settings.");
       return;
     }
     if (!pageId) {
@@ -1199,7 +1199,7 @@ export default function App() {
   const editorFocusMode = editingContent || editingPopup || appView === "site-layout";
 
   const handleBackFromSiteLayout = useCallback(() => {
-    window.location.href = window.epbBuilderData.adminUrls.dashboard;
+    window.location.href = window.avWebStudioBuilderData.adminUrls.dashboard;
   }, []);
 
   const topBarVariant = editingContent ? "content-edit" : appView === "site-layout" || appView === "popups" ? "workspace" : "minimal";
@@ -1214,20 +1214,20 @@ export default function App() {
             ? "Settings"
             : undefined;
 
-  if (isLoading && (appView === "pages" || appView === "posts") && Number(window.epbBuilderData?.initialPageId) > 0) {
+  if (isLoading && (appView === "pages" || appView === "posts") && Number(window.avWebStudioBuilderData?.initialPageId) > 0) {
     return (
-      <div className="epb-loading epb-fade-in" data-theme={resolved}>
-        <div className="epb-loading__spinner-wrap">
-          <div className="epb-spinner" />
+      <div className="av-web-studio-loading av-web-studio-fade-in" data-theme={resolved}>
+        <div className="av-web-studio-loading__spinner-wrap">
+          <div className="av-web-studio-spinner" />
         </div>
-        <p className="epb-loading__text">Loading WPVisualX...</p>
+        <p className="av-web-studio-loading__text">Loading AV Web Studio...</p>
       </div>
     );
   }
 
   return (
     <div
-      className={`epb-editor epb-app-layout epb-fade-in${editorFocusMode ? " epb-app-layout--focus" : ""}`}
+      className={`av-web-studio-editor av-web-studio-app-layout av-web-studio-fade-in${editorFocusMode ? " av-web-studio-app-layout--focus" : ""}`}
       data-theme={resolved}
     >
       {!editorFocusMode && (
@@ -1240,7 +1240,7 @@ export default function App() {
         />
       )}
 
-      <div className="epb-editor__main">
+      <div className="av-web-studio-editor__main">
         <TopBar
           variant={topBarVariant}
           pageTitle={pageTitle}
@@ -1276,7 +1276,7 @@ export default function App() {
         />
 
         {notice && (
-          <div key={notice.message} className={`epb-notice epb-notice--${notice.type}`}>
+          <div key={notice.message} className={`av-web-studio-notice av-web-studio-notice--${notice.type}`}>
             {notice.message}
           </div>
         )}
@@ -1306,10 +1306,10 @@ export default function App() {
               settingsLabel={postType === "post" ? "Post Options" : "Page Options"}
               onChange={handleContentTabChange}
             />
-            <div key={pageId} className={`epb-workspace epb-slide-up${isPageLoading ? " epb-workspace--loading" : ""}`}>
+            <div key={pageId} className={`av-web-studio-workspace av-web-studio-slide-up${isPageLoading ? " av-web-studio-workspace--loading" : ""}`}>
               {isPageLoading && (
-                <div className="epb-workspace__loading" aria-live="polite">
-                  <div className="epb-spinner epb-spinner--sm" />
+                <div className="av-web-studio-workspace__loading" aria-live="polite">
+                  <div className="av-web-studio-spinner av-web-studio-spinner--sm" />
                   <span>Loading page…</span>
                 </div>
               )}
@@ -1404,10 +1404,10 @@ export default function App() {
               )}
             </div>
             <AiPanel
-              enabled={!!window.epbBuilderData?.canUseAi && contentTab === "builder"}
-              aiReady={!!window.epbBuilderData?.aiReady}
-              settingsUrl={window.epbBuilderData?.adminUrls?.settings}
-              defaultOpen={!!window.epbBuilderData?.pluginSettings?.ai_panel_default_open}
+              enabled={!!window.avWebStudioBuilderData?.canUseAi && contentTab === "builder"}
+              aiReady={!!window.avWebStudioBuilderData?.aiReady}
+              settingsUrl={window.avWebStudioBuilderData?.adminUrls?.settings}
+              defaultOpen={!!window.avWebStudioBuilderData?.pluginSettings?.ai_panel_default_open}
               theme={resolved}
               history={aiChatHistory}
               activeTurnId={activeAiTurnId}
@@ -1422,7 +1422,7 @@ export default function App() {
         )}
 
         {appView === "site-layout" && (
-          <div className="epb-workspace epb-slide-up">
+          <div className="av-web-studio-workspace av-web-studio-slide-up">
             <SiteLayoutSidebar
               globalLayout={globalLayout}
               activeScope={
@@ -1481,7 +1481,7 @@ export default function App() {
         )}
 
         {appView === "popups" && activePopupId && (
-          <div className="epb-workspace epb-slide-up">
+          <div className="av-web-studio-workspace av-web-studio-slide-up">
             <PopupsSidebar
               popups={popups}
               activePopupId={activePopupId}
@@ -1510,7 +1510,7 @@ export default function App() {
                     js: "",
                   };
                   popupVisualSourceHtmlRef.current = merged.html;
-                  const nextPopup: EpbPopup = {
+                  const nextPopup: StudioPopup = {
                     ...activePopup,
                     ...merged,
                     edit_mode: "visual",

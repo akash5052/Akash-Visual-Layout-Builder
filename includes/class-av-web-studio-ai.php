@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class EPB_AI {
+class Av_Web_Studio_AI {
 
 	const SYSTEM_PROMPT = "You are an expert web developer assistant for a WordPress page builder. The user manages a page with separate HTML, CSS, and vanilla JavaScript files.
 
@@ -46,10 +46,10 @@ Example replace (edit):
 	 * @return array
 	 */
 	public static function generate($prompt, $settings = [], $context = null, $page_title = '') {
-		$settings = wp_parse_args($settings, EPB_Settings::defaults());
+		$settings = wp_parse_args($settings, Av_Web_Studio_Settings::defaults());
 		$errors   = [];
 		$context  = self::normalize_context($context);
-		$intent   = EPB_AI_Intent::parse($prompt, $context);
+		$intent   = Av_Web_Studio_AI_Intent::parse($prompt, $context);
 		$intent   = self::prevent_duplicate_sections($prompt, $context, $intent);
 		$intent['page_title'] = $page_title;
 
@@ -59,13 +59,13 @@ Example replace (edit):
 		}
 
 		// Image requests: Claude suggests relevant scenes, then we render them.
-		$raw = EPB_Settings::get_raw();
+		$raw = Av_Web_Studio_Settings::get_raw();
 		if ($intent['type'] === 'images' && $context && !empty($raw['images_enabled'])) {
-			$claude = EPB_AI_Claude::enhance_page_images($prompt, $context, $page_title, $intent);
+			$claude = Av_Web_Studio_AI_Claude::enhance_page_images($prompt, $context, $page_title, $intent);
 			if ($claude !== null) {
 				return $claude;
 			}
-			$local = EPB_AI_Editor::apply($prompt, $context, $intent);
+			$local = Av_Web_Studio_AI_Editor::apply($prompt, $context, $intent);
 			if ($local !== null && ( $local['action'] ?? '' ) !== 'none') {
 				return $local;
 			}
@@ -73,7 +73,7 @@ Example replace (edit):
 
 		$enhanced_prompt = self::build_context_prompt($prompt, $context, $intent, $page_title);
 
-		if (EPB_Settings::has_cloud_ai()) {
+		if (Av_Web_Studio_Settings::has_cloud_ai()) {
 			$cloud = self::try_cloud_ai($enhanced_prompt, $prompt, $context, $intent, $errors, $page_title);
 			if ($cloud !== null) {
 				return $cloud;
@@ -82,7 +82,7 @@ Example replace (edit):
 
 		// Handle edit / animate / images locally when cloud is unavailable.
 		if ($context && ! in_array($intent['type'], ['add', 'seo_content'], true)) {
-			$local = EPB_AI_Editor::apply($prompt, $context, $intent);
+			$local = Av_Web_Studio_AI_Editor::apply($prompt, $context, $intent);
 			if ($local !== null) {
 				if (!empty($errors)) {
 					$local['message'] .= ' (Cloud AI unavailable.)';
@@ -92,10 +92,10 @@ Example replace (edit):
 		}
 
 		// Full page from smart templates (no cloud AI).
-		if ($intent['type'] === 'seo_content' || EPB_AI_Intent::is_whole_page_prompt($prompt, $context)) {
-			$topic = $intent['topic'] ?: EPB_AI_Intent::extract_content_topic($prompt) ?: EPB_AI_Intent::extract_topic($prompt) ?: $page_title ?: 'professional services';
-			$code  = EPB_AI_Content::generate_full_page($topic, $page_title);
-			$code  = EPB_AI_Claude::align_with_suggestions($code, $topic, $page_title, $prompt);
+		if ($intent['type'] === 'seo_content' || Av_Web_Studio_AI_Intent::is_whole_page_prompt($prompt, $context)) {
+			$topic = $intent['topic'] ?: Av_Web_Studio_AI_Intent::extract_content_topic($prompt) ?: Av_Web_Studio_AI_Intent::extract_topic($prompt) ?: $page_title ?: 'professional services';
+			$code  = Av_Web_Studio_AI_Content::generate_full_page($topic, $page_title);
+			$code  = Av_Web_Studio_AI_Claude::align_with_suggestions($code, $topic, $page_title, $prompt);
 			$msg   = 'Industry-tailored page with images suggested by Claude.';
 			if (!empty($errors)) {
 				$msg .= ' (Cloud AI unavailable.)';
@@ -105,7 +105,7 @@ Example replace (edit):
 
 		// Smart template fallback.
 		if ($context && $intent['type'] !== 'add') {
-			$local = EPB_AI_Editor::apply($prompt, $context, $intent);
+			$local = Av_Web_Studio_AI_Editor::apply($prompt, $context, $intent);
 			if ($local !== null) {
 				if (!empty($errors)) {
 					$local['message'] .= ' (Cloud AI unavailable.)';
@@ -114,7 +114,7 @@ Example replace (edit):
 			}
 		}
 
-		$code = EPB_AI_Templates::generate($prompt, $context);
+		$code = Av_Web_Studio_AI_Templates::generate($prompt, $context);
 		$msg  = $intent['type'] === 'add' ? 'Modern section added with industry-matched content and images.' : 'Page updated.';
 		if (!empty($errors)) {
 			$msg .= ' (Cloud AI unavailable.)';
@@ -146,19 +146,19 @@ Example replace (edit):
 	 * @return array|null
 	 */
 	private static function try_cloud_ai($enhanced_prompt, $prompt, $context, $intent, &$errors, $page_title = '') {
-		$result = EPB_AI_Client::generate_text(
+		$result = Av_Web_Studio_AI_Client::generate_text(
 			$enhanced_prompt,
 			self::SYSTEM_PROMPT,
 			[
 				'temperature'  => 0.35,
 				'max_tokens'   => 8192,
 				'timeout'      => 120,
-				'models'       => EPB_AI_Client::preferred_models('auto'),
-				'json_schema'  => EPB_AI_Client::page_response_schema(),
+				'models'       => Av_Web_Studio_AI_Client::preferred_models('auto'),
+				'json_schema'  => Av_Web_Studio_AI_Client::page_response_schema(),
 			]
 		);
 		if (!is_wp_error($result)) {
-			return self::wrap_from_text($result, 'ai', __('Generated with the WordPress AI Client.', 'wpvisualx'), $prompt, $context, $intent, $page_title);
+			return self::wrap_from_text($result, 'ai', __('Generated with the WordPress AI Client.', 'av-web-studio'), $prompt, $context, $intent, $page_title);
 		}
 		$errors[] = $result->get_error_message();
 		return null;
@@ -174,7 +174,7 @@ Example replace (edit):
 		if (!is_array($context)) {
 			return null;
 		}
-		return EPB_Renderer::normalize_code($context);
+		return Av_Web_Studio_Renderer::normalize_code($context);
 	}
 
 	/**
@@ -187,7 +187,7 @@ Example replace (edit):
 	 * @return string
 	 */
 	private static function build_context_prompt($prompt, $context, $intent, $page_title = '') {
-		$parts = [ EPB_AI_Intent::instruction_for_ai($intent) ];
+		$parts = [ Av_Web_Studio_AI_Intent::instruction_for_ai($intent) ];
 
 		if ($page_title !== '') {
 			$parts[] = 'Page title: ' . $page_title;
@@ -195,7 +195,7 @@ Example replace (edit):
 
 		$section_html    = null;
 		$section_heading = '';
-		$section_type    = $intent['section_type'] ?? EPB_AI_Intent::parse_section_type(strtolower($prompt));
+		$section_type    = $intent['section_type'] ?? Av_Web_Studio_AI_Intent::parse_section_type(strtolower($prompt));
 
 		if ($context && !empty($context['html'])) {
 			$target = $intent['target'] ?? null;
@@ -203,20 +203,20 @@ Example replace (edit):
 				$target = 'type:' . $section_type;
 			}
 			if ($target && $target !== 'all') {
-				$section_html = EPB_AI_Editor::get_section($context['html'], $target ?: 'last');
+				$section_html = Av_Web_Studio_AI_Editor::get_section($context['html'], $target ?: 'last');
 				if ($section_html) {
-					$section_heading = EPB_AI_Editor::extract_heading($section_html);
+					$section_heading = Av_Web_Studio_AI_Editor::extract_heading($section_html);
 				}
 			}
 		}
 
 		$topic = $intent['topic']
-			?: EPB_AI_Intent::extract_image_topic($prompt)
-			?: EPB_AI_Intent::extract_content_topic($prompt)
-			?: EPB_AI_Intent::extract_topic($prompt)
+			?: Av_Web_Studio_AI_Intent::extract_image_topic($prompt)
+			?: Av_Web_Studio_AI_Intent::extract_content_topic($prompt)
+			?: Av_Web_Studio_AI_Intent::extract_topic($prompt)
 			?: $page_title;
 
-		$resolved = EPB_AI_Images::resolve_topic(
+		$resolved = Av_Web_Studio_AI_Images::resolve_topic(
 			$topic,
 			$page_title,
 			$section_html,
@@ -225,7 +225,7 @@ Example replace (edit):
 
 		// Always attach a concrete image brief so the model cannot invent unrelated stock IDs.
 		if (in_array($intent['type'], [ 'images', 'seo_content', 'add', 'edit' ], true)) {
-			$parts[] = EPB_AI_Images::image_brief_for_ai(
+			$parts[] = Av_Web_Studio_AI_Images::image_brief_for_ai(
 				$resolved,
 				$page_title,
 				$section_type ?: '',
@@ -235,7 +235,7 @@ Example replace (edit):
 
 		if ($section_html && $section_heading) {
 			$parts[] = "Target section heading: {$section_heading}";
-			$body = EPB_AI_Images::extract_section_text($section_html);
+			$body = Av_Web_Studio_AI_Images::extract_section_text($section_html);
 			if ($body !== '') {
 				$parts[] = "Target section copy (for image relevance):\n" . $body;
 			}
@@ -265,8 +265,8 @@ Example replace (edit):
 			return $intent;
 		}
 
-		$type = $intent['section_type'] ?? EPB_AI_Intent::parse_section_type(strtolower($prompt));
-		if (!$type || !EPB_AI_Templates::page_has_section_type($context['html'], $type)) {
+		$type = $intent['section_type'] ?? Av_Web_Studio_AI_Intent::parse_section_type(strtolower($prompt));
+		if (!$type || !Av_Web_Studio_AI_Templates::page_has_section_type($context['html'], $type)) {
 			return $intent;
 		}
 
@@ -400,17 +400,17 @@ Example replace (edit):
 
 		// Force stock/AI images to match page — prefer Claude suggestions when available.
 		$topic = ( $intent['topic'] ?? '' )
-			?: EPB_AI_Intent::extract_image_topic($prompt)
-			?: EPB_AI_Intent::extract_content_topic($prompt)
-			?: EPB_AI_Intent::extract_topic($prompt)
+			?: Av_Web_Studio_AI_Intent::extract_image_topic($prompt)
+			?: Av_Web_Studio_AI_Intent::extract_content_topic($prompt)
+			?: Av_Web_Studio_AI_Intent::extract_topic($prompt)
 			?: $page_title
 			?: ( $intent['page_title'] ?? '' );
 
 		$title = $page_title ?: ( $intent['page_title'] ?? '' );
 		// Swap leftover remote stock URLs for bundled local images.
-		$parsed['code'] = EPB_AI_Images::align_code_images($parsed['code'], $topic, $title);
+		$parsed['code'] = Av_Web_Studio_AI_Images::align_code_images($parsed['code'], $topic, $title);
 		if (in_array($intent['type'] ?? '', [ 'images', 'seo_content', 'add' ], true)) {
-			$parsed['code'] = EPB_AI_Claude::align_with_suggestions($parsed['code'], $topic, $title, $prompt);
+			$parsed['code'] = Av_Web_Studio_AI_Claude::align_with_suggestions($parsed['code'], $topic, $title, $prompt);
 		}
 
 		return self::wrap($parsed['code'], $source, $message, $action);
@@ -495,7 +495,7 @@ Example replace (edit):
 
 		$prompt = $fallback_prompt ?: $response;
 		return [
-			'code'   => EPB_AI_Templates::generate($prompt),
+			'code'   => Av_Web_Studio_AI_Templates::generate($prompt),
 			'source' => 'smart',
 		];
 	}

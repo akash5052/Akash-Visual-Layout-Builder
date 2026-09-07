@@ -1,4 +1,4 @@
-.epb-popup {
+.av-web-studio-popup {
   position: fixed;
   inset: 0;
   z-index: 999999;
@@ -12,20 +12,20 @@
   transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
-.epb-popup--visible {
+.av-web-studio-popup--visible {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
 
-.epb-popup__overlay {
+.av-web-studio-popup__overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(2px);
 }
 
-.epb-popup__dialog {
+.av-web-studio-popup__dialog {
   position: relative;
   z-index: 1;
   width: min(520px, 100%);
@@ -38,11 +38,11 @@
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.epb-popup--visible .epb-popup__dialog {
+.av-web-studio-popup--visible .av-web-studio-popup__dialog {
   transform: translateY(0) scale(1);
 }
 
-.epb-popup__close {
+.av-web-studio-popup__close {
   position: absolute;
   top: 10px;
   right: 12px;
@@ -58,25 +58,25 @@
   cursor: pointer;
 }
 
-.epb-popup__close:hover {
+.av-web-studio-popup__close:hover {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.epb-popup__content {
+.av-web-studio-popup__content {
   padding: 28px 24px 24px;
 }
 
-.epb-popup-inner {
+.av-web-studio-popup-inner {
   text-align: center;
   padding: 8px;
 }
 
-.epb-popup-inner h2 {
+.av-web-studio-popup-inner h2 {
   margin: 0 0 12px;
   font-size: 1.5rem;
 }
 
-.epb-popup-cta {
+.av-web-studio-popup-cta {
   margin-top: 16px;
   padding: 10px 20px;
   border: none;
@@ -87,6 +87,6 @@
   cursor: pointer;
 }
 
-body.epb-popup-open {
+body.av-web-studio-popup-open {
   overflow: hidden;
 }

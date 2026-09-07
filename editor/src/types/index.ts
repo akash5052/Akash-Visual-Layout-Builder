@@ -28,7 +28,7 @@ export interface PaginatedResult<T> {
   per_page: number;
 }
 
-export interface EpbPopup {
+export interface StudioPopup {
   id: string;
   name: string;
   enabled: boolean;
@@ -58,7 +58,7 @@ export interface EpbPopup {
   modified: string;
 }
 
-export const EMPTY_POPUP: EpbPopup = {
+export const EMPTY_POPUP: StudioPopup = {
   id: "",
   name: "New Popup",
   enabled: false,
@@ -196,7 +196,7 @@ export interface PluginAdminSettings {
   available_claude_models?: PluginModelOption[];
 }
 
-export type TrackingScope = "entire_site" | "epb_only";
+export type TrackingScope = "entire_site" | "av_web_studio_only";
 
 export interface TrackingSettings {
   enabled: boolean;
@@ -236,7 +236,7 @@ export interface PageSummary {
   preview_url: string;
   full_preview_url: string;
   permalink: string;
-  epb_enabled: boolean;
+  av_web_studio_enabled: boolean;
 }
 
 export interface PageDetail extends PageSummary {
@@ -260,7 +260,7 @@ export interface ParentPageOption {
   title: string;
 }
 
-export type PageTemplate = "default" | "epb-full-width" | "epb-canvas" | "theme";
+export type PageTemplate = "default" | "av-web-studio-full-width" | "av-web-studio-canvas" | "theme";
 
 export interface PostOptions {
   excerpt: string;
@@ -286,7 +286,7 @@ export const EMPTY_POST_OPTIONS: PostOptions = {
   category_ids: [],
   tag_names: [],
   parent_id: 0,
-  page_template: "epb-full-width",
+  page_template: "av-web-studio-full-width",
   comment_status: "closed",
   hide_title: true,
   menu_order: 0,
@@ -310,7 +310,7 @@ export interface PostMetaLists {
   parent_pages: ParentPageOption[];
 }
 
-export interface EpbData {
+export interface AvWebStudioData {
   restUrl: string;
   nonce: string;
   ajaxUrl: string;
@@ -346,7 +346,7 @@ export interface EpbData {
 
 declare global {
   interface Window {
-    epbBuilderData: EpbData;
+    avWebStudioBuilderData: AvWebStudioData;
     wp?: {
       media: (args: Record<string, unknown>) => {
         on: (event: string, callback: () => void) => void;
