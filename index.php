@@ -2,7 +2,7 @@
 /**
  * Silence is golden.
  *
- * @package AV Web Studio
+ * @package Akash Visual Layout Builder
  */
 
 // Prevent direct access.

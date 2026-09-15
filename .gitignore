@@ -1,0 +1,5 @@
+*.zip
+.DS_Store
+editor/dist/
+editor/node_modules/
+local-config.php

@@ -70,37 +70,37 @@ export function DashboardView({ activeView, pageCount, postCount, popupCount }: 
   const counts = { pageCount, postCount, popupCount };
 
   return (
-    <div className="av-web-studio-screen av-web-studio-screen--dashboard">
-      <header className="av-web-studio-screen__header">
+    <div className="akash-visual-layout-builder-screen akash-visual-layout-builder-screen--dashboard">
+      <header className="akash-visual-layout-builder-screen__header">
         <div>
-          <h1 className="av-web-studio-screen__title">Welcome back</h1>
-          <p className="av-web-studio-screen__subtitle">
+          <h1 className="akash-visual-layout-builder-screen__title">Welcome back</h1>
+          <p className="akash-visual-layout-builder-screen__subtitle">
             Choose a section below. Pages and posts each have their own workspace.
-            <span className="av-web-studio-screen__version"> v{window.avWebStudioBuilderData.version}</span>
+            <span className="akash-visual-layout-builder-screen__version"> v{window.akashVisualLayoutBuilderData.version}</span>
           </p>
         </div>
       </header>
 
-      <div className="av-web-studio-dashboard-grid">
+      <div className="akash-visual-layout-builder-dashboard-grid">
         {CARDS.map((card) => {
           const count = card.countKey ? counts[card.countKey] : null;
-          const href = window.avWebStudioBuilderData.adminUrls[card.hrefKey as keyof typeof window.avWebStudioBuilderData.adminUrls];
+          const href = window.akashVisualLayoutBuilderData.adminUrls[card.hrefKey as keyof typeof window.akashVisualLayoutBuilderData.adminUrls];
           if (!href) return null;
           return (
             <a
               key={card.hrefKey}
               href={href}
-              className="av-web-studio-dashboard-card"
+              className="akash-visual-layout-builder-dashboard-card"
               onClick={(event) => {
                 if (card.view === activeView) {
                   event.preventDefault();
                 }
               }}
             >
-              <h2 className="av-web-studio-dashboard-card__title">{card.title}</h2>
-              {count !== null && <span className="av-web-studio-dashboard-card__count">{count}</span>}
-              <p className="av-web-studio-dashboard-card__text">{card.description}</p>
-              <span className="av-web-studio-dashboard-card__cta">Open →</span>
+              <h2 className="akash-visual-layout-builder-dashboard-card__title">{card.title}</h2>
+              {count !== null && <span className="akash-visual-layout-builder-dashboard-card__count">{count}</span>}
+              <p className="akash-visual-layout-builder-dashboard-card__text">{card.description}</p>
+              <span className="akash-visual-layout-builder-dashboard-card__cta">Open →</span>
             </a>
           );
         })}

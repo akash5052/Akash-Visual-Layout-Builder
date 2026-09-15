@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Sanitize visual-builder HTML and generated CSS. Users cannot paste CSS/JS.
  */
-class Av_Web_Studio_Output {
+class Akash_Visual_Layout_Builder_Output {
 
 	/**
 	 * Allowed HTML for compiled visual markup.
@@ -156,7 +156,7 @@ class Av_Web_Studio_Output {
 			return '';
 		}
 		if (self::is_remote_stock_src($url)) {
-			return AV_WEB_STUDIO_PLUGIN_URL . 'assets/images/placeholder.svg';
+			return AKASH_VISUAL_LAYOUT_BUILDER_PLUGIN_URL . 'assets/images/placeholder.svg';
 		}
 		return $url;
 	}
@@ -176,7 +176,7 @@ class Av_Web_Studio_Output {
 			];
 		}
 
-		$compiled = Av_Web_Studio_Visual_Compile::compile(self::scrub_visual($doc));
+		$compiled = Akash_Visual_Layout_Builder_Visual_Compile::compile(self::scrub_visual($doc));
 
 		return [
 			'html' => self::kses_html($compiled['html'] ?? ''),

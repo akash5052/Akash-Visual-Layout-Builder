@@ -16,12 +16,12 @@ import type {
 function getHeaders(): HeadersInit {
   return {
     "Content-Type": "application/json",
-    "X-WP-Nonce": window.avWebStudioBuilderData.nonce,
+    "X-WP-Nonce": window.akashVisualLayoutBuilderData.nonce,
   };
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${window.avWebStudioBuilderData.restUrl}${endpoint}`, {
+  const response = await fetch(`${window.akashVisualLayoutBuilderData.restUrl}${endpoint}`, {
     ...options,
     headers: { ...getHeaders(), ...options.headers },
   });
@@ -264,8 +264,8 @@ export async function generateAiCode(
 ): Promise<{ success: boolean; code: PageCode; source: string; message: string; action: "append" | "replace" | "none" }> {
   // Secure admin-ajax.php proxy (nonce-verified, admin-only) — relays to Gemini server-side.
   const form = new FormData();
-  form.append("action", "av_web_studio_ai_generate");
-  form.append("nonce", window.avWebStudioBuilderData.aiNonce);
+  form.append("action", "akash_visual_layout_builder_ai_generate");
+  form.append("nonce", window.akashVisualLayoutBuilderData.aiNonce);
   form.append("prompt", prompt);
   if (title) form.append("title", title);
   if (code) {
@@ -274,7 +274,7 @@ export async function generateAiCode(
     form.append("code[js]", "");
   }
 
-  const response = await fetch(window.avWebStudioBuilderData.ajaxUrl, { method: "POST", body: form });
+  const response = await fetch(window.akashVisualLayoutBuilderData.ajaxUrl, { method: "POST", body: form });
   const payload = await response.json();
 
   if (!response.ok || !payload?.success) {
@@ -325,9 +325,9 @@ export async function uploadTemplate(
   const form = new FormData();
   form.append("file", file);
 
-  const response = await fetch(`${window.avWebStudioBuilderData.restUrl}templates/upload`, {
+  const response = await fetch(`${window.akashVisualLayoutBuilderData.restUrl}templates/upload`, {
     method: "POST",
-    headers: { "X-WP-Nonce": window.avWebStudioBuilderData.nonce },
+    headers: { "X-WP-Nonce": window.akashVisualLayoutBuilderData.nonce },
     body: form,
   });
 
@@ -363,9 +363,9 @@ export async function uploadSvg(file: File): Promise<{ success: boolean; svg: im
   const form = new FormData();
   form.append("file", file);
 
-  const response = await fetch(`${window.avWebStudioBuilderData.restUrl}svg`, {
+  const response = await fetch(`${window.akashVisualLayoutBuilderData.restUrl}svg`, {
     method: "POST",
-    headers: { "X-WP-Nonce": window.avWebStudioBuilderData.nonce },
+    headers: { "X-WP-Nonce": window.akashVisualLayoutBuilderData.nonce },
     body: form,
   });
 
@@ -396,7 +396,7 @@ export function saveTracking(tracking: import("../types").TrackingSettings): Pro
 }
 
 export function getContentEditUrl(postType: ContentPostType, id: number): string {
-  const base = postType === "post" ? window.avWebStudioBuilderData.adminUrls.posts : window.avWebStudioBuilderData.adminUrls.pages;
+  const base = postType === "post" ? window.akashVisualLayoutBuilderData.adminUrls.posts : window.akashVisualLayoutBuilderData.adminUrls.pages;
   return `${base}&page_id=${id}`;
 }
 

@@ -46,7 +46,7 @@ import { replaceAdminQuery } from "./utils/adminNav";
 
 export default function App() {
   const { theme, setTheme, resolved } = useEditorTheme();
-  const appView: AppView = window.avWebStudioBuilderData?.initialView || "dashboard";
+  const appView: AppView = window.akashVisualLayoutBuilderData?.initialView || "dashboard";
   const [pickerPages, setPickerPages] = useState<PageSummary[]>([]);
   const [contentStats, setContentStats] = useState({ pages: 0, posts: 0, popups: 0 });
   const [pageId, setPageId] = useState<number | null>(null);
@@ -309,7 +309,7 @@ export default function App() {
       const expectedType: ContentPostType = appView === "posts" ? "post" : "page";
       if (page.post_type !== expectedType) {
         const base =
-          page.post_type === "post" ? window.avWebStudioBuilderData.adminUrls.posts : window.avWebStudioBuilderData.adminUrls.pages;
+          page.post_type === "post" ? window.akashVisualLayoutBuilderData.adminUrls.posts : window.akashVisualLayoutBuilderData.adminUrls.pages;
         window.location.href = `${base}&page_id=${page.id}`;
         return;
       }
@@ -351,7 +351,7 @@ export default function App() {
         const normalizedGlobal = normalizeGlobalLayout(layout);
         setGlobalLayout(normalizedGlobal);
         globalLayoutRef.current = normalizedGlobal;
-        const initialId = Math.max(0, Number(window.avWebStudioBuilderData?.initialPageId) || 0);
+        const initialId = Math.max(0, Number(window.akashVisualLayoutBuilderData?.initialPageId) || 0);
         if (initialId > 0 && (appView === "pages" || appView === "posts")) {
           await loadPage(initialId);
         } else {
@@ -1034,7 +1034,7 @@ export default function App() {
         replaceAdminQuery({ page_id: String(item.id) });
         return;
       }
-      const editBase = type === "post" ? window.avWebStudioBuilderData.adminUrls.posts : window.avWebStudioBuilderData.adminUrls.pages;
+      const editBase = type === "post" ? window.akashVisualLayoutBuilderData.adminUrls.posts : window.akashVisualLayoutBuilderData.adminUrls.pages;
       window.location.href = `${editBase}&page_id=${item.id}`;
     } catch (err) {
       showNotice("error", err instanceof Error ? err.message : `Failed to create ${label}`);
@@ -1048,8 +1048,8 @@ export default function App() {
   const handleOpenPopup = handleSelectPopup;
 
   const handleAiGenerate = async (prompt: string) => {
-    if (!window.avWebStudioBuilderData?.aiReady) {
-      showNotice("error", "Enable AI in AV Web Studio → Settings.");
+    if (!window.akashVisualLayoutBuilderData?.aiReady) {
+      showNotice("error", "Enable AI in Akash Visual Layout Builder → Settings.");
       return;
     }
     if (!pageId) {
@@ -1199,7 +1199,7 @@ export default function App() {
   const editorFocusMode = editingContent || editingPopup || appView === "site-layout";
 
   const handleBackFromSiteLayout = useCallback(() => {
-    window.location.href = window.avWebStudioBuilderData.adminUrls.dashboard;
+    window.location.href = window.akashVisualLayoutBuilderData.adminUrls.dashboard;
   }, []);
 
   const topBarVariant = editingContent ? "content-edit" : appView === "site-layout" || appView === "popups" ? "workspace" : "minimal";
@@ -1214,20 +1214,20 @@ export default function App() {
             ? "Settings"
             : undefined;
 
-  if (isLoading && (appView === "pages" || appView === "posts") && Number(window.avWebStudioBuilderData?.initialPageId) > 0) {
+  if (isLoading && (appView === "pages" || appView === "posts") && Number(window.akashVisualLayoutBuilderData?.initialPageId) > 0) {
     return (
-      <div className="av-web-studio-loading av-web-studio-fade-in" data-theme={resolved}>
-        <div className="av-web-studio-loading__spinner-wrap">
-          <div className="av-web-studio-spinner" />
+      <div className="akash-visual-layout-builder-loading akash-visual-layout-builder-fade-in" data-theme={resolved}>
+        <div className="akash-visual-layout-builder-loading__spinner-wrap">
+          <div className="akash-visual-layout-builder-spinner" />
         </div>
-        <p className="av-web-studio-loading__text">Loading AV Web Studio...</p>
+        <p className="akash-visual-layout-builder-loading__text">Loading Akash Visual Layout Builder...</p>
       </div>
     );
   }
 
   return (
     <div
-      className={`av-web-studio-editor av-web-studio-app-layout av-web-studio-fade-in${editorFocusMode ? " av-web-studio-app-layout--focus" : ""}`}
+      className={`akash-visual-layout-builder-editor akash-visual-layout-builder-app-layout akash-visual-layout-builder-fade-in${editorFocusMode ? " akash-visual-layout-builder-app-layout--focus" : ""}`}
       data-theme={resolved}
     >
       {!editorFocusMode && (
@@ -1240,7 +1240,7 @@ export default function App() {
         />
       )}
 
-      <div className="av-web-studio-editor__main">
+      <div className="akash-visual-layout-builder-editor__main">
         <TopBar
           variant={topBarVariant}
           pageTitle={pageTitle}
@@ -1276,7 +1276,7 @@ export default function App() {
         />
 
         {notice && (
-          <div key={notice.message} className={`av-web-studio-notice av-web-studio-notice--${notice.type}`}>
+          <div key={notice.message} className={`akash-visual-layout-builder-notice akash-visual-layout-builder-notice--${notice.type}`}>
             {notice.message}
           </div>
         )}
@@ -1306,10 +1306,10 @@ export default function App() {
               settingsLabel={postType === "post" ? "Post Options" : "Page Options"}
               onChange={handleContentTabChange}
             />
-            <div key={pageId} className={`av-web-studio-workspace av-web-studio-slide-up${isPageLoading ? " av-web-studio-workspace--loading" : ""}`}>
+            <div key={pageId} className={`akash-visual-layout-builder-workspace akash-visual-layout-builder-slide-up${isPageLoading ? " akash-visual-layout-builder-workspace--loading" : ""}`}>
               {isPageLoading && (
-                <div className="av-web-studio-workspace__loading" aria-live="polite">
-                  <div className="av-web-studio-spinner av-web-studio-spinner--sm" />
+                <div className="akash-visual-layout-builder-workspace__loading" aria-live="polite">
+                  <div className="akash-visual-layout-builder-spinner akash-visual-layout-builder-spinner--sm" />
                   <span>Loading page…</span>
                 </div>
               )}
@@ -1404,10 +1404,10 @@ export default function App() {
               )}
             </div>
             <AiPanel
-              enabled={!!window.avWebStudioBuilderData?.canUseAi && contentTab === "builder"}
-              aiReady={!!window.avWebStudioBuilderData?.aiReady}
-              settingsUrl={window.avWebStudioBuilderData?.adminUrls?.settings}
-              defaultOpen={!!window.avWebStudioBuilderData?.pluginSettings?.ai_panel_default_open}
+              enabled={!!window.akashVisualLayoutBuilderData?.canUseAi && contentTab === "builder"}
+              aiReady={!!window.akashVisualLayoutBuilderData?.aiReady}
+              settingsUrl={window.akashVisualLayoutBuilderData?.adminUrls?.settings}
+              defaultOpen={!!window.akashVisualLayoutBuilderData?.pluginSettings?.ai_panel_default_open}
               theme={resolved}
               history={aiChatHistory}
               activeTurnId={activeAiTurnId}
@@ -1422,7 +1422,7 @@ export default function App() {
         )}
 
         {appView === "site-layout" && (
-          <div className="av-web-studio-workspace av-web-studio-slide-up">
+          <div className="akash-visual-layout-builder-workspace akash-visual-layout-builder-slide-up">
             <SiteLayoutSidebar
               globalLayout={globalLayout}
               activeScope={
@@ -1481,7 +1481,7 @@ export default function App() {
         )}
 
         {appView === "popups" && activePopupId && (
-          <div className="av-web-studio-workspace av-web-studio-slide-up">
+          <div className="akash-visual-layout-builder-workspace akash-visual-layout-builder-slide-up">
             <PopupsSidebar
               popups={popups}
               activePopupId={activePopupId}

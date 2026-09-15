@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Industry-aware copy, features, and design tokens for relevant AI output.
  */
-class Av_Web_Studio_AI_Profiles {
+class Akash_Visual_Layout_Builder_AI_Profiles {
 
 	/**
 	 * Detect industry from prompt / page title.
@@ -96,11 +96,11 @@ class Av_Web_Studio_AI_Profiles {
 	 * @return string
 	 */
 	public static function brand($page_title, $topic, $industry = '') {
-		if ($page_title && ! Av_Web_Studio_AI_Intent::is_bad_title($page_title)) {
+		if ($page_title && ! Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($page_title)) {
 			return esc_html(trim($page_title));
 		}
 		$t = trim($topic);
-		if ($t && ! Av_Web_Studio_AI_Intent::is_bad_title($t) && strlen($t) < 50) {
+		if ($t && ! Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($t) && strlen($t) < 50) {
 			return esc_html(ucwords($t));
 		}
 		$labels = [

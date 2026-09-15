@@ -196,7 +196,7 @@ export interface PluginAdminSettings {
   available_claude_models?: PluginModelOption[];
 }
 
-export type TrackingScope = "entire_site" | "av_web_studio_only";
+export type TrackingScope = "entire_site" | "akash_visual_layout_builder_only";
 
 export interface TrackingSettings {
   enabled: boolean;
@@ -236,7 +236,7 @@ export interface PageSummary {
   preview_url: string;
   full_preview_url: string;
   permalink: string;
-  av_web_studio_enabled: boolean;
+  akash_visual_layout_builder_enabled: boolean;
 }
 
 export interface PageDetail extends PageSummary {
@@ -260,7 +260,7 @@ export interface ParentPageOption {
   title: string;
 }
 
-export type PageTemplate = "default" | "av-web-studio-full-width" | "av-web-studio-canvas" | "theme";
+export type PageTemplate = "default" | "akash-visual-layout-builder-full-width" | "akash-visual-layout-builder-canvas" | "theme";
 
 export interface PostOptions {
   excerpt: string;
@@ -286,7 +286,7 @@ export const EMPTY_POST_OPTIONS: PostOptions = {
   category_ids: [],
   tag_names: [],
   parent_id: 0,
-  page_template: "av-web-studio-full-width",
+  page_template: "akash-visual-layout-builder-full-width",
   comment_status: "closed",
   hide_title: true,
   menu_order: 0,
@@ -346,7 +346,7 @@ export interface AvWebStudioData {
 
 declare global {
   interface Window {
-    avWebStudioBuilderData: AvWebStudioData;
+    akashVisualLayoutBuilderData: AvWebStudioData;
     wp?: {
       media: (args: Record<string, unknown>) => {
         on: (event: string, callback: () => void) => void;

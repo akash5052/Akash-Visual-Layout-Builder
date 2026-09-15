@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Parses user intent from natural language AI prompts.
  */
-class Av_Web_Studio_AI_Intent {
+class Akash_Visual_Layout_Builder_AI_Intent {
 
 	/**
 	 * Parse prompt into structured intent.
@@ -196,19 +196,19 @@ class Av_Web_Studio_AI_Intent {
 
 	public static function extract_image_topic($prompt) {
 		if (preg_match('/(?:image|photo|picture|photos|images)\s+(?:of|for|showing|about|featuring)\s+(.+?)(?:\.|$)/i', $prompt, $m)) {
-			$t = Av_Web_Studio_AI_Images::sanitize_topic(trim($m[1]));
+			$t = Akash_Visual_Layout_Builder_AI_Images::sanitize_topic(trim($m[1]));
 			if ($t !== '') {
 				return $t;
 			}
 		}
 		if (preg_match('/(?:add|generate|insert|put|place)\s+(?:an?\s+)?images?\s+(?:of|for|to|into|on)\s+(.+?)(?:\.|$)/i', $prompt, $m)) {
-			$t = Av_Web_Studio_AI_Images::sanitize_topic(trim($m[1]));
+			$t = Akash_Visual_Layout_Builder_AI_Images::sanitize_topic(trim($m[1]));
 			if ($t !== '') {
 				return $t;
 			}
 		}
 		$topic = self::extract_topic($prompt);
-		$topic = Av_Web_Studio_AI_Images::sanitize_topic($topic);
+		$topic = Akash_Visual_Layout_Builder_AI_Images::sanitize_topic($topic);
 		// Empty / generic — let resolve_topic use page/section context instead of forcing "business".
 		return $topic;
 	}
@@ -326,7 +326,7 @@ class Av_Web_Studio_AI_Intent {
 		if (preg_match('/^<h1[^>]*>[\s\S]*?<\/h1>\s*$/i', $html)) {
 			return true;
 		}
-		if (preg_match('/^<div[^>]*class="[^"]*av-web-studio-page[^"]*"[^>]*>\s*<h1[^>]*>[\s\S]*?<\/h1>\s*<\/div>\s*$/i', $html)) {
+		if (preg_match('/^<div[^>]*class="[^"]*akash-visual-layout-builder-page[^"]*"[^>]*>\s*<h1[^>]*>[\s\S]*?<\/h1>\s*<\/div>\s*$/i', $html)) {
 			return true;
 		}
 		return strlen(wp_strip_all_tags($html)) < 80;
@@ -364,12 +364,12 @@ class Av_Web_Studio_AI_Intent {
 					. 'Return action "replace" with FULL updated page. '
 					. 'Every image must match the detected industry and section heading/copy. '
 					. 'Label conceptually as images suggested by Claude. '
-					. Av_Web_Studio_AI_Images::ai_image_instructions();
+					. Akash_Visual_Layout_Builder_AI_Images::ai_image_instructions();
 			case 'seo_content':
 				return 'INTENT: GENERATE a COMPLETE landing page from this single prompt — hero, features, about, testimonials, FAQ, and CTA. '
 					. 'Use action "replace" with FULL page html/css/js. Semantic HTML (one h1, h2 per section), meta description comment, JSON-LD schema, descriptive alt text. '
 					. 'Images must match the business type in every section. '
-					. Av_Web_Studio_AI_Images::ai_image_instructions();
+					. Akash_Visual_Layout_Builder_AI_Images::ai_image_instructions();
 			default:
 				return 'INTENT: ADD a new section. Return action "append" with ONLY the new section html/css/js. Do NOT duplicate an existing section type already on the page.';
 		}

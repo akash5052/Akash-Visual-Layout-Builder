@@ -84,21 +84,21 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
 
   if (loading) {
     return (
-      <div className="av-web-studio-screen av-web-studio-screen--settings">
-        <div className="av-web-studio-screen__empty">
-          <div className="av-web-studio-spinner" />
+      <div className="akash-visual-layout-builder-screen akash-visual-layout-builder-screen--settings">
+        <div className="akash-visual-layout-builder-screen__empty">
+          <div className="akash-visual-layout-builder-spinner" />
         </div>
       </div>
     );
   }
 
-  if (!settings.can_manage_settings && !window.avWebStudioBuilderData?.canManageSettings) {
+  if (!settings.can_manage_settings && !window.akashVisualLayoutBuilderData?.canManageSettings) {
     return (
-      <div className="av-web-studio-screen av-web-studio-screen--settings">
-        <header className="av-web-studio-screen__header">
+      <div className="akash-visual-layout-builder-screen akash-visual-layout-builder-screen--settings">
+        <header className="akash-visual-layout-builder-screen__header">
           <div>
-            <h1 className="av-web-studio-screen__title">Settings</h1>
-            <p className="av-web-studio-screen__subtitle">You do not have permission to manage plugin settings.</p>
+            <h1 className="akash-visual-layout-builder-screen__title">Settings</h1>
+            <p className="akash-visual-layout-builder-screen__subtitle">You do not have permission to manage plugin settings.</p>
           </div>
         </header>
       </div>
@@ -113,23 +113,23 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
     : [{ value: "claude-haiku-4-5-20251001", label: "Claude Haiku 4.5" }];
 
   return (
-    <div className="av-web-studio-screen av-web-studio-screen--settings">
-      <header className="av-web-studio-screen__header">
+    <div className="akash-visual-layout-builder-screen akash-visual-layout-builder-screen--settings">
+      <header className="akash-visual-layout-builder-screen__header">
         <div>
-          <h1 className="av-web-studio-screen__title">Settings</h1>
-          <p className="av-web-studio-screen__subtitle">
-            Configure AI, images, editor defaults, SEO, popups, and permissions for AV Web Studio.
+          <h1 className="akash-visual-layout-builder-screen__title">Settings</h1>
+          <p className="akash-visual-layout-builder-screen__subtitle">
+            Configure AI, images, editor defaults, SEO, popups, and permissions for Akash Visual Layout Builder.
           </p>
         </div>
-        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary" disabled={saving} onClick={handleSave}>
+        <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--primary" disabled={saving} onClick={handleSave}>
           {saving ? "Saving…" : "Save settings"}
         </button>
       </header>
 
-      <div className="av-web-studio-tracking-form av-web-studio-settings-form">
-        <section className="av-web-studio-tracking-section">
-          <h2 className="av-web-studio-tracking-section__title">AI Assistant</h2>
-          <p className="av-web-studio-tracking-section__hint">
+      <div className="akash-visual-layout-builder-tracking-form akash-visual-layout-builder-settings-form">
+        <section className="akash-visual-layout-builder-tracking-section">
+          <h2 className="akash-visual-layout-builder-tracking-section__title">AI Assistant</h2>
+          <p className="akash-visual-layout-builder-tracking-section__hint">
             Cloud AI uses the WordPress AI Client. Add a provider under{" "}
             {settings.connectors_url ? (
               <a href={settings.connectors_url}>Settings → Connectors</a>
@@ -150,7 +150,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             </a>
             . This plugin does not store provider API keys.
           </p>
-          <p className="av-web-studio-tracking-section__hint">
+          <p className="akash-visual-layout-builder-tracking-section__hint">
             {settings.ai_client_available
               ? "A text-generation provider is configured and ready."
               : settings.ai_client_core
@@ -158,7 +158,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
                 : "This site is below WordPress 7.0, so only local templates are used."}
           </p>
 
-          <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+          <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
             <input
               type="checkbox"
               checked={settings.ai_enabled}
@@ -167,8 +167,8 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             <span>Enable AI assistant</span>
           </label>
 
-          <div className="av-web-studio-tracking-grid">
-            <label className="av-web-studio-layout-mode">
+          <div className="akash-visual-layout-builder-tracking-grid">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Preferred Gemini model</span>
               <select
                 value={settings.gemini_model}
@@ -181,7 +181,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
                 ))}
               </select>
             </label>
-            <label className="av-web-studio-layout-mode">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Preferred Claude model</span>
               <select
                 value={settings.claude_model}
@@ -196,8 +196,8 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             </label>
           </div>
 
-          <div className="av-web-studio-tracking-grid">
-            <label className="av-web-studio-layout-mode">
+          <div className="akash-visual-layout-builder-tracking-grid">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Image suggestions provider</span>
               <select
                 value={settings.image_suggestions}
@@ -211,7 +211,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
                 <option value="local">Local recipes only</option>
               </select>
             </label>
-            <label className="av-web-studio-layout-mode">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Who can use AI</span>
               <select
                 value={settings.ai_capability}
@@ -224,8 +224,8 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             </label>
           </div>
 
-          <div className="av-web-studio-tracking-grid">
-            <label className="av-web-studio-layout-mode">
+          <div className="akash-visual-layout-builder-tracking-grid">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>AI chat history turns</span>
               <input
                 type="number"
@@ -235,7 +235,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
                 onChange={(e) => update("ai_history_turns", Number(e.target.value) || 40)}
               />
             </label>
-            <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+            <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
               <input
                 type="checkbox"
                 checked={settings.ai_panel_default_open}
@@ -246,12 +246,12 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
           </div>
         </section>
 
-        <section className="av-web-studio-tracking-section">
-          <h2 className="av-web-studio-tracking-section__title">Images</h2>
-          <p className="av-web-studio-tracking-section__hint">
+        <section className="akash-visual-layout-builder-tracking-section">
+          <h2 className="akash-visual-layout-builder-tracking-section__title">Images</h2>
+          <p className="akash-visual-layout-builder-tracking-section__hint">
             AI does not load remote stock photos. Choose images from the WordPress Media Library.
           </p>
-          <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+          <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
             <input
               type="checkbox"
               checked={settings.images_enabled}
@@ -259,7 +259,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             />
             <span>Allow AI to insert local placeholder image slots</span>
           </label>
-          <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+          <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
             <input
               type="checkbox"
               checked={settings.images_replace_broken}
@@ -267,8 +267,8 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             />
             <span>Auto-replace broken / unsupported image URLs</span>
           </label>
-          <div className="av-web-studio-tracking-grid">
-            <label className="av-web-studio-layout-mode">
+          <div className="akash-visual-layout-builder-tracking-grid">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Default image width</span>
               <input
                 type="number"
@@ -278,7 +278,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
                 onChange={(e) => update("image_width", Number(e.target.value) || 1200)}
               />
             </label>
-            <label className="av-web-studio-layout-mode">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Default image height</span>
               <input
                 type="number"
@@ -291,12 +291,12 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
           </div>
         </section>
 
-        <section className="av-web-studio-tracking-section">
-          <h2 className="av-web-studio-tracking-section__title">Google Fonts</h2>
-          <p className="av-web-studio-tracking-section__hint">
+        <section className="akash-visual-layout-builder-tracking-section">
+          <h2 className="akash-visual-layout-builder-tracking-section__title">Google Fonts</h2>
+          <p className="akash-visual-layout-builder-tracking-section__hint">
             Off by default. When enabled, pages that use Google Font families load stylesheets from fonts.googleapis.com.
           </p>
-          <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+          <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
             <input
               type="checkbox"
               checked={!!settings.google_fonts_enabled}
@@ -306,10 +306,10 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
           </label>
         </section>
 
-        <section className="av-web-studio-tracking-section">
-          <h2 className="av-web-studio-tracking-section__title">Editor defaults</h2>
-          <div className="av-web-studio-tracking-grid">
-            <label className="av-web-studio-layout-mode">
+        <section className="akash-visual-layout-builder-tracking-section">
+          <h2 className="akash-visual-layout-builder-tracking-section__title">Editor defaults</h2>
+          <div className="akash-visual-layout-builder-tracking-grid">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Default list status filter</span>
               <select
                 value={settings.default_list_status}
@@ -322,7 +322,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
                 <option value="any">Any</option>
               </select>
             </label>
-            <label className="av-web-studio-layout-mode">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Default editor theme</span>
               <select
                 value={settings.default_theme}
@@ -336,8 +336,8 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
               </select>
             </label>
           </div>
-          <div className="av-web-studio-tracking-grid">
-            <label className="av-web-studio-layout-mode">
+          <div className="akash-visual-layout-builder-tracking-grid">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Autosave delay (ms)</span>
               <input
                 type="number"
@@ -348,7 +348,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
                 onChange={(e) => update("autosave_delay_ms", Number(e.target.value) || 1500)}
               />
             </label>
-            <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+            <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
               <input
                 type="checkbox"
                 checked={settings.default_preview}
@@ -359,12 +359,12 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
           </div>
         </section>
 
-        <section className="av-web-studio-tracking-section">
-          <h2 className="av-web-studio-tracking-section__title">SEO defaults</h2>
-          <p className="av-web-studio-tracking-section__hint">
+        <section className="akash-visual-layout-builder-tracking-section">
+          <h2 className="akash-visual-layout-builder-tracking-section__title">SEO defaults</h2>
+          <p className="akash-visual-layout-builder-tracking-section__hint">
             Per-page SEO is edited in the page SEO tab. These are site-wide defaults.
           </p>
-          <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+          <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
             <input
               type="checkbox"
               checked={settings.seo_defer_to_plugins}
@@ -372,7 +372,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             />
             <span>Defer to Yoast / Rank Math / AIOSEO when active</span>
           </label>
-          <label className="av-web-studio-layout-mode">
+          <label className="akash-visual-layout-builder-layout-mode">
             <span>Default meta description template</span>
             <input
               type="text"
@@ -381,7 +381,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
               placeholder="e.g. {{title}} — professional services"
             />
           </label>
-          <label className="av-web-studio-layout-mode">
+          <label className="akash-visual-layout-builder-layout-mode">
             <span>Default social / OG image URL</span>
             <input
               type="url"
@@ -392,9 +392,9 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
           </label>
         </section>
 
-        <section className="av-web-studio-tracking-section">
-          <h2 className="av-web-studio-tracking-section__title">Popups &amp; layout</h2>
-          <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+        <section className="akash-visual-layout-builder-tracking-section">
+          <h2 className="akash-visual-layout-builder-tracking-section__title">Popups &amp; layout</h2>
+          <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
             <input
               type="checkbox"
               checked={settings.popups_enabled}
@@ -402,7 +402,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             />
             <span>Enable popups on the front end</span>
           </label>
-          <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+          <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
             <input
               type="checkbox"
               checked={settings.layout_header_default}
@@ -410,7 +410,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             />
             <span>Prefer global header by default for new pages</span>
           </label>
-          <label className="av-web-studio-layout-toggle av-web-studio-tracking-toggle">
+          <label className="akash-visual-layout-builder-layout-toggle akash-visual-layout-builder-tracking-toggle">
             <input
               type="checkbox"
               checked={settings.layout_footer_default}
@@ -418,16 +418,16 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
             />
             <span>Prefer global footer by default for new pages</span>
           </label>
-          <p className="av-web-studio-tracking-section__hint">
+          <p className="akash-visual-layout-builder-tracking-section__hint">
             Tracking scripts are managed under <strong>Tracking</strong>. Site header/footer code is under{" "}
             <strong>Site Layout</strong>.
           </p>
         </section>
 
-        <section className="av-web-studio-tracking-section">
-          <h2 className="av-web-studio-tracking-section__title">SVG &amp; permissions</h2>
-          <div className="av-web-studio-tracking-grid">
-            <label className="av-web-studio-layout-mode">
+        <section className="akash-visual-layout-builder-tracking-section">
+          <h2 className="akash-visual-layout-builder-tracking-section__title">SVG &amp; permissions</h2>
+          <div className="akash-visual-layout-builder-tracking-grid">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Max SVG upload size (KB)</span>
               <input
                 type="number"
@@ -437,7 +437,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
                 onChange={(e) => update("svg_max_kb", Number(e.target.value) || 512)}
               />
             </label>
-            <label className="av-web-studio-layout-mode">
+            <label className="akash-visual-layout-builder-layout-mode">
               <span>Who can open the builder</span>
               <select
                 value={settings.builder_capability}
@@ -449,7 +449,7 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
               </select>
             </label>
           </div>
-          <label className="av-web-studio-layout-mode">
+          <label className="akash-visual-layout-builder-layout-mode">
             <span>Who can manage these settings</span>
             <select
               value={settings.settings_capability}
@@ -461,8 +461,8 @@ export function SettingsView({ onNotice }: SettingsViewProps) {
           </label>
         </section>
 
-        <div className="av-web-studio-settings-actions">
-          <button type="button" className="av-web-studio-btn av-web-studio-btn--primary" disabled={saving} onClick={handleSave}>
+        <div className="akash-visual-layout-builder-settings-actions">
+          <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--primary" disabled={saving} onClick={handleSave}>
             {saving ? "Saving…" : "Save settings"}
           </button>
         </div>

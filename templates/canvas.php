@@ -1,8 +1,8 @@
 <?php
 /**
- * AV Web Studio Canvas — minimal page shell without theme header or footer.
+ * Akash Visual Layout Builder Canvas — minimal page shell without theme header or footer.
  *
- * @package AV Web Studio
+ * @package Akash Visual Layout Builder
  */
 
 if (!defined('ABSPATH')) {
@@ -16,9 +16,9 @@ if (!defined('ABSPATH')) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class('av-web-studio-canvas-template'); ?>>
+<body <?php body_class('akash-visual-layout-builder-canvas-template'); ?>>
 <?php wp_body_open(); ?>
-<main id="av-web-studio-canvas-content" class="av-web-studio-canvas-content">
+<main id="akash-visual-layout-builder-canvas-content" class="akash-visual-layout-builder-canvas-content">
 <?php
 while (have_posts()) {
 	the_post();

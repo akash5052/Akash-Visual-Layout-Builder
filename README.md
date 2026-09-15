@@ -1,10 +1,10 @@
-# AV Web Studio
+# Akash Visual Layout Builder
 
 WordPress plugin for building and managing pages, posts, layouts, and popups with a visual editor.
 
 ## Repository
 
-Source: [github.com/akash5052/AV-Web-Studio](https://github.com/akash5052/AV-Web-Studio)
+Source: [github.com/akash5052/Akash-Visual-Layout-Builder](https://github.com/akash5052/Akash-Visual-Layout-Builder)
 
 WordPress.org details (description, install, FAQ, changelog) live in [`readme.txt`](readme.txt).
 

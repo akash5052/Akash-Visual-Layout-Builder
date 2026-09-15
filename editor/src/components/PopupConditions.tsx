@@ -41,8 +41,8 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
   };
 
   return (
-    <div className="av-web-studio-popup-conditions">
-      <label className="av-web-studio-layout-toggle">
+    <div className="akash-visual-layout-builder-popup-conditions">
+      <label className="akash-visual-layout-builder-layout-toggle">
         <input
           type="checkbox"
           checked={popup.enabled}
@@ -51,7 +51,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         <span>Popup enabled</span>
       </label>
 
-      <label className="av-web-studio-layout-mode">
+      <label className="akash-visual-layout-builder-layout-mode">
         <span>Trigger</span>
         <select
           value={popup.trigger.type}
@@ -66,7 +66,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       </label>
 
       {(popup.trigger.type === "load" || popup.trigger.type === "inactivity") && (
-        <label className="av-web-studio-layout-mode">
+        <label className="akash-visual-layout-builder-layout-mode">
           <span>Delay (seconds)</span>
           <input
             type="number"
@@ -80,7 +80,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       )}
 
       {popup.trigger.type === "scroll" && (
-        <label className="av-web-studio-layout-mode">
+        <label className="akash-visual-layout-builder-layout-mode">
           <span>Scroll depth (%)</span>
           <input
             type="number"
@@ -95,7 +95,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       )}
 
       {popup.trigger.type === "click" && (
-        <label className="av-web-studio-layout-mode">
+        <label className="akash-visual-layout-builder-layout-mode">
           <span>CSS selector</span>
           <input
             type="text"
@@ -108,7 +108,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         </label>
       )}
 
-      <label className="av-web-studio-layout-mode">
+      <label className="akash-visual-layout-builder-layout-mode">
         <span>Display on</span>
         <select
           value={popup.conditions.scope}
@@ -123,11 +123,11 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       </label>
 
       {(popup.conditions.scope === "specific" || popup.conditions.scope === "exclude") && (
-        <div className="av-web-studio-popup-pages">
-          <span className="av-web-studio-popup-pages__label">Pages / posts</span>
-          <div className="av-web-studio-popup-pages__list">
+        <div className="akash-visual-layout-builder-popup-pages">
+          <span className="akash-visual-layout-builder-popup-pages__label">Pages / posts</span>
+          <div className="akash-visual-layout-builder-popup-pages__list">
             {pages.map((p) => (
-              <label key={p.id} className="av-web-studio-popup-pages__item">
+              <label key={p.id} className="akash-visual-layout-builder-popup-pages__item">
                 <input
                   type="checkbox"
                   checked={popup.conditions.page_ids.includes(p.id)}
@@ -140,7 +140,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         </div>
       )}
 
-      <label className="av-web-studio-layout-mode">
+      <label className="akash-visual-layout-builder-layout-mode">
         <span>Show frequency</span>
         <select
           value={popup.frequency.type}
@@ -155,7 +155,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
       </label>
 
       {popup.frequency.type === "days" && (
-        <label className="av-web-studio-layout-mode">
+        <label className="akash-visual-layout-builder-layout-mode">
           <span>Days between shows</span>
           <input
             type="number"
@@ -168,7 +168,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         </label>
       )}
 
-      <label className="av-web-studio-layout-toggle">
+      <label className="akash-visual-layout-builder-layout-toggle">
         <input
           type="checkbox"
           checked={popup.overlay_close}
@@ -177,7 +177,7 @@ export function PopupConditions({ popup, pages, onChange }: PopupConditionsProps
         <span>Close on overlay click</span>
       </label>
 
-      <label className="av-web-studio-layout-toggle">
+      <label className="akash-visual-layout-builder-layout-toggle">
         <input
           type="checkbox"
           checked={popup.esc_close}

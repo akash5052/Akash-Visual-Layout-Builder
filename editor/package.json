@@ -1,11 +1,11 @@
 {
-  "name": "av-web-studio-editor",
+  "name": "akash-visual-layout-builder-editor",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && esbuild src/main.tsx --bundle --outdir=../assets/build --entry-names=index --asset-names=index --format=iife --global-name=avWebStudioBuilderApp --jsx=automatic --minify --target=es2020",
+    "build": "tsc -b && esbuild src/main.tsx --bundle --outdir=../assets/build --entry-names=index --asset-names=index --format=iife --global-name=akashVisualLayoutBuilderApp --jsx=automatic --minify --target=es2020",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -15,14 +15,14 @@ interface ContentTabsProps {
 
 export function ContentTabs({ active, settingsLabel = "Settings", onChange }: ContentTabsProps) {
   return (
-    <div className="av-web-studio-content-tabs" role="tablist" aria-label="Content sections">
+    <div className="akash-visual-layout-builder-content-tabs" role="tablist" aria-label="Content sections">
       {TABS.map((tab) => (
         <button
           key={tab.id}
           type="button"
           role="tab"
           aria-selected={active === tab.id}
-          className={`av-web-studio-content-tabs__btn ${active === tab.id ? "av-web-studio-content-tabs__btn--active" : ""}`}
+          className={`akash-visual-layout-builder-content-tabs__btn ${active === tab.id ? "akash-visual-layout-builder-content-tabs__btn--active" : ""}`}
           onClick={() => onChange(tab.id)}
         >
           {tab.id === "settings" ? settingsLabel : tab.label}

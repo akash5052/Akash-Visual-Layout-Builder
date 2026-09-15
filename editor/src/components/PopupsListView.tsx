@@ -133,13 +133,13 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
   const allSelected = data.items.length > 0 && data.items.every((item) => selected.has(item.id));
 
   return (
-    <div className="av-web-studio-screen av-web-studio-screen--list">
-      <header className="av-web-studio-screen__header">
+    <div className="akash-visual-layout-builder-screen akash-visual-layout-builder-screen--list">
+      <header className="akash-visual-layout-builder-screen__header">
         <div>
-          <h1 className="av-web-studio-screen__title">Popups</h1>
-          <p className="av-web-studio-screen__subtitle">Manage popup campaigns, triggers, and display rules.</p>
+          <h1 className="akash-visual-layout-builder-screen__title">Popups</h1>
+          <p className="akash-visual-layout-builder-screen__subtitle">Manage popup campaigns, triggers, and display rules.</p>
         </div>
-        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary" onClick={onCreate}>
+        <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--primary" onClick={onCreate}>
           + New popup
         </button>
       </header>
@@ -157,24 +157,24 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
       />
 
       {loading ? (
-        <div className="av-web-studio-screen__empty">
+        <div className="akash-visual-layout-builder-screen__empty">
           <p>Loading popups…</p>
         </div>
       ) : data.items.length === 0 ? (
-        <div className="av-web-studio-screen__empty">
+        <div className="akash-visual-layout-builder-screen__empty">
           <p>{statusFilter === "trash" ? "No popups in trash." : "No popups yet."}</p>
           {statusFilter !== "trash" && (
-            <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost" onClick={onCreate}>
+            <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost" onClick={onCreate}>
               Create your first popup
             </button>
           )}
         </div>
       ) : (
-        <div className="av-web-studio-content-table-wrap">
-          <table className="av-web-studio-content-table">
+        <div className="akash-visual-layout-builder-content-table-wrap">
+          <table className="akash-visual-layout-builder-content-table">
             <thead>
               <tr>
-                <th className="av-web-studio-content-table__check">
+                <th className="akash-visual-layout-builder-content-table__check">
                   <input
                     type="checkbox"
                     aria-label="Select all"
@@ -194,8 +194,8 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
                 const busy = rowBusyId === popup.id;
 
                 return (
-                  <tr key={popup.id} className={selected.has(popup.id) ? "av-web-studio-content-table__row--selected" : ""}>
-                    <td className="av-web-studio-content-table__check">
+                  <tr key={popup.id} className={selected.has(popup.id) ? "akash-visual-layout-builder-content-table__row--selected" : ""}>
+                    <td className="akash-visual-layout-builder-content-table__check">
                       <input
                         type="checkbox"
                         aria-label={`Select ${popup.name}`}
@@ -205,25 +205,25 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
                     </td>
                     <td>
                       {isTrashed ? (
-                        <span className="av-web-studio-content-table__title av-web-studio-content-table__title--static">{popup.name}</span>
+                        <span className="akash-visual-layout-builder-content-table__title akash-visual-layout-builder-content-table__title--static">{popup.name}</span>
                       ) : (
-                        <button type="button" className="av-web-studio-content-table__title" onClick={() => onOpen(popup.id)}>
+                        <button type="button" className="akash-visual-layout-builder-content-table__title" onClick={() => onOpen(popup.id)}>
                           {popup.name}
                         </button>
                       )}
                     </td>
                     <td>
-                      <span className={`av-web-studio-status av-web-studio-status--${statusClass(popup.status)}`}>
+                      <span className={`akash-visual-layout-builder-status akash-visual-layout-builder-status--${statusClass(popup.status)}`}>
                         {displayStatus(popup.status)}
                       </span>
                     </td>
-                    <td className="av-web-studio-content-table__date">{formatListDate(popup.modified)}</td>
-                    <td className="av-web-studio-content-table__actions">
+                    <td className="akash-visual-layout-builder-content-table__date">{formatListDate(popup.modified)}</td>
+                    <td className="akash-visual-layout-builder-content-table__actions">
                       {isTrashed ? (
                         <>
                           <button
                             type="button"
-                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
+                            className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost akash-visual-layout-builder-btn--sm"
                             disabled={busy}
                             onClick={() => handleRowRestore(popup)}
                           >
@@ -231,7 +231,7 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
                           </button>
                           <button
                             type="button"
-                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-btn--danger"
+                            className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost akash-visual-layout-builder-btn--sm akash-visual-layout-builder-btn--danger"
                             disabled={busy}
                             onClick={() => handleRowDeletePermanent(popup)}
                           >
@@ -242,21 +242,21 @@ export function PopupsListView({ onCreate, onOpen, onNotice }: PopupsListViewPro
                         <>
                           <button
                             type="button"
-                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
+                            className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost akash-visual-layout-builder-btn--sm"
                             onClick={() => setQuickEditPopup(popup)}
                           >
                             Quick Edit
                           </button>
                           <button
                             type="button"
-                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm"
+                            className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost akash-visual-layout-builder-btn--sm"
                             onClick={() => onOpen(popup.id)}
                           >
                             Edit
                           </button>
                           <button
                             type="button"
-                            className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm av-web-studio-btn--danger"
+                            className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost akash-visual-layout-builder-btn--sm akash-visual-layout-builder-btn--danger"
                             disabled={busy}
                             onClick={() => handleRowTrash(popup)}
                           >

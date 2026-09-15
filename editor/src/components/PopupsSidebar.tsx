@@ -23,11 +23,11 @@ export function PopupsSidebar({
   const activePopup = popups.find((p) => p.id === activePopupId) ?? null;
 
   return (
-    <aside className="av-web-studio-side-panel">
-      <div className="av-web-studio-side-panel__header">
-        <div className="av-web-studio-filetree__label-row">
+    <aside className="akash-visual-layout-builder-side-panel">
+      <div className="akash-visual-layout-builder-side-panel__header">
+        <div className="akash-visual-layout-builder-filetree__label-row">
           <h3>Popups</h3>
-          <button type="button" className="av-web-studio-filetree__add" onClick={onCreatePopup} title="New popup">
+          <button type="button" className="akash-visual-layout-builder-filetree__add" onClick={onCreatePopup} title="New popup">
             +
           </button>
         </div>
@@ -35,22 +35,22 @@ export function PopupsSidebar({
       </div>
 
       {popups.length === 0 ? (
-        <p className="av-web-studio-filetree__empty">No popups yet</p>
+        <p className="akash-visual-layout-builder-filetree__empty">No popups yet</p>
       ) : (
-        <div className="av-web-studio-popup-list">
+        <div className="akash-visual-layout-builder-popup-list">
           {popups.map((popup) => (
             <div
               key={popup.id}
-              className={`av-web-studio-popup-item ${activePopupId === popup.id ? "av-web-studio-popup-item--active" : ""}`}
+              className={`akash-visual-layout-builder-popup-item ${activePopupId === popup.id ? "akash-visual-layout-builder-popup-item--active" : ""}`}
             >
-              <button type="button" className="av-web-studio-popup-item__btn" onClick={() => onSelectPopup(popup.id)}>
-                <span className="av-web-studio-file__icon">◉</span>
-                <span className="av-web-studio-popup-item__name">{popup.name}</span>
-                {!popup.enabled && <span className="av-web-studio-popup-item__badge">off</span>}
+              <button type="button" className="akash-visual-layout-builder-popup-item__btn" onClick={() => onSelectPopup(popup.id)}>
+                <span className="akash-visual-layout-builder-file__icon">◉</span>
+                <span className="akash-visual-layout-builder-popup-item__name">{popup.name}</span>
+                {!popup.enabled && <span className="akash-visual-layout-builder-popup-item__badge">off</span>}
               </button>
               <button
                 type="button"
-                className="av-web-studio-popup-item__delete"
+                className="akash-visual-layout-builder-popup-item__delete"
                 onClick={() => onDeletePopup(popup.id)}
                 title="Move popup to trash"
               >
@@ -63,7 +63,7 @@ export function PopupsSidebar({
 
       {activePopup && (
         <>
-          <label className="av-web-studio-layout-mode">
+          <label className="akash-visual-layout-builder-layout-mode">
             <span>Popup name</span>
             <input
               type="text"
@@ -71,7 +71,7 @@ export function PopupsSidebar({
               onChange={(e) => onPopupChange({ ...activePopup, name: e.target.value })}
             />
           </label>
-          <label className="av-web-studio-layout-toggle">
+          <label className="akash-visual-layout-builder-layout-toggle">
             <input
               type="checkbox"
               checked={activePopup.enabled}

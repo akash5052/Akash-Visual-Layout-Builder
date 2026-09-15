@@ -22,7 +22,7 @@ interface AiPanelProps {
 
 function SparkleIcon() {
   return (
-    <svg className="av-web-studio-ai-toggle__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg className="akash-visual-layout-builder-ai-toggle__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M12 2l1.4 4.2L17.6 8 13.4 9.4 12 13.6 10.6 9.4 6.4 8l4.2-1.8L12 2z"
         fill="currentColor"
@@ -91,31 +91,31 @@ export function AiPanel({
   ];
 
   return createPortal(
-    <div className={`av-web-studio-ai-panel ${isOpen ? "av-web-studio-ai-panel--open" : ""}`} data-theme={theme}>
+    <div className={`akash-visual-layout-builder-ai-panel ${isOpen ? "akash-visual-layout-builder-ai-panel--open" : ""}`} data-theme={theme}>
       {isOpen && (
-        <div className="av-web-studio-ai-content" role="dialog" aria-label="AI assistant">
-          <div className="av-web-studio-ai-content__accent" aria-hidden="true" />
+        <div className="akash-visual-layout-builder-ai-content" role="dialog" aria-label="AI assistant">
+          <div className="akash-visual-layout-builder-ai-content__accent" aria-hidden="true" />
 
-          <div className="av-web-studio-ai-header">
-            <div className="av-web-studio-ai-header__title">
-              <span className="av-web-studio-ai-header__icon" aria-hidden="true">
+          <div className="akash-visual-layout-builder-ai-header">
+            <div className="akash-visual-layout-builder-ai-header__title">
+              <span className="akash-visual-layout-builder-ai-header__icon" aria-hidden="true">
                 <SparkleIcon />
               </span>
               <div>
                 <h4>AI Assistant</h4>
-                <p className="av-web-studio-ai-header__status">
-                  <span className={`av-web-studio-ai-status ${aiReady ? "av-web-studio-ai-status--ok" : "av-web-studio-ai-status--warn"}`}>
-                    <span className="av-web-studio-ai-status__dot" />
+                <p className="akash-visual-layout-builder-ai-header__status">
+                  <span className={`akash-visual-layout-builder-ai-status ${aiReady ? "akash-visual-layout-builder-ai-status--ok" : "akash-visual-layout-builder-ai-status--warn"}`}>
+                    <span className="akash-visual-layout-builder-ai-status__dot" />
                     {aiReady ? "Ready" : "Setup required"}
                   </span>
                 </p>
               </div>
             </div>
-            <div className="av-web-studio-ai-header__actions">
+            <div className="akash-visual-layout-builder-ai-header__actions">
               {history.length > 0 && (
                 <button
                   type="button"
-                  className="av-web-studio-ai-history-clear"
+                  className="akash-visual-layout-builder-ai-history-clear"
                   onClick={onClearHistory}
                   disabled={!aiReady || isLoading}
                   title="Clear chat history"
@@ -125,7 +125,7 @@ export function AiPanel({
               )}
               <button
                 type="button"
-                className="av-web-studio-ai-close"
+                className="akash-visual-layout-builder-ai-close"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close AI assistant"
               >
@@ -134,16 +134,16 @@ export function AiPanel({
             </div>
           </div>
 
-          <div className="av-web-studio-ai-body">
+          <div className="akash-visual-layout-builder-ai-body">
             {!aiReady && (
-              <div className="av-web-studio-ai-history__empty av-web-studio-ai-history__empty--setup">
+              <div className="akash-visual-layout-builder-ai-history__empty akash-visual-layout-builder-ai-history__empty--setup">
                 <strong>Enable AI in Settings</strong>
                 <p>
                   Turn on the AI assistant in{" "}
                   {settingsUrl ? (
-                    <a href={settingsUrl}>AV Web Studio → Settings</a>
+                    <a href={settingsUrl}>Akash Visual Layout Builder → Settings</a>
                   ) : (
-                    "AV Web Studio → Settings"
+                    "Akash Visual Layout Builder → Settings"
                   )}
                   . Cloud models use{" "}
                   <strong>Settings → Connectors</strong> in WordPress 7.0+.
@@ -151,9 +151,9 @@ export function AiPanel({
               </div>
             )}
 
-            <div className="av-web-studio-ai-history" aria-label="AI chat history">
+            <div className="akash-visual-layout-builder-ai-history" aria-label="AI chat history">
               {history.length === 0 && !pendingPrompt && aiReady && (
-                <div className="av-web-studio-ai-history__empty">
+                <div className="akash-visual-layout-builder-ai-history__empty">
                   <strong>Ask anything about this page</strong>
                   <p>Generate sections, swap images, or add animations. You can restore any earlier version.</p>
                 </div>
@@ -162,20 +162,20 @@ export function AiPanel({
               {history.map((turn, index) => {
                 const isActive = turn.id === activeTurnId;
                 return (
-                  <div key={turn.id} className={`av-web-studio-ai-turn ${isActive ? "av-web-studio-ai-turn--active" : ""}`}>
-                    <div className="av-web-studio-ai-msg av-web-studio-ai-msg--user">
-                      <span className="av-web-studio-ai-msg__label">You</span>
+                  <div key={turn.id} className={`akash-visual-layout-builder-ai-turn ${isActive ? "akash-visual-layout-builder-ai-turn--active" : ""}`}>
+                    <div className="akash-visual-layout-builder-ai-msg akash-visual-layout-builder-ai-msg--user">
+                      <span className="akash-visual-layout-builder-ai-msg__label">You</span>
                       <p>{turn.prompt}</p>
-                      <time className="av-web-studio-ai-msg__time">{formatTime(turn.createdAt)}</time>
+                      <time className="akash-visual-layout-builder-ai-msg__time">{formatTime(turn.createdAt)}</time>
                     </div>
 
-                    <div className="av-web-studio-ai-msg av-web-studio-ai-msg--assistant">
-                      <span className="av-web-studio-ai-msg__label">Assistant</span>
+                    <div className="akash-visual-layout-builder-ai-msg akash-visual-layout-builder-ai-msg--assistant">
+                      <span className="akash-visual-layout-builder-ai-msg__label">Assistant</span>
                       <p>{turn.explanation || "Page updated."}</p>
-                      <div className="av-web-studio-ai-turn__actions">
+                      <div className="akash-visual-layout-builder-ai-turn__actions">
                         <button
                           type="button"
-                          className={`av-web-studio-ai-restore ${isActive ? "av-web-studio-ai-restore--active" : ""}`}
+                          className={`akash-visual-layout-builder-ai-restore ${isActive ? "akash-visual-layout-builder-ai-restore--active" : ""}`}
                           onClick={() => onRestore(turn.id)}
                           disabled={isLoading || isActive}
                           title="Restore page to this version"
@@ -185,7 +185,7 @@ export function AiPanel({
                         {index > 0 && (
                           <button
                             type="button"
-                            className="av-web-studio-ai-restore av-web-studio-ai-restore--ghost"
+                            className="akash-visual-layout-builder-ai-restore akash-visual-layout-builder-ai-restore--ghost"
                             onClick={() => onRestoreBefore(turn.id)}
                             disabled={!aiReady || isLoading}
                             title="Restore to state before this change"
@@ -200,13 +200,13 @@ export function AiPanel({
               })}
 
               {pendingPrompt && (
-                <div className="av-web-studio-ai-turn av-web-studio-ai-turn--pending">
-                  <div className="av-web-studio-ai-msg av-web-studio-ai-msg--user">
-                    <span className="av-web-studio-ai-msg__label">You</span>
+                <div className="akash-visual-layout-builder-ai-turn akash-visual-layout-builder-ai-turn--pending">
+                  <div className="akash-visual-layout-builder-ai-msg akash-visual-layout-builder-ai-msg--user">
+                    <span className="akash-visual-layout-builder-ai-msg__label">You</span>
                     <p>{pendingPrompt}</p>
                   </div>
-                  <div className="av-web-studio-ai-msg av-web-studio-ai-msg--assistant av-web-studio-ai-msg--loading">
-                    <span className="av-web-studio-ai-generate__spinner" aria-hidden="true" />
+                  <div className="akash-visual-layout-builder-ai-msg akash-visual-layout-builder-ai-msg--assistant akash-visual-layout-builder-ai-msg--loading">
+                    <span className="akash-visual-layout-builder-ai-generate__spinner" aria-hidden="true" />
                     <span>Generating…</span>
                   </div>
                 </div>
@@ -216,14 +216,14 @@ export function AiPanel({
             </div>
 
             {aiReady && history.length === 0 && !isLoading && (
-              <div className="av-web-studio-ai-suggestions">
-                <span className="av-web-studio-ai-suggestions__label">Quick ideas</span>
-                <div className="av-web-studio-ai-suggestions__list">
+              <div className="akash-visual-layout-builder-ai-suggestions">
+                <span className="akash-visual-layout-builder-ai-suggestions__label">Quick ideas</span>
+                <div className="akash-visual-layout-builder-ai-suggestions__list">
                   {suggestions.map((s) => (
                     <button
                       key={s.label}
                       type="button"
-                      className="av-web-studio-ai-chip"
+                      className="akash-visual-layout-builder-ai-chip"
                       onClick={() => setPrompt(s.prompt)}
                       disabled={!aiReady || isLoading}
                       title={s.prompt}
@@ -235,8 +235,8 @@ export function AiPanel({
               </div>
             )}
 
-            <form className="av-web-studio-ai-composer" onSubmit={handleSubmit}>
-              <div className="av-web-studio-ai-composer__shell">
+            <form className="akash-visual-layout-builder-ai-composer" onSubmit={handleSubmit}>
+              <div className="akash-visual-layout-builder-ai-composer__shell">
                 <textarea
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -252,12 +252,12 @@ export function AiPanel({
                     }
                   }}
                 />
-                <div className="av-web-studio-ai-composer__footer">
-                  <span className="av-web-studio-ai-composer__hint">Enter to send · Shift+Enter for new line</span>
-                  <button type="submit" className="av-web-studio-ai-generate" disabled={!aiReady || isLoading || !prompt.trim()}>
+                <div className="akash-visual-layout-builder-ai-composer__footer">
+                  <span className="akash-visual-layout-builder-ai-composer__hint">Enter to send · Shift+Enter for new line</span>
+                  <button type="submit" className="akash-visual-layout-builder-ai-generate" disabled={!aiReady || isLoading || !prompt.trim()}>
                     {isLoading ? (
                       <>
-                        <span className="av-web-studio-ai-generate__spinner" aria-hidden="true" />
+                        <span className="akash-visual-layout-builder-ai-generate__spinner" aria-hidden="true" />
                         Generating
                       </>
                     ) : (
@@ -276,14 +276,14 @@ export function AiPanel({
 
       <button
         type="button"
-        className="av-web-studio-ai-toggle"
+        className="akash-visual-layout-builder-ai-toggle"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label={isOpen ? "Close AI assistant" : "Open AI assistant"}
       >
-        <span className="av-web-studio-ai-toggle__glow" aria-hidden="true" />
+        <span className="akash-visual-layout-builder-ai-toggle__glow" aria-hidden="true" />
         <SparkleIcon />
-        <span className="av-web-studio-ai-toggle__label">
+        <span className="akash-visual-layout-builder-ai-toggle__label">
           {isOpen ? "Close" : history.length > 0 ? `AI (${history.length})` : "AI Assistant"}
         </span>
       </button>

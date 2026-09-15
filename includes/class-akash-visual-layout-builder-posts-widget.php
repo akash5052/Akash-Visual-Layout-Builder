@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Server-side rendering for dynamic post listing widgets.
  */
-class Av_Web_Studio_Posts_Widget {
+class Akash_Visual_Layout_Builder_Posts_Widget {
 
 	/**
 	 * Replace post widget placeholders in stored HTML.
@@ -17,12 +17,12 @@ class Av_Web_Studio_Posts_Widget {
 	 * @return string
 	 */
 	public static function hydrate_html($html, $post_id = 0) {
-		if ($html === '' || strpos($html, 'data-av-web-studio-posts') === false) {
+		if ($html === '' || strpos($html, 'data-akash-visual-layout-builder-posts') === false) {
 			return $html;
 		}
 
 		return (string) preg_replace_callback(
-			'/<div([^>]*)\sdata-av-web-studio-posts=(["\'])(.*?)\2([^>]*)><\/div>/s',
+			'/<div([^>]*)\sdata-akash-visual-layout-builder-posts=(["\'])(.*?)\2([^>]*)><\/div>/s',
 			function ($matches) use ($post_id) {
 				$config = json_decode(htmlspecialchars_decode($matches[3], ENT_QUOTES), true);
 				if (!is_array($config)) {
@@ -31,7 +31,7 @@ class Av_Web_Studio_Posts_Widget {
 
 				$inner = self::render($config, $post_id);
 
-				return '<div' . $matches[1] . ' data-av-web-studio-posts=' . $matches[2] . $matches[3] . $matches[2] . $matches[4] . '>' . $inner . '</div>';
+				return '<div' . $matches[1] . ' data-akash-visual-layout-builder-posts=' . $matches[2] . $matches[3] . $matches[2] . $matches[4] . '>' . $inner . '</div>';
 			},
 			$html
 		);
@@ -68,10 +68,10 @@ class Av_Web_Studio_Posts_Widget {
 
 		$style_vars = self::style_vars($display, $layout);
 		$card_class = self::card_class($display);
-		$layout_class = 'av-web-studio-posts--' . $layout;
+		$layout_class = 'akash-visual-layout-builder-posts--' . $layout;
 
 		if (empty($posts)) {
-			return '<div class="av-web-studio-posts ' . esc_attr($layout_class) . ' ' . esc_attr($card_class) . '" style="' . esc_attr($style_vars) . '"><div class="av-web-studio-posts__empty">' . esc_html__('No posts found.', 'av-web-studio') . '</div></div>';
+			return '<div class="akash-visual-layout-builder-posts ' . esc_attr($layout_class) . ' ' . esc_attr($card_class) . '" style="' . esc_attr($style_vars) . '"><div class="akash-visual-layout-builder-posts__empty">' . esc_html__('No posts found.', 'akash-visual-layout-builder') . '</div></div>';
 		}
 
 		$items = '';
@@ -81,15 +81,15 @@ class Av_Web_Studio_Posts_Widget {
 		}
 
 		if ($layout === 'carousel') {
-			$items = '<div class="av-web-studio-posts av-web-studio-posts--carousel ' . esc_attr($card_class) . ' av-web-studio-carousel" style="' . esc_attr($style_vars) . '" data-av-web-studio-carousel>' . $items .
-				'<button type="button" data-av-web-studio-carousel-prev aria-label="' . esc_attr__('Previous slide', 'av-web-studio') . '" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);border:none;background:rgba(15,23,42,.7);color:#fff;width:32px;height:32px;cursor:pointer;">‹</button>' .
-				'<button type="button" data-av-web-studio-carousel-next aria-label="' . esc_attr__('Next slide', 'av-web-studio') . '" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:rgba(15,23,42,.7);color:#fff;width:32px;height:32px;cursor:pointer;">›</button>' .
+			$items = '<div class="akash-visual-layout-builder-posts akash-visual-layout-builder-posts--carousel ' . esc_attr($card_class) . ' akash-visual-layout-builder-carousel" style="' . esc_attr($style_vars) . '" data-akash-visual-layout-builder-carousel>' . $items .
+				'<button type="button" data-akash-visual-layout-builder-carousel-prev aria-label="' . esc_attr__('Previous slide', 'akash-visual-layout-builder') . '" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);border:none;background:rgba(15,23,42,.7);color:#fff;width:32px;height:32px;cursor:pointer;">‹</button>' .
+				'<button type="button" data-akash-visual-layout-builder-carousel-next aria-label="' . esc_attr__('Next slide', 'akash-visual-layout-builder') . '" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:rgba(15,23,42,.7);color:#fff;width:32px;height:32px;cursor:pointer;">›</button>' .
 				'</div>';
 
 			return $items;
 		}
 
-		return '<div class="av-web-studio-posts ' . esc_attr($layout_class) . ' ' . esc_attr($card_class) . '" style="' . esc_attr($style_vars) . '">' . $items . '</div>';
+		return '<div class="akash-visual-layout-builder-posts ' . esc_attr($layout_class) . ' ' . esc_attr($card_class) . '" style="' . esc_attr($style_vars) . '">' . $items . '</div>';
 	}
 
 	/**
@@ -200,7 +200,7 @@ class Av_Web_Studio_Posts_Widget {
 		$show_date       = !empty($display['showDate']);
 		$show_categories = !empty($display['showCategories']);
 		$show_read_more  = !empty($display['showReadMore']);
-		$read_more_text  = sanitize_text_field($display['readMoreText'] ?? __('Read more', 'av-web-studio'));
+		$read_more_text  = sanitize_text_field($display['readMoreText'] ?? __('Read more', 'akash-visual-layout-builder'));
 		$excerpt_length  = max(5, min(80, absint($display['excerptLength'] ?? 22)));
 		$image_size      = sanitize_key($display['imageSize'] ?? 'medium');
 		$title_tag       = in_array($display['titleTag'] ?? 'h3', [ 'h2', 'h3', 'h4' ], true) ? $display['titleTag'] : 'h3';
@@ -212,13 +212,13 @@ class Av_Web_Studio_Posts_Widget {
 				$post,
 				in_array($image_size, [ 'thumbnail', 'medium', 'large', 'full' ], true) ? $image_size : 'medium',
 				[
-					'class'   => 'av-web-studio-posts__image',
+					'class'   => 'akash-visual-layout-builder-posts__image',
 					'loading' => 'lazy',
 					'alt'     => get_the_title($post),
 				]
 			);
 			if ($thumb) {
-				$media = '<a class="av-web-studio-posts__media" href="' . esc_url($permalink) . '">' . $thumb . '</a>';
+				$media = '<a class="akash-visual-layout-builder-posts__media" href="' . esc_url($permalink) . '">' . $thumb . '</a>';
 			}
 		}
 
@@ -239,26 +239,26 @@ class Av_Web_Studio_Posts_Widget {
 			}
 		}
 
-		$meta = $meta_parts ? '<div class="av-web-studio-posts__meta">' . implode('<span aria-hidden="true"> · </span>', $meta_parts) . '</div>' : '';
+		$meta = $meta_parts ? '<div class="akash-visual-layout-builder-posts__meta">' . implode('<span aria-hidden="true"> · </span>', $meta_parts) . '</div>' : '';
 
 		$title = $show_title
-			? '<' . $title_tag . ' class="av-web-studio-posts__title"><a href="' . esc_url($permalink) . '">' . esc_html(get_the_title($post)) . '</a></' . $title_tag . '>'
+			? '<' . $title_tag . ' class="akash-visual-layout-builder-posts__title"><a href="' . esc_url($permalink) . '">' . esc_html(get_the_title($post)) . '</a></' . $title_tag . '>'
 			: '';
 
 		$excerpt = $show_excerpt
-			? '<p class="av-web-studio-posts__excerpt">' . esc_html(wp_trim_words(get_the_excerpt($post), $excerpt_length, '…')) . '</p>'
+			? '<p class="akash-visual-layout-builder-posts__excerpt">' . esc_html(wp_trim_words(get_the_excerpt($post), $excerpt_length, '…')) . '</p>'
 			: '';
 
 		$read_more = $show_read_more
-			? '<a class="av-web-studio-posts__read-more" href="' . esc_url($permalink) . '">' . esc_html($read_more_text) . '</a>'
+			? '<a class="akash-visual-layout-builder-posts__read-more" href="' . esc_url($permalink) . '">' . esc_html($read_more_text) . '</a>'
 			: '';
 
-		$body = '<div class="av-web-studio-posts__body">' . $meta . $title . $excerpt . $read_more . '</div>';
-		$item = '<article class="av-web-studio-posts__item">' . $media . $body . '</article>';
+		$body = '<div class="akash-visual-layout-builder-posts__body">' . $meta . $title . $excerpt . $read_more . '</div>';
+		$item = '<article class="akash-visual-layout-builder-posts__item">' . $media . $body . '</article>';
 
 		if ($layout === 'carousel') {
 			$display_style = $active ? 'block' : 'none';
-			return '<div class="av-web-studio-posts__slide' . ($active ? ' is-active' : '') . '" data-av-web-studio-slide style="display:' . esc_attr($display_style) . ';">' . $item . '</div>';
+			return '<div class="akash-visual-layout-builder-posts__slide' . ($active ? ' is-active' : '') . '" data-akash-visual-layout-builder-slide style="display:' . esc_attr($display_style) . ';">' . $item . '</div>';
 		}
 
 		return $item;
@@ -279,11 +279,11 @@ class Av_Web_Studio_Posts_Widget {
 		$carousel_height = sanitize_text_field($display['carouselHeight'] ?? '360px');
 
 		$vars = [
-			'--av-web-studio-posts-gap' => $gap,
-			'--av-web-studio-posts-cols' => (string) $cols,
-			'--av-web-studio-posts-image-ratio' => $ratio,
-			'--av-web-studio-posts-list-image-width' => $list_width,
-			'--av-web-studio-posts-carousel-height' => $carousel_height,
+			'--akash-visual-layout-builder-posts-gap' => $gap,
+			'--akash-visual-layout-builder-posts-cols' => (string) $cols,
+			'--akash-visual-layout-builder-posts-image-ratio' => $ratio,
+			'--akash-visual-layout-builder-posts-list-image-width' => $list_width,
+			'--akash-visual-layout-builder-posts-carousel-height' => $carousel_height,
 		];
 
 		$parts = [];
@@ -311,7 +311,7 @@ class Av_Web_Studio_Posts_Widget {
 			$style = 'card';
 		}
 
-		return 'av-web-studio-posts--' . $style;
+		return 'akash-visual-layout-builder-posts--' . $style;
 	}
 
 	/**

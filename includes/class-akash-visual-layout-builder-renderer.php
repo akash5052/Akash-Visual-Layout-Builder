@@ -4,20 +4,20 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class Av_Web_Studio_Renderer {
+class Akash_Visual_Layout_Builder_Renderer {
 
-	const META_HTML    = '_av_web_studio_html';
-	const META_CSS     = '_av_web_studio_css';
-	const META_JS      = '_av_web_studio_js';
-	const META_ENABLED = '_av_web_studio_enabled';
-	const META_LEGACY  = '_av_web_studio_code';
-	const META_EDIT_MODE = '_av_web_studio_edit_mode';
-	const META_VISUAL    = '_av_web_studio_visual';
+	const META_HTML    = '_akash_visual_layout_builder_html';
+	const META_CSS     = '_akash_visual_layout_builder_css';
+	const META_JS      = '_akash_visual_layout_builder_js';
+	const META_ENABLED = '_akash_visual_layout_builder_enabled';
+	const META_LEGACY  = '_akash_visual_layout_builder_code';
+	const META_EDIT_MODE = '_akash_visual_layout_builder_edit_mode';
+	const META_VISUAL    = '_akash_visual_layout_builder_visual';
 
 	/**
 	 * Get editor mode for a page.
 	 *
-	 * The plugin is visual-only. Legacy `_av_web_studio_edit_mode` values are ignored.
+	 * The plugin is visual-only. Legacy `_akash_visual_layout_builder_edit_mode` values are ignored.
 	 *
 	 * @param int $post_id Post ID.
 	 * @return string
@@ -64,7 +64,7 @@ class Av_Web_Studio_Renderer {
 			delete_post_meta($post_id, self::META_VISUAL);
 			return;
 		}
-		$doc = Av_Web_Studio_Output::scrub_visual($doc);
+		$doc = Akash_Visual_Layout_Builder_Output::scrub_visual($doc);
 		update_post_meta($post_id, self::META_VISUAL, wp_json_encode($doc));
 	}
 
@@ -176,7 +176,7 @@ class Av_Web_Studio_Renderer {
 		$visual = self::get_visual_document($post_id);
 
 		if (is_array($visual)) {
-			$clean = Av_Web_Studio_Output::compile_visual($visual);
+			$clean = Akash_Visual_Layout_Builder_Output::compile_visual($visual);
 		} else {
 			$clean = [
 				'html' => '',
@@ -218,15 +218,15 @@ class Av_Web_Studio_Renderer {
 			return '';
 		}
 
-		$html = Av_Web_Studio_Output::kses_html($html);
+		$html = Akash_Visual_Layout_Builder_Output::kses_html($html);
 
-		$html = Av_Web_Studio_Posts_Widget::hydrate_html($html, (int) $post_id);
+		$html = Akash_Visual_Layout_Builder_Posts_Widget::hydrate_html($html, (int) $post_id);
 
-		if (preg_match('/^<div[^>]*class="[^"]*av-web-studio-page[^"]*"/i', $html)) {
+		if (preg_match('/^<div[^>]*class="[^"]*akash-visual-layout-builder-page[^"]*"/i', $html)) {
 			return $html;
 		}
 
-		$attrs = 'class="av-web-studio-page av-web-studio-page-' . esc_attr($post_id) . '" data-av-web-studio-page="' . esc_attr($post_id) . '"';
+		$attrs = 'class="akash-visual-layout-builder-page akash-visual-layout-builder-page-' . esc_attr($post_id) . '" data-akash-visual-layout-builder-page="' . esc_attr($post_id) . '"';
 
 		return '<div ' . $attrs . '>' . $html . '</div>';
 	}
@@ -238,7 +238,7 @@ class Av_Web_Studio_Renderer {
 	 * @return string
 	 */
 	public static function render_css($code) {
-		return Av_Web_Studio_Output::sanitize_css(isset($code['css']) ? $code['css'] : '');
+		return Akash_Visual_Layout_Builder_Output::sanitize_css(isset($code['css']) ? $code['css'] : '');
 	}
 
 	/**

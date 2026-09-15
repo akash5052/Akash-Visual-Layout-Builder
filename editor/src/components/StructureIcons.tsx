@@ -7,7 +7,7 @@ interface StructureIconProps {
 
 export function StructureIcon({ kind, title }: StructureIconProps) {
   return (
-    <span className={`av-web-studio-visual__structure-icon av-web-studio-visual__structure-icon--${kind}`} title={title} aria-label={title}>
+    <span className={`akash-visual-layout-builder-visual__structure-icon akash-visual-layout-builder-visual__structure-icon--${kind}`} title={title} aria-label={title}>
       {kind === "section" && (
         <svg viewBox="0 0 20 14" width="16" height="12" fill="none" aria-hidden="true">
           <rect x="1" y="1" width="18" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.6" />

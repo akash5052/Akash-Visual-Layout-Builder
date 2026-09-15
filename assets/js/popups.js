@@ -1,13 +1,13 @@
 (function () {
   "use strict";
 
-  var popups = window.avWebStudioBuilderPopups;
+  var popups = window.akashVisualLayoutBuilderPopups;
   if (!Array.isArray(popups) || !popups.length) {
     return;
   }
 
   function storageKey(id) {
-    return "av_web_studio_popup_" + id;
+    return "akash_visual_layout_builder_popup_" + id;
   }
 
   function shouldShow(config) {
@@ -49,19 +49,19 @@
   }
 
   function getEl(id) {
-    return document.getElementById("av-web-studio-popup-" + id);
+    return document.getElementById("akash-visual-layout-builder-popup-" + id);
   }
 
   function showPopup(config) {
     var el = getEl(config.id);
-    if (!el || el.classList.contains("av-web-studio-popup--visible")) {
+    if (!el || el.classList.contains("akash-visual-layout-builder-popup--visible")) {
       return;
     }
-    el.classList.add("av-web-studio-popup--visible");
+    el.classList.add("akash-visual-layout-builder-popup--visible");
     el.setAttribute("aria-hidden", "false");
-    document.body.classList.add("av-web-studio-popup-open");
+    document.body.classList.add("akash-visual-layout-builder-popup-open");
     markShown(config);
-    document.dispatchEvent(new CustomEvent("av-web-studio:popup:open", { detail: { id: config.id } }));
+    document.dispatchEvent(new CustomEvent("akash-visual-layout-builder:popup:open", { detail: { id: config.id } }));
   }
 
   function hidePopup(config) {
@@ -69,12 +69,12 @@
     if (!el) {
       return;
     }
-    el.classList.remove("av-web-studio-popup--visible");
+    el.classList.remove("akash-visual-layout-builder-popup--visible");
     el.setAttribute("aria-hidden", "true");
-    if (!document.querySelector(".av-web-studio-popup.av-web-studio-popup--visible")) {
-      document.body.classList.remove("av-web-studio-popup-open");
+    if (!document.querySelector(".akash-visual-layout-builder-popup.akash-visual-layout-builder-popup--visible")) {
+      document.body.classList.remove("akash-visual-layout-builder-popup-open");
     }
-    document.dispatchEvent(new CustomEvent("av-web-studio:popup:close", { detail: { id: config.id } }));
+    document.dispatchEvent(new CustomEvent("akash-visual-layout-builder:popup:close", { detail: { id: config.id } }));
   }
 
   function bindClose(config) {
@@ -83,9 +83,9 @@
       return;
     }
 
-    el.querySelectorAll("[data-av-web-studio-close]").forEach(function (node) {
+    el.querySelectorAll("[data-akash-visual-layout-builder-close]").forEach(function (node) {
       node.addEventListener("click", function () {
-        if (config.overlay_close !== false || node.classList.contains("av-web-studio-popup__close")) {
+        if (config.overlay_close !== false || node.classList.contains("akash-visual-layout-builder-popup__close")) {
           hidePopup(config);
         }
       });
@@ -93,7 +93,7 @@
 
     if (config.esc_close !== false) {
       document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && el.classList.contains("av-web-studio-popup--visible")) {
+        if (e.key === "Escape" && el.classList.contains("akash-visual-layout-builder-popup--visible")) {
           hidePopup(config);
         }
       });

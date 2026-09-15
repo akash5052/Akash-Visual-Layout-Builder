@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var cfg = window.avWebStudioTracking || {};
+  var cfg = window.akashVisualLayoutBuilderTracking || {};
 
   if (cfg.gtmId) {
     window.dataLayer = window.dataLayer || [];

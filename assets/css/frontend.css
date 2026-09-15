@@ -1,34 +1,34 @@
 /**
- * Front-end layout overrides for AV Web Studio pages.
+ * Front-end layout overrides for Akash Visual Layout Builder pages.
  */
 
 /* Hide duplicate page title when enabled in page settings */
-body.av-web-studio-hide-title .entry-header,
-body.av-web-studio-hide-title .page-header,
-body.av-web-studio-hide-title .wp-block-post-title,
-body.av-web-studio-hide-title h1.entry-title {
+body.akash-visual-layout-builder-hide-title .entry-header,
+body.akash-visual-layout-builder-hide-title .page-header,
+body.akash-visual-layout-builder-hide-title .wp-block-post-title,
+body.akash-visual-layout-builder-hide-title h1.entry-title {
 	display: none !important;
 }
 
-/* Default + AV Web Studio Full Width — stretch content area */
-body.av-web-studio-page-template-default .entry-content,
-body.av-web-studio-page-template-default .page-content,
-body.av-web-studio-page-template-default .wp-block-post-content,
-body.av-web-studio-page-template-av-web-studio-full-width .entry-content,
-body.av-web-studio-page-template-av-web-studio-full-width .page-content,
-body.av-web-studio-page-template-av-web-studio-full-width .wp-block-post-content,
-body.av-web-studio-page-template-default article .entry-content,
-body.av-web-studio-page-template-av-web-studio-full-width article .entry-content,
-body.av-web-studio-page-template-default .site-main,
-body.av-web-studio-page-template-av-web-studio-full-width .site-main,
-body.av-web-studio-page-template-default .content-area,
-body.av-web-studio-page-template-av-web-studio-full-width .content-area,
-body.av-web-studio-page-template-default .ast-container,
-body.av-web-studio-page-template-av-web-studio-full-width .ast-container,
-body.av-web-studio-page-template-default .container,
-body.av-web-studio-page-template-av-web-studio-full-width .container,
-body.av-web-studio-page-template-default .wrap,
-body.av-web-studio-page-template-av-web-studio-full-width .wrap {
+/* Default + Akash Visual Layout Builder Full Width — stretch content area */
+body.akash-visual-layout-builder-page-template-default .entry-content,
+body.akash-visual-layout-builder-page-template-default .page-content,
+body.akash-visual-layout-builder-page-template-default .wp-block-post-content,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .entry-content,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .page-content,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .wp-block-post-content,
+body.akash-visual-layout-builder-page-template-default article .entry-content,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width article .entry-content,
+body.akash-visual-layout-builder-page-template-default .site-main,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .site-main,
+body.akash-visual-layout-builder-page-template-default .content-area,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .content-area,
+body.akash-visual-layout-builder-page-template-default .ast-container,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .ast-container,
+body.akash-visual-layout-builder-page-template-default .container,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .container,
+body.akash-visual-layout-builder-page-template-default .wrap,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .wrap {
 	max-width: 100% !important;
 	width: 100% !important;
 	padding-left: 0 !important;
@@ -37,20 +37,20 @@ body.av-web-studio-page-template-av-web-studio-full-width .wrap {
 	margin-right: 0 !important;
 }
 
-body.av-web-studio-page-template-default .site-content,
-body.av-web-studio-page-template-default #content,
-body.av-web-studio-page-template-default #primary,
-body.av-web-studio-page-template-default main,
-body.av-web-studio-page-template-av-web-studio-full-width .site-content,
-body.av-web-studio-page-template-av-web-studio-full-width #content,
-body.av-web-studio-page-template-av-web-studio-full-width #primary,
-body.av-web-studio-page-template-av-web-studio-full-width main {
+body.akash-visual-layout-builder-page-template-default .site-content,
+body.akash-visual-layout-builder-page-template-default #content,
+body.akash-visual-layout-builder-page-template-default #primary,
+body.akash-visual-layout-builder-page-template-default main,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .site-content,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width #content,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width #primary,
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width main {
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
 
-/* Full viewport width breakout — AV Web Studio Full Width only */
-body.av-web-studio-page-template-av-web-studio-full-width .av-web-studio-page {
+/* Full viewport width breakout — Akash Visual Layout Builder Full Width only */
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-full-width .akash-visual-layout-builder-page {
 	width: 100vw !important;
 	max-width: 100vw !important;
 	position: relative;
@@ -62,15 +62,15 @@ body.av-web-studio-page-template-av-web-studio-full-width .av-web-studio-page {
 	overflow-x: hidden;
 }
 
-/* AV Web Studio Canvas — minimal shell */
-body.av-web-studio-page-template-av-web-studio-canvas,
-body.av-web-studio-canvas-template {
+/* Akash Visual Layout Builder Canvas — minimal shell */
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-canvas,
+body.akash-visual-layout-builder-canvas-template {
 	margin: 0;
 	padding: 0;
 }
 
-body.av-web-studio-page-template-av-web-studio-canvas .av-web-studio-canvas-content,
-body.av-web-studio-canvas-template .av-web-studio-canvas-content {
+body.akash-visual-layout-builder-page-template-akash-visual-layout-builder-canvas .akash-visual-layout-builder-canvas-content,
+body.akash-visual-layout-builder-canvas-template .akash-visual-layout-builder-canvas-content {
 	display: block;
 	width: 100%;
 	min-height: 100vh;
@@ -78,104 +78,104 @@ body.av-web-studio-canvas-template .av-web-studio-canvas-content {
 	padding: 0;
 }
 
-.av-web-studio-page * {
+.akash-visual-layout-builder-page * {
 	box-sizing: border-box;
 }
 
-.av-web-studio-page section,
-.av-web-studio-page .hero,
-.av-web-studio-page .features {
+.akash-visual-layout-builder-page section,
+.akash-visual-layout-builder-page .hero,
+.akash-visual-layout-builder-page .features {
 	width: 100%;
 }
 
 /* Posts listing widgets */
-.av-web-studio-posts {
-	--av-web-studio-posts-gap: 24px;
-	--av-web-studio-posts-cols: 3;
-	--av-web-studio-posts-image-ratio: 16/9;
-	--av-web-studio-posts-list-image-width: 140px;
-	--av-web-studio-posts-carousel-height: 360px;
+.akash-visual-layout-builder-posts {
+	--akash-visual-layout-builder-posts-gap: 24px;
+	--akash-visual-layout-builder-posts-cols: 3;
+	--akash-visual-layout-builder-posts-image-ratio: 16/9;
+	--akash-visual-layout-builder-posts-list-image-width: 140px;
+	--akash-visual-layout-builder-posts-carousel-height: 360px;
 }
 
-.av-web-studio-posts--grid {
+.akash-visual-layout-builder-posts--grid {
 	display: grid;
-	grid-template-columns: repeat(var(--av-web-studio-posts-cols), minmax(0, 1fr));
-	gap: var(--av-web-studio-posts-gap);
+	grid-template-columns: repeat(var(--akash-visual-layout-builder-posts-cols), minmax(0, 1fr));
+	gap: var(--akash-visual-layout-builder-posts-gap);
 }
 
-.av-web-studio-posts--list {
+.akash-visual-layout-builder-posts--list {
 	display: flex;
 	flex-direction: column;
-	gap: var(--av-web-studio-posts-gap);
+	gap: var(--akash-visual-layout-builder-posts-gap);
 }
 
-.av-web-studio-posts--carousel {
+.akash-visual-layout-builder-posts--carousel {
 	position: relative;
 }
 
-.av-web-studio-posts__item {
+.akash-visual-layout-builder-posts__item {
 	display: flex;
 	flex-direction: column;
 	min-width: 0;
 }
 
-.av-web-studio-posts--list .av-web-studio-posts__item {
+.akash-visual-layout-builder-posts--list .akash-visual-layout-builder-posts__item {
 	flex-direction: row;
 	gap: 16px;
 	align-items: flex-start;
 }
 
-.av-web-studio-posts--card .av-web-studio-posts__item {
+.akash-visual-layout-builder-posts--card .akash-visual-layout-builder-posts__item {
 	border: 1px solid #e2e8f0;
 	border-radius: 8px;
 	overflow: hidden;
 	background: #fff;
 }
 
-.av-web-studio-posts--minimal .av-web-studio-posts__item {
+.akash-visual-layout-builder-posts--minimal .akash-visual-layout-builder-posts__item {
 	border: none;
 	background: transparent;
 }
 
-.av-web-studio-posts--overlay .av-web-studio-posts__item {
+.akash-visual-layout-builder-posts--overlay .akash-visual-layout-builder-posts__item {
 	position: relative;
 	border-radius: 8px;
 	overflow: hidden;
 }
 
-.av-web-studio-posts__media {
+.akash-visual-layout-builder-posts__media {
 	display: block;
 	overflow: hidden;
 	flex-shrink: 0;
 }
 
-.av-web-studio-posts--grid .av-web-studio-posts__media {
-	aspect-ratio: var(--av-web-studio-posts-image-ratio);
+.akash-visual-layout-builder-posts--grid .akash-visual-layout-builder-posts__media {
+	aspect-ratio: var(--akash-visual-layout-builder-posts-image-ratio);
 }
 
-.av-web-studio-posts--list .av-web-studio-posts__media {
-	width: var(--av-web-studio-posts-list-image-width);
-	aspect-ratio: var(--av-web-studio-posts-image-ratio);
+.akash-visual-layout-builder-posts--list .akash-visual-layout-builder-posts__media {
+	width: var(--akash-visual-layout-builder-posts-list-image-width);
+	aspect-ratio: var(--akash-visual-layout-builder-posts-image-ratio);
 }
 
-.av-web-studio-posts__media img {
+.akash-visual-layout-builder-posts__media img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	display: block;
 }
 
-.av-web-studio-posts__body {
+.akash-visual-layout-builder-posts__body {
 	padding: 16px;
 	flex: 1 1 auto;
 	min-width: 0;
 }
 
-.av-web-studio-posts--list .av-web-studio-posts__body {
+.akash-visual-layout-builder-posts--list .akash-visual-layout-builder-posts__body {
 	padding: 0;
 }
 
-.av-web-studio-posts--overlay .av-web-studio-posts__body {
+.akash-visual-layout-builder-posts--overlay .akash-visual-layout-builder-posts__body {
 	position: absolute;
 	inset: auto 0 0 0;
 	padding: 20px;
@@ -183,22 +183,22 @@ body.av-web-studio-canvas-template .av-web-studio-canvas-content {
 	background: linear-gradient(transparent, rgba(15, 23, 42, 0.85));
 }
 
-.av-web-studio-posts__title {
+.akash-visual-layout-builder-posts__title {
 	margin: 0 0 8px;
 	font-size: 1.125rem;
 	line-height: 1.35;
 }
 
-.av-web-studio-posts__title a {
+.akash-visual-layout-builder-posts__title a {
 	color: inherit;
 	text-decoration: none;
 }
 
-.av-web-studio-posts__title a:hover {
+.akash-visual-layout-builder-posts__title a:hover {
 	text-decoration: underline;
 }
 
-.av-web-studio-posts__meta {
+.akash-visual-layout-builder-posts__meta {
 	font-size: 12px;
 	opacity: 0.72;
 	margin-bottom: 8px;
@@ -207,25 +207,25 @@ body.av-web-studio-canvas-template .av-web-studio-canvas-content {
 	gap: 8px;
 }
 
-.av-web-studio-posts__excerpt {
+.akash-visual-layout-builder-posts__excerpt {
 	margin: 0 0 12px;
 	font-size: 14px;
 	line-height: 1.55;
 	opacity: 0.88;
 }
 
-.av-web-studio-posts__read-more {
+.akash-visual-layout-builder-posts__read-more {
 	font-size: 13px;
 	font-weight: 700;
 	color: #6366f1;
 	text-decoration: none;
 }
 
-.av-web-studio-posts__read-more:hover {
+.akash-visual-layout-builder-posts__read-more:hover {
 	text-decoration: underline;
 }
 
-.av-web-studio-posts__empty {
+.akash-visual-layout-builder-posts__empty {
 	padding: 24px;
 	text-align: center;
 	opacity: 0.65;
@@ -234,15 +234,15 @@ body.av-web-studio-canvas-template .av-web-studio-canvas-content {
 	border-radius: 8px;
 }
 
-.av-web-studio-posts--carousel .av-web-studio-posts__slide {
+.akash-visual-layout-builder-posts--carousel .akash-visual-layout-builder-posts__slide {
 	display: none;
 }
 
-.av-web-studio-posts--carousel .av-web-studio-posts__slide.is-active {
+.akash-visual-layout-builder-posts--carousel .akash-visual-layout-builder-posts__slide.is-active {
 	display: block;
 }
 
-.av-web-studio-posts--carousel .av-web-studio-posts__slide .av-web-studio-posts__media {
-	height: var(--av-web-studio-posts-carousel-height);
+.akash-visual-layout-builder-posts--carousel .akash-visual-layout-builder-posts__slide .akash-visual-layout-builder-posts__media {
+	height: var(--akash-visual-layout-builder-posts-carousel-height);
 	aspect-ratio: auto;
 }

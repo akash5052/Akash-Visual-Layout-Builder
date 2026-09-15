@@ -6,8 +6,8 @@ import { PostsWidgetFields } from "./PostsWidgetFields";
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="av-web-studio-visual__field">
-      <span className="av-web-studio-visual__field-label">{label}</span>
+    <div className="akash-visual-layout-builder-visual__field">
+      <span className="akash-visual-layout-builder-visual__field-label">{label}</span>
       {children}
     </div>
   );
@@ -61,7 +61,7 @@ export function AdvancedWidgetFields({
               placeholder="16 / 9"
             />
           </Field>
-          <label className="av-web-studio-visual__check">
+          <label className="akash-visual-layout-builder-visual__check">
             <input
               type="checkbox"
               checked={widget.autoplay}

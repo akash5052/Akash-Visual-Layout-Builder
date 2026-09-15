@@ -62,23 +62,23 @@ export function LayoutPanel({
   const canEditFooter = pageLayout.footer_mode !== "none";
 
   return (
-    <aside className="av-web-studio-side-panel av-web-studio-layout-sidebar">
-      <div className="av-web-studio-side-panel__header">
+    <aside className="akash-visual-layout-builder-side-panel akash-visual-layout-builder-layout-sidebar">
+      <div className="akash-visual-layout-builder-side-panel__header">
         <h3>Page layout</h3>
         <p>Page header &amp; footer</p>
       </div>
 
       <button
         type="button"
-        className={`av-web-studio-file ${layoutCodePart === "page-header" ? "av-web-studio-file--active" : ""}`}
+        className={`akash-visual-layout-builder-file ${layoutCodePart === "page-header" ? "akash-visual-layout-builder-file--active" : ""}`}
         disabled={!canEditHeader}
         onClick={() => onLayoutCodePartChange("page-header")}
       >
-        <span className="av-web-studio-file__icon">⬆</span>
-        <span className="av-web-studio-file__path">Page Header</span>
+        <span className="akash-visual-layout-builder-file__icon">⬆</span>
+        <span className="akash-visual-layout-builder-file__path">Page Header</span>
       </button>
 
-      <label className="av-web-studio-layout-mode av-web-studio-layout-mode--sidebar">
+      <label className="akash-visual-layout-builder-layout-mode akash-visual-layout-builder-layout-mode--sidebar">
         <span>Header mode</span>
         <select
           value={pageLayout.header_mode}
@@ -91,19 +91,19 @@ export function LayoutPanel({
           ))}
         </select>
       </label>
-      <p className="av-web-studio-side-panel__hint">{regionHint("header", pageLayout.header_mode, globalLayout.header_enabled)}</p>
+      <p className="akash-visual-layout-builder-side-panel__hint">{regionHint("header", pageLayout.header_mode, globalLayout.header_enabled)}</p>
 
       <button
         type="button"
-        className={`av-web-studio-file ${layoutCodePart === "page-footer" ? "av-web-studio-file--active" : ""}`}
+        className={`akash-visual-layout-builder-file ${layoutCodePart === "page-footer" ? "akash-visual-layout-builder-file--active" : ""}`}
         disabled={!canEditFooter}
         onClick={() => onLayoutCodePartChange("page-footer")}
       >
-        <span className="av-web-studio-file__icon">⬇</span>
-        <span className="av-web-studio-file__path">Page Footer</span>
+        <span className="akash-visual-layout-builder-file__icon">⬇</span>
+        <span className="akash-visual-layout-builder-file__path">Page Footer</span>
       </button>
 
-      <label className="av-web-studio-layout-mode av-web-studio-layout-mode--sidebar">
+      <label className="akash-visual-layout-builder-layout-mode akash-visual-layout-builder-layout-mode--sidebar">
         <span>Footer mode</span>
         <select
           value={pageLayout.footer_mode}
@@ -116,14 +116,14 @@ export function LayoutPanel({
           ))}
         </select>
       </label>
-      <p className="av-web-studio-side-panel__hint">{regionHint("footer", pageLayout.footer_mode, globalLayout.footer_enabled)}</p>
+      <p className="akash-visual-layout-builder-side-panel__hint">{regionHint("footer", pageLayout.footer_mode, globalLayout.footer_enabled)}</p>
 
-      <p className="av-web-studio-side-panel__hint">
+      <p className="akash-visual-layout-builder-side-panel__hint">
         Visual builder is active for the page {regionLabel}. Use Desktop / Tablet / Mobile for responsive editing.
       </p>
 
-      <div className="av-web-studio-side-panel__footer">
-        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary av-web-studio-btn--block" disabled={isSaving} onClick={onSave}>
+      <div className="akash-visual-layout-builder-side-panel__footer">
+        <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--primary akash-visual-layout-builder-btn--block" disabled={isSaving} onClick={onSave}>
           {isSaving ? "Saving…" : "Save layout"}
         </button>
       </div>

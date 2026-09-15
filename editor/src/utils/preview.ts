@@ -2,11 +2,11 @@ import type { PageCode, GlobalLayout, PageLayout } from "../types";
 import { buildPreviewBody } from "./layout";
 
 /**
- * Strip outer .av-web-studio-page wrapper so we can append inner sections only.
+ * Strip outer .akash-visual-layout-builder-page wrapper so we can append inner sections only.
  */
 function stripPageWrapper(html: string): string {
   const trimmed = html.trim();
-  const match = trimmed.match(/^<div[^>]*class="[^"]*av-web-studio-page[^"]*"[^>]*>([\s\S]*)<\/div>\s*$/i);
+  const match = trimmed.match(/^<div[^>]*class="[^"]*akash-visual-layout-builder-page[^"]*"[^>]*>([\s\S]*)<\/div>\s*$/i);
   if (match) {
     return match[1].trim();
   }
@@ -25,11 +25,11 @@ export function mergeHtml(existing: string, generated: string): string {
   const current = existing.trim();
 
   if (!current) {
-    return `<div class="av-web-studio-page">\n${section}\n</div>`;
+    return `<div class="akash-visual-layout-builder-page">\n${section}\n</div>`;
   }
 
   const rootMatch = current.match(
-    /^(\s*<div[^>]*class="[^"]*av-web-studio-page[^"]*"[^>]*>)([\s\S]*?)(<\/div>\s*)$/i
+    /^(\s*<div[^>]*class="[^"]*akash-visual-layout-builder-page[^"]*"[^>]*>)([\s\S]*?)(<\/div>\s*)$/i
   );
 
   if (rootMatch) {

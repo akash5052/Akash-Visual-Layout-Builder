@@ -41,7 +41,7 @@ export function BuilderContextMenu({ x, y, items, onClose }: BuilderContextMenuP
 
   return createPortal(
     <div
-      className="av-web-studio-context-menu"
+      className="akash-visual-layout-builder-context-menu"
       style={{ top, left }}
       role="menu"
       onContextMenu={(e) => e.preventDefault()}
@@ -49,13 +49,13 @@ export function BuilderContextMenu({ x, y, items, onClose }: BuilderContextMenuP
     >
       {items.map((item) =>
         item.separator ? (
-          <div key={item.id} className="av-web-studio-context-menu__sep" role="separator" />
+          <div key={item.id} className="akash-visual-layout-builder-context-menu__sep" role="separator" />
         ) : (
           <button
             key={item.id}
             type="button"
             role="menuitem"
-            className={`av-web-studio-context-menu__item${item.danger ? " av-web-studio-context-menu__item--danger" : ""}`}
+            className={`akash-visual-layout-builder-context-menu__item${item.danger ? " akash-visual-layout-builder-context-menu__item--danger" : ""}`}
             disabled={item.disabled}
             onClick={() => {
               item.onClick?.();
@@ -63,7 +63,7 @@ export function BuilderContextMenu({ x, y, items, onClose }: BuilderContextMenuP
             }}
           >
             <span>{item.label}</span>
-            {item.shortcut ? <span className="av-web-studio-context-menu__shortcut">{item.shortcut}</span> : null}
+            {item.shortcut ? <span className="akash-visual-layout-builder-context-menu__shortcut">{item.shortcut}</span> : null}
           </button>
         )
       )}

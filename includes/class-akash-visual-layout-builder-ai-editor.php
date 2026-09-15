@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Applies AI edits to existing page code (sections, animations, images).
  */
-class Av_Web_Studio_AI_Editor {
+class Akash_Visual_Layout_Builder_AI_Editor {
 
 	/**
 	 * Apply a contextual edit based on parsed intent.
@@ -22,7 +22,7 @@ class Av_Web_Studio_AI_Editor {
 			return [
 				'code'    => $context,
 				'source'  => 'smart',
-				'message' => __('Add a section first, then you can edit it.', 'av-web-studio'),
+				'message' => __('Add a section first, then you can edit it.', 'akash-visual-layout-builder'),
 				'action'  => 'none',
 			];
 		}
@@ -31,22 +31,22 @@ class Av_Web_Studio_AI_Editor {
 			case 'animate':
 				return self::wrap_result(
 					self::add_animations($context, $intent['target'] ?? 'all'),
-					__('Animations added to your page.', 'av-web-studio')
+					__('Animations added to your page.', 'akash-visual-layout-builder')
 				);
 
 			case 'images':
-				$topic = $intent['topic'] ?: Av_Web_Studio_AI_Intent::extract_image_topic($prompt);
+				$topic = $intent['topic'] ?: Akash_Visual_Layout_Builder_AI_Intent::extract_image_topic($prompt);
 				$page_title = $intent['page_title'] ?? self::extract_page_title($context['html'] ?? '');
 				$result = self::inject_images($context, $topic, $intent['target'] ?? 'last', $prompt, $page_title);
 				if ($result) {
-					return self::wrap_result($result, __('Relevant images added to match your page content.', 'av-web-studio'));
+					return self::wrap_result($result, __('Relevant images added to match your page content.', 'akash-visual-layout-builder'));
 				}
 				break;
 
 			case 'edit':
 				$result = self::edit_page($context, $prompt, $intent);
 				if ($result) {
-					$msg = !empty($intent['is_complaint']) ? __('Section fixed and improved.', 'av-web-studio') : __('Section updated.', 'av-web-studio');
+					$msg = !empty($intent['is_complaint']) ? __('Section fixed and improved.', 'akash-visual-layout-builder') : __('Section updated.', 'akash-visual-layout-builder');
 					return self::wrap_result($result, $msg);
 				}
 				break;
@@ -148,7 +148,7 @@ class Av_Web_Studio_AI_Editor {
 	public static function extract_page_title($html) {
 		if (preg_match('/<h1[^>]*>(.*?)<\/h1>/is', $html, $m)) {
 			$title = trim(wp_strip_all_tags($m[1]));
-			if (!Av_Web_Studio_AI_Intent::is_bad_title($title)) {
+			if (!Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($title)) {
 				return $title;
 			}
 		}
@@ -173,10 +173,10 @@ class Av_Web_Studio_AI_Editor {
 		}
 
 		$title = self::extract_heading($old);
-		if (!$title || Av_Web_Studio_AI_Intent::is_bad_title($title)) {
+		if (!$title || Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($title)) {
 			$title = self::extract_page_title($context['html']);
 		}
-		if (!$title || Av_Web_Studio_AI_Intent::is_bad_title($title)) {
+		if (!$title || Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($title)) {
 			$defaults = [
 				'hero'     => 'Welcome',
 				'pricing'  => 'Simple Pricing',
@@ -191,7 +191,7 @@ class Av_Web_Studio_AI_Editor {
 		}
 
 		$slug = 'fixed-' . $type . '-' . wp_rand(100, 999);
-		$new  = Av_Web_Studio_AI_Templates::section_by_type($type, $title, $slug, $prompt);
+		$new  = Akash_Visual_Layout_Builder_AI_Templates::section_by_type($type, $title, $slug, $prompt);
 
 		return [
 			'html' => self::replace_section($context['html'], $target, $new['html']),
@@ -279,38 +279,38 @@ class Av_Web_Studio_AI_Editor {
 
 		$anim_css = "
 /* --- AI Animations --- */
-@keyframes av-web-studio-fade-up {
+@keyframes akash-visual-layout-builder-fade-up {
   from { opacity: 0; transform: translateY(36px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes av-web-studio-fade-in {
+@keyframes akash-visual-layout-builder-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-@keyframes av-web-studio-scale-in {
+@keyframes akash-visual-layout-builder-scale-in {
   from { opacity: 0; transform: scale(0.94); }
   to { opacity: 1; transform: scale(1); }
 }
-@keyframes av-web-studio-slide-left {
+@keyframes akash-visual-layout-builder-slide-left {
   from { opacity: 0; transform: translateX(-40px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
-.av-web-studio-anim-enter {
-  animation: av-web-studio-fade-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.akash-visual-layout-builder-anim-enter {
+  animation: akash-visual-layout-builder-fade-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   opacity: 0;
 }
-.av-web-studio-anim-delay-1 { animation-delay: 0.12s; }
-.av-web-studio-anim-delay-2 { animation-delay: 0.24s; }
-.av-web-studio-anim-delay-3 { animation-delay: 0.36s; }
-.av-web-studio-anim-delay-4 { animation-delay: 0.48s; }
+.akash-visual-layout-builder-anim-delay-1 { animation-delay: 0.12s; }
+.akash-visual-layout-builder-anim-delay-2 { animation-delay: 0.24s; }
+.akash-visual-layout-builder-anim-delay-3 { animation-delay: 0.36s; }
+.akash-visual-layout-builder-anim-delay-4 { animation-delay: 0.48s; }
 
-.av-web-studio-scroll-reveal {
+.akash-visual-layout-builder-scroll-reveal {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity 0.65s ease, transform 0.65s ease;
 }
-.av-web-studio-scroll-reveal.av-web-studio-revealed {
+.akash-visual-layout-builder-scroll-reveal.akash-visual-layout-builder-revealed {
   opacity: 1;
   transform: translateY(0);
 }
@@ -322,16 +322,16 @@ section:hover {
 		$anim_js = "
 /* --- AI Scroll Reveal --- */
 document.addEventListener('DOMContentLoaded', function () {
-  var els = document.querySelectorAll('.av-web-studio-scroll-reveal');
+  var els = document.querySelectorAll('.akash-visual-layout-builder-scroll-reveal');
   if (!els.length) return;
   if (!('IntersectionObserver' in window)) {
-    els.forEach(function (el) { el.classList.add('av-web-studio-revealed'); });
+    els.forEach(function (el) { el.classList.add('akash-visual-layout-builder-revealed'); });
     return;
   }
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
-        entry.target.classList.add('av-web-studio-revealed');
+        entry.target.classList.add('akash-visual-layout-builder-revealed');
         io.unobserve(entry.target);
       }
     });
@@ -340,12 +340,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });";
 
 		if ($target === 'all') {
-			$html = preg_replace('/<section\b/i', '<section class="av-web-studio-scroll-reveal"', $html);
-			$html = preg_replace('/class="av-web-studio-scroll-reveal"\s+class="/i', 'class="av-web-studio-scroll-reveal ', $html);
+			$html = preg_replace('/<section\b/i', '<section class="akash-visual-layout-builder-scroll-reveal"', $html);
+			$html = preg_replace('/class="akash-visual-layout-builder-scroll-reveal"\s+class="/i', 'class="akash-visual-layout-builder-scroll-reveal ', $html);
 		} else {
 			$section = self::get_section($html, $target);
 			if ($section) {
-				$updated = preg_replace('/<section\b/i', '<section class="av-web-studio-scroll-reveal av-web-studio-anim-enter"', $section, 1);
+				$updated = preg_replace('/<section\b/i', '<section class="akash-visual-layout-builder-scroll-reveal akash-visual-layout-builder-anim-enter"', $section, 1);
 				$html    = str_replace($section, $updated, $html);
 			}
 		}
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					function ($tag) use (&$i) {
 						$delay = min($i, 4);
 						$i++;
-						return '<' . $tag[1] . ' class="av-web-studio-anim-enter av-web-studio-anim-delay-' . $delay . '"';
+						return '<' . $tag[1] . ' class="akash-visual-layout-builder-anim-enter akash-visual-layout-builder-anim-delay-' . $delay . '"';
 					},
 					$block,
 					6
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			$page_title = self::extract_page_title($html);
 		}
 
-		$section_type = Av_Web_Studio_AI_Intent::parse_section_type(strtolower($prompt));
+		$section_type = Akash_Visual_Layout_Builder_AI_Intent::parse_section_type(strtolower($prompt));
 		if (is_string($target) && strpos($target, 'type:') === 0) {
 			$section_type = substr($target, 5) ?: $section_type;
 		}
@@ -406,17 +406,17 @@ document.addEventListener('DOMContentLoaded', function () {
 			} else {
 				$new_html = $html;
 				foreach ($sections as $sec) {
-					$resolved = Av_Web_Studio_AI_Images::resolve_topic($topic, $page_title, $sec, $html);
-					$type     = Av_Web_Studio_AI_Images::detect_section_type_from_html($sec);
-					$updated  = Av_Web_Studio_AI_Images::align_section_images($sec, $resolved, $page_title, $type);
+					$resolved = Akash_Visual_Layout_Builder_AI_Images::resolve_topic($topic, $page_title, $sec, $html);
+					$type     = Akash_Visual_Layout_Builder_AI_Images::detect_section_type_from_html($sec);
+					$updated  = Akash_Visual_Layout_Builder_AI_Images::align_section_images($sec, $resolved, $page_title, $type);
 					if (stripos($updated, '<img') === false && stripos($updated, 'background-image') === false) {
-						$industry = Av_Web_Studio_AI_Images::industry_for_topic($resolved, $page_title);
-						$heading  = Av_Web_Studio_AI_Editor::extract_heading($sec);
-						$alt      = Av_Web_Studio_AI_Images::descriptive_alt($resolved, $industry, 0, $heading);
-						$img      = Av_Web_Studio_AI_Images::img_tag($alt, $resolved, 'av-web-studio-ai-injected-img', 1000, 560, 0, $page_title, $type, $heading);
+						$industry = Akash_Visual_Layout_Builder_AI_Images::industry_for_topic($resolved, $page_title);
+						$heading  = Akash_Visual_Layout_Builder_AI_Editor::extract_heading($sec);
+						$alt      = Akash_Visual_Layout_Builder_AI_Images::descriptive_alt($resolved, $industry, 0, $heading);
+						$img      = Akash_Visual_Layout_Builder_AI_Images::img_tag($alt, $resolved, 'akash-visual-layout-builder-ai-injected-img', 1000, 560, 0, $page_title, $type, $heading);
 						$updated  = preg_replace(
 							'/(<section[^>]*>)(\s*)/i',
-							'$1$2<div class="av-web-studio-ai-img-wrap">' . $img . '</div>',
+							'$1$2<div class="akash-visual-layout-builder-ai-img-wrap">' . $img . '</div>',
 							$updated,
 							1
 						);
@@ -434,25 +434,25 @@ document.addEventListener('DOMContentLoaded', function () {
 		$section = self::get_section($html, $target);
 
 		if (!$section) {
-			$resolved = Av_Web_Studio_AI_Images::resolve_topic($topic, $page_title, null, $html);
-			$industry = Av_Web_Studio_AI_Images::industry_for_topic($resolved, $page_title);
-			$alt      = Av_Web_Studio_AI_Images::descriptive_alt($resolved, $industry);
-			$heading  = Av_Web_Studio_AI_Images::is_generic_topic($resolved)
-				? ucfirst(Av_Web_Studio_AI_Images::industry_label($industry))
+			$resolved = Akash_Visual_Layout_Builder_AI_Images::resolve_topic($topic, $page_title, null, $html);
+			$industry = Akash_Visual_Layout_Builder_AI_Images::industry_for_topic($resolved, $page_title);
+			$alt      = Akash_Visual_Layout_Builder_AI_Images::descriptive_alt($resolved, $industry);
+			$heading  = Akash_Visual_Layout_Builder_AI_Images::is_generic_topic($resolved)
+				? ucfirst(Akash_Visual_Layout_Builder_AI_Images::industry_label($industry))
 				: ucfirst($resolved);
 
-			$new_section = '<section class="av-web-studio-image-sec">' . "\n"
-				. '  <div class="av-web-studio-image-sec__inner">' . "\n"
-				. '    ' . Av_Web_Studio_AI_Images::img_tag($alt, $resolved, 'av-web-studio-image-sec__hero', 1200, 640, 0, $page_title, 'hero', $heading) . "\n"
+			$new_section = '<section class="akash-visual-layout-builder-image-sec">' . "\n"
+				. '  <div class="akash-visual-layout-builder-image-sec__inner">' . "\n"
+				. '    ' . Akash_Visual_Layout_Builder_AI_Images::img_tag($alt, $resolved, 'akash-visual-layout-builder-image-sec__hero', 1200, 640, 0, $page_title, 'hero', $heading) . "\n"
 				. '    <h2>' . esc_html($heading) . '</h2>' . "\n"
 				. '  </div>' . "\n"
 				. '</section>';
 
 			$css = $context['css'] . "/* --- AI Image Section --- */
-.av-web-studio-image-sec { padding: 60px 20px; width: 100%; text-align: center; }
-.av-web-studio-image-sec__inner { max-width: 1100px; margin: 0 auto; }
-.av-web-studio-image-sec__hero { width: 100%; max-height: 480px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,.12); margin-bottom: 24px; }
-.av-web-studio-image-sec h2 { font-size: 2rem; color: #0f172a; margin: 0; }";
+.akash-visual-layout-builder-image-sec { padding: 60px 20px; width: 100%; text-align: center; }
+.akash-visual-layout-builder-image-sec__inner { max-width: 1100px; margin: 0 auto; }
+.akash-visual-layout-builder-image-sec__hero { width: 100%; max-height: 480px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,.12); margin-bottom: 24px; }
+.akash-visual-layout-builder-image-sec h2 { font-size: 2rem; color: #0f172a; margin: 0; }";
 
 			return [
 				'html' => trim($html . "\n\n" . $new_section),
@@ -461,19 +461,19 @@ document.addEventListener('DOMContentLoaded', function () {
 			];
 		}
 
-		$resolved = Av_Web_Studio_AI_Images::resolve_topic($topic, $page_title, $section, $html);
-		$industry = Av_Web_Studio_AI_Images::industry_for_topic($resolved, $page_title);
+		$resolved = Akash_Visual_Layout_Builder_AI_Images::resolve_topic($topic, $page_title, $section, $html);
+		$industry = Akash_Visual_Layout_Builder_AI_Images::industry_for_topic($resolved, $page_title);
 		$heading  = self::extract_heading($section);
-		$body     = Av_Web_Studio_AI_Images::extract_section_text($section);
-		$type     = $section_type ?: Av_Web_Studio_AI_Images::detect_section_type_from_html($section);
+		$body     = Akash_Visual_Layout_Builder_AI_Images::extract_section_text($section);
+		$type     = $section_type ?: Akash_Visual_Layout_Builder_AI_Images::detect_section_type_from_html($section);
 		$updated  = $section;
 
 		if (stripos($updated, '<img') === false && stripos($updated, 'background-image') === false) {
-			$alt = Av_Web_Studio_AI_Images::descriptive_alt($resolved, $industry, 0, $heading);
-			$img = Av_Web_Studio_AI_Images::img_tag($alt, $resolved, 'av-web-studio-ai-injected-img', 1000, 560, 0, $page_title, $type, $heading);
+			$alt = Akash_Visual_Layout_Builder_AI_Images::descriptive_alt($resolved, $industry, 0, $heading);
+			$img = Akash_Visual_Layout_Builder_AI_Images::img_tag($alt, $resolved, 'akash-visual-layout-builder-ai-injected-img', 1000, 560, 0, $page_title, $type, $heading);
 			$updated = preg_replace(
 				'/(<section[^>]*>)(\s*)/i',
-				'$1$2<div class="av-web-studio-ai-img-wrap">' . $img . '</div>',
+				'$1$2<div class="akash-visual-layout-builder-ai-img-wrap">' . $img . '</div>',
 				$updated,
 				1
 			);
@@ -485,13 +485,13 @@ document.addEventListener('DOMContentLoaded', function () {
 					$count++;
 					$w   = 800;
 					$h   = 500;
-					$alt = Av_Web_Studio_AI_Images::descriptive_alt($resolved, '', $count - 1, $heading);
-					$src = esc_url(Av_Web_Studio_AI_Images::relevant_url($resolved, $w, $h, $count - 1, $page_title, $type, $heading, $body));
-					return '<img class="av-web-studio-ai-injected-img" src="' . $src . '" alt="' . esc_attr($alt) . '" width="' . $w . '" height="' . $h . '" loading="lazy" decoding="async" />';
+					$alt = Akash_Visual_Layout_Builder_AI_Images::descriptive_alt($resolved, '', $count - 1, $heading);
+					$src = esc_url(Akash_Visual_Layout_Builder_AI_Images::relevant_url($resolved, $w, $h, $count - 1, $page_title, $type, $heading, $body));
+					return '<img class="akash-visual-layout-builder-ai-injected-img" src="' . $src . '" alt="' . esc_attr($alt) . '" width="' . $w . '" height="' . $h . '" loading="lazy" decoding="async" />';
 				},
 				$updated
 			);
-			$updated = Av_Web_Studio_AI_Images::align_images_in_markup($updated, $resolved, $page_title, $type, $heading);
+			$updated = Akash_Visual_Layout_Builder_AI_Images::align_images_in_markup($updated, $resolved, $page_title, $type, $heading);
 		}
 
 		$new_html = str_replace($section, $updated, $html);
@@ -510,13 +510,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * @return string
 	 */
 	private static function injected_image_css($existing) {
-		if (strpos($existing, 'av-web-studio-ai-injected-img') !== false) {
+		if (strpos($existing, 'akash-visual-layout-builder-ai-injected-img') !== false) {
 			return trim($existing);
 		}
 
 		return trim($existing . "/* --- AI Injected Images --- */
-.av-web-studio-ai-img-wrap { margin-bottom: 24px; }
-.av-web-studio-ai-injected-img {
+.akash-visual-layout-builder-ai-img-wrap { margin-bottom: 24px; }
+.akash-visual-layout-builder-ai-injected-img {
   width: 100%;
   max-height: 420px;
   object-fit: cover;
@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function () {
   box-shadow: 0 4px 20px rgba(0,0,0,.1);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
-.av-web-studio-ai-injected-img:hover {
+.akash-visual-layout-builder-ai-injected-img:hover {
   transform: scale(1.02);
   box-shadow: 0 8px 28px rgba(0,0,0,.15);
 }"
@@ -568,7 +568,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				return $regenerated;
 			}
 
-			$new_section = Av_Web_Studio_AI_Templates::generate($prompt, $context);
+			$new_section = Akash_Visual_Layout_Builder_AI_Templates::generate($prompt, $context);
 			$html        = self::replace_section($context['html'], $intent['target'] ?? 'last', $new_section['html']);
 
 			return [
@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	 */
 	private static function apply_background_edit($context, $color, $target) {
 		$section = self::get_section($context['html'], $target);
-		$slug    = 'av-web-studio-edit-' . wp_rand(100, 999);
+		$slug    = 'akash-visual-layout-builder-edit-' . wp_rand(100, 999);
 
 		if ($section && preg_match('/class="([^"]*)"/i', $section, $m)) {
 			$class   = $m[1];

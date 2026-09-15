@@ -36,14 +36,14 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Logo({ compact = false }: LogoProps) {
   if (compact) {
-    return <LogoMark className="av-web-studio-logo__mark av-web-studio-logo__mark--animated" />;
+    return <LogoMark className="akash-visual-layout-builder-logo__mark akash-visual-layout-builder-logo__mark--animated" />;
   }
 
   return (
-    <div className="av-web-studio-logo" aria-label="AV Web Studio">
-      <LogoMark className="av-web-studio-logo__mark av-web-studio-logo__mark--animated" />
-      <span className="av-web-studio-logo__text">
-        <span className="av-web-studio-logo__brand">AV Web Studio</span>
+    <div className="akash-visual-layout-builder-logo" aria-label="Akash Visual Layout Builder">
+      <LogoMark className="akash-visual-layout-builder-logo__mark akash-visual-layout-builder-logo__mark--animated" />
+      <span className="akash-visual-layout-builder-logo__text">
+        <span className="akash-visual-layout-builder-logo__brand">Akash Visual Layout Builder</span>
       </span>
     </div>
   );

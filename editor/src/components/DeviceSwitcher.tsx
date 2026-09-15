@@ -43,12 +43,12 @@ const DEVICES: { id: DevicePreview; Icon: () => ReactElement }[] = [
 
 export function DeviceSwitcher({ value, onChange, className = "" }: DeviceSwitcherProps) {
   return (
-    <div className={`av-web-studio-device-switch ${className}`.trim()} role="group" aria-label="Responsive preview">
+    <div className={`akash-visual-layout-builder-device-switch ${className}`.trim()} role="group" aria-label="Responsive preview">
       {DEVICES.map(({ id, Icon }) => (
         <button
           key={id}
           type="button"
-          className={`av-web-studio-device-switch__btn ${value === id ? "is-active" : ""}`}
+          className={`akash-visual-layout-builder-device-switch__btn ${value === id ? "is-active" : ""}`}
           title={DEVICE_PREVIEW_LABELS[id]}
           aria-label={DEVICE_PREVIEW_LABELS[id]}
           aria-pressed={value === id}

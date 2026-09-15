@@ -69,15 +69,15 @@ export function SvgLibraryView({ onNotice }: SvgLibraryViewProps) {
   };
 
   return (
-    <div className="av-web-studio-screen av-web-studio-screen--svg">
-      <header className="av-web-studio-screen__header">
+    <div className="akash-visual-layout-builder-screen akash-visual-layout-builder-screen--svg">
+      <header className="akash-visual-layout-builder-screen__header">
         <div>
-          <h1 className="av-web-studio-screen__title">SVG Library</h1>
-          <p className="av-web-studio-screen__subtitle">
+          <h1 className="akash-visual-layout-builder-screen__title">SVG Library</h1>
+          <p className="akash-visual-layout-builder-screen__subtitle">
             Upload SVG files and copy snippets into your page HTML. SVG uploads are sanitized for safety.
           </p>
         </div>
-        <div className="av-web-studio-screen__actions">
+        <div className="akash-visual-layout-builder-screen__actions">
           <input
             ref={fileInputRef}
             type="file"
@@ -88,7 +88,7 @@ export function SvgLibraryView({ onNotice }: SvgLibraryViewProps) {
           />
           <button
             type="button"
-            className="av-web-studio-btn av-web-studio-btn--primary"
+            className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--primary"
             disabled={uploading}
             onClick={() => fileInputRef.current?.click()}
           >
@@ -98,31 +98,31 @@ export function SvgLibraryView({ onNotice }: SvgLibraryViewProps) {
       </header>
 
       {loading ? (
-        <div className="av-web-studio-screen__empty">
-          <div className="av-web-studio-spinner" />
+        <div className="akash-visual-layout-builder-screen__empty">
+          <div className="akash-visual-layout-builder-spinner" />
         </div>
       ) : svgs.length === 0 ? (
-        <div className="av-web-studio-screen__empty">
+        <div className="akash-visual-layout-builder-screen__empty">
           <p>No SVG files yet. Upload your first icon or illustration.</p>
         </div>
       ) : (
-        <div className="av-web-studio-svg-grid">
+        <div className="akash-visual-layout-builder-svg-grid">
           {svgs.map((svg) => (
-            <article key={svg.id} className="av-web-studio-svg-card">
-              <div className="av-web-studio-svg-card__preview">
+            <article key={svg.id} className="akash-visual-layout-builder-svg-card">
+              <div className="akash-visual-layout-builder-svg-card__preview">
                 <img src={svg.url} alt={svg.title || svg.filename} />
               </div>
-              <div className="av-web-studio-svg-card__body">
-                <h3 className="av-web-studio-svg-card__title">{svg.title || svg.filename}</h3>
-                <p className="av-web-studio-svg-card__meta">{svg.filename}</p>
-                <div className="av-web-studio-svg-card__actions">
-                  <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={() => copySnippet(svg.url, "img")}>
+              <div className="akash-visual-layout-builder-svg-card__body">
+                <h3 className="akash-visual-layout-builder-svg-card__title">{svg.title || svg.filename}</h3>
+                <p className="akash-visual-layout-builder-svg-card__meta">{svg.filename}</p>
+                <div className="akash-visual-layout-builder-svg-card__actions">
+                  <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost akash-visual-layout-builder-btn--sm" onClick={() => copySnippet(svg.url, "img")}>
                     Copy &lt;img&gt;
                   </button>
-                  <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={() => copySnippet(svg.url, "url")}>
+                  <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost akash-visual-layout-builder-btn--sm" onClick={() => copySnippet(svg.url, "url")}>
                     Copy URL
                   </button>
-                  <button type="button" className="av-web-studio-btn av-web-studio-btn--ghost av-web-studio-btn--sm" onClick={() => handleDelete(svg.id)}>
+                  <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost akash-visual-layout-builder-btn--sm" onClick={() => handleDelete(svg.id)}>
                     Delete
                   </button>
                 </div>

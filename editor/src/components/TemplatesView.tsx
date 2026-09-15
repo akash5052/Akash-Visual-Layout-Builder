@@ -42,7 +42,7 @@ export function TemplatesView({ onNotice }: TemplatesViewProps) {
     try {
       const page = await applyTemplate(tpl.id, tpl.brand);
       onNotice("success", `Created “${page.title}” from ${tpl.title}. Opening editor…`);
-      const editUrl = `${window.avWebStudioBuilderData.adminUrls.pages}&page_id=${page.id}`;
+      const editUrl = `${window.akashVisualLayoutBuilderData.adminUrls.pages}&page_id=${page.id}`;
       window.location.href = editUrl;
     } catch (err) {
       onNotice("error", err instanceof Error ? err.message : "Could not apply template.");
@@ -88,16 +88,16 @@ export function TemplatesView({ onNotice }: TemplatesViewProps) {
   };
 
   return (
-    <div className="av-web-studio-screen av-web-studio-screen--templates">
-      <header className="av-web-studio-screen__header">
+    <div className="akash-visual-layout-builder-screen akash-visual-layout-builder-screen--templates">
+      <header className="akash-visual-layout-builder-screen__header">
         <div>
-          <h1 className="av-web-studio-screen__title">Templates</h1>
-          <p className="av-web-studio-screen__subtitle">
+          <h1 className="akash-visual-layout-builder-screen__title">Templates</h1>
+          <p className="akash-visual-layout-builder-screen__subtitle">
             Start from a polished visual landing page — fully editable with sections and widgets. Or upload a zip with{" "}
             <code>manifest.json</code> plus <code>document.json</code>.
           </p>
         </div>
-        <div className="av-web-studio-screen__actions">
+        <div className="akash-visual-layout-builder-screen__actions">
           <input
             ref={fileInputRef}
             type="file"
@@ -107,7 +107,7 @@ export function TemplatesView({ onNotice }: TemplatesViewProps) {
           />
           <button
             type="button"
-            className="av-web-studio-btn av-web-studio-btn--primary"
+            className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--primary"
             disabled={uploading}
             onClick={() => fileInputRef.current?.click()}
           >
@@ -116,31 +116,31 @@ export function TemplatesView({ onNotice }: TemplatesViewProps) {
         </div>
       </header>
 
-      {loading && <p className="av-web-studio-templates__loading">Loading templates…</p>}
+      {loading && <p className="akash-visual-layout-builder-templates__loading">Loading templates…</p>}
 
       {!loading && templates.length === 0 && (
-        <div className="av-web-studio-screen__empty">
+        <div className="akash-visual-layout-builder-screen__empty">
           <p>No templates yet. Upload a template zip to get started.</p>
         </div>
       )}
 
       {!loading && templates.length > 0 && (
-        <div className="av-web-studio-templates-grid">
+        <div className="akash-visual-layout-builder-templates-grid">
           {templates.map((tpl) => (
-            <article key={tpl.id} className="av-web-studio-template-card" style={{ ["--av-web-studio-tpl-accent" as string]: tpl.accent }}>
-              <div className="av-web-studio-template-card__media">
-                {tpl.preview ? <img src={tpl.preview} alt="" loading="lazy" /> : <div className="av-web-studio-template-card__placeholder" />}
-                <span className="av-web-studio-template-card__badge">{tpl.brand}</span>
-                {tpl.badge && <span className="av-web-studio-template-card__source">{tpl.badge}</span>}
-                {tpl.source === "uploaded" && !tpl.badge && <span className="av-web-studio-template-card__source">Uploaded</span>}
+            <article key={tpl.id} className="akash-visual-layout-builder-template-card" style={{ ["--akash-visual-layout-builder-tpl-accent" as string]: tpl.accent }}>
+              <div className="akash-visual-layout-builder-template-card__media">
+                {tpl.preview ? <img src={tpl.preview} alt="" loading="lazy" /> : <div className="akash-visual-layout-builder-template-card__placeholder" />}
+                <span className="akash-visual-layout-builder-template-card__badge">{tpl.brand}</span>
+                {tpl.badge && <span className="akash-visual-layout-builder-template-card__source">{tpl.badge}</span>}
+                {tpl.source === "uploaded" && !tpl.badge && <span className="akash-visual-layout-builder-template-card__source">Uploaded</span>}
               </div>
-              <div className="av-web-studio-template-card__body">
+              <div className="akash-visual-layout-builder-template-card__body">
                 <h2>{tpl.title}</h2>
                 <p>{tpl.description}</p>
-                <div className="av-web-studio-template-card__actions">
+                <div className="akash-visual-layout-builder-template-card__actions">
                   <button
                     type="button"
-                    className="av-web-studio-btn av-web-studio-btn--primary"
+                    className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--primary"
                     disabled={applying === tpl.id}
                     onClick={() => void handleUse(tpl)}
                   >
@@ -149,7 +149,7 @@ export function TemplatesView({ onNotice }: TemplatesViewProps) {
                   {tpl.can_delete && (
                     <button
                       type="button"
-                      className="av-web-studio-btn av-web-studio-btn--ghost"
+                      className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--ghost"
                       disabled={deleting === tpl.id}
                       onClick={() => void handleDelete(tpl)}
                     >

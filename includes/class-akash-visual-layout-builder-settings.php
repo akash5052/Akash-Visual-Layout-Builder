@@ -7,9 +7,9 @@ if (!defined('ABSPATH')) {
 /**
  * Central plugin settings for AI, images, editor, SEO, popups, and permissions.
  */
-class Av_Web_Studio_Settings {
+class Akash_Visual_Layout_Builder_Settings {
 
-	const OPTION_KEY = 'av_web_studio_settings';
+	const OPTION_KEY = 'akash_visual_layout_builder_settings';
 
 	const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
 	const DEFAULT_CLAUDE_MODEL = 'claude-haiku-4-5-20251001';
@@ -59,7 +59,7 @@ class Av_Web_Studio_Settings {
 			// Google Fonts (off until the site owner opts in)
 			'google_fonts_enabled' => false,
 
-			// Tracking link (actual tracking lives in av_web_studio_tracking)
+			// Tracking link (actual tracking lives in akash_visual_layout_builder_tracking)
 			'tracking_enabled_hint'=> true,
 
 			// Permissions
@@ -92,12 +92,12 @@ class Av_Web_Studio_Settings {
 	public static function get_ai_settings() {
 		$settings = self::get_raw();
 
-		if (defined('AV_WEB_STUDIO_GEMINI_MODEL') && AV_WEB_STUDIO_GEMINI_MODEL) {
-			$settings['gemini_model'] = AV_WEB_STUDIO_GEMINI_MODEL;
+		if (defined('AKASH_VISUAL_LAYOUT_BUILDER_GEMINI_MODEL') && AKASH_VISUAL_LAYOUT_BUILDER_GEMINI_MODEL) {
+			$settings['gemini_model'] = AKASH_VISUAL_LAYOUT_BUILDER_GEMINI_MODEL;
 		}
 
-		if (defined('AV_WEB_STUDIO_CLAUDE_MODEL') && AV_WEB_STUDIO_CLAUDE_MODEL) {
-			$settings['claude_model'] = AV_WEB_STUDIO_CLAUDE_MODEL;
+		if (defined('AKASH_VISUAL_LAYOUT_BUILDER_CLAUDE_MODEL') && AKASH_VISUAL_LAYOUT_BUILDER_CLAUDE_MODEL) {
+			$settings['claude_model'] = AKASH_VISUAL_LAYOUT_BUILDER_CLAUDE_MODEL;
 		}
 
 		return $settings;
@@ -110,7 +110,7 @@ class Av_Web_Studio_Settings {
 	 */
 	public static function has_cloud_ai() {
 		$s = self::get_raw();
-		return !empty($s['ai_enabled']) && Av_Web_Studio_AI_Client::is_available();
+		return !empty($s['ai_enabled']) && Akash_Visual_Layout_Builder_AI_Client::is_available();
 	}
 
 	public static function has_gemini_config() {
@@ -197,9 +197,9 @@ class Av_Web_Studio_Settings {
 			'is_configured'         => self::has_any_ai_config(),
 			'has_gemini'            => self::has_cloud_ai(),
 			'has_claude'            => self::has_cloud_ai(),
-			'ai_client_available'   => Av_Web_Studio_AI_Client::is_available(),
-			'ai_client_core'        => Av_Web_Studio_AI_Client::core_available(),
-			'connectors_url'        => Av_Web_Studio_AI_Client::connectors_url(),
+			'ai_client_available'   => Akash_Visual_Layout_Builder_AI_Client::is_available(),
+			'ai_client_core'        => Akash_Visual_Layout_Builder_AI_Client::core_available(),
+			'connectors_url'        => Akash_Visual_Layout_Builder_AI_Client::connectors_url(),
 			'has_smart_engine'      => true,
 			'images_enabled'        => (bool) $s['images_enabled'],
 			'image_width'           => absint($s['image_width']),
@@ -278,7 +278,7 @@ class Av_Web_Studio_Settings {
 			return [
 				'success'  => false,
 				'settings' => self::admin_settings(),
-				'message'  => __('Invalid settings payload.', 'av-web-studio'),
+				'message'  => __('Invalid settings payload.', 'akash-visual-layout-builder'),
 			];
 		}
 
@@ -336,7 +336,7 @@ class Av_Web_Studio_Settings {
 		return [
 			'success'  => true,
 			'settings' => self::admin_settings(),
-			'message'  => __('Settings saved.', 'av-web-studio'),
+			'message'  => __('Settings saved.', 'akash-visual-layout-builder'),
 		];
 	}
 

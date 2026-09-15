@@ -18,7 +18,7 @@ const VIEW_LABELS: Record<AppView, string> = {
 function NavIcon({ children }: { children: ReactNode }) {
   return (
     <svg
-      className="av-web-studio-main-nav__svg"
+      className="akash-visual-layout-builder-main-nav__svg"
       viewBox="0 0 24 24"
       width="18"
       height="18"
@@ -113,7 +113,7 @@ export function MainNav({
   onBackToList,
   onPopupsBackToList,
 }: MainNavProps) {
-  const urls = window.avWebStudioBuilderData.adminUrls;
+  const urls = window.akashVisualLayoutBuilderData.adminUrls;
   const items: { view: AppView; href: string }[] = [
     { view: "dashboard", href: urls.dashboard },
     { view: "pages", href: urls.pages },
@@ -124,7 +124,7 @@ export function MainNav({
     { view: "svg", href: urls.svg },
     { view: "tracking", href: urls.tracking },
   ];
-  if (urls.settings && (window.avWebStudioBuilderData.canManageSettings || window.avWebStudioBuilderData.pluginSettings?.can_manage_settings)) {
+  if (urls.settings && (window.akashVisualLayoutBuilderData.canManageSettings || window.akashVisualLayoutBuilderData.pluginSettings?.can_manage_settings)) {
     items.push({ view: "settings", href: urls.settings });
   }
 
@@ -149,35 +149,35 @@ export function MainNav({
   };
 
   return (
-    <nav className="av-web-studio-main-nav" aria-label="AV Web Studio sections">
-      <div className="av-web-studio-main-nav__brand">
-        <LogoMark className="av-web-studio-main-nav__brand-mark" />
-        <span className="av-web-studio-main-nav__brand-text">AV Web Studio</span>
+    <nav className="akash-visual-layout-builder-main-nav" aria-label="Akash Visual Layout Builder sections">
+      <div className="akash-visual-layout-builder-main-nav__brand">
+        <LogoMark className="akash-visual-layout-builder-main-nav__brand-mark" />
+        <span className="akash-visual-layout-builder-main-nav__brand-text">Akash Visual Layout Builder</span>
       </div>
 
-      <ul className="av-web-studio-main-nav__list">
+      <ul className="akash-visual-layout-builder-main-nav__list">
         {items.map((item) => (
           <li key={item.view}>
             <a
               href={item.href}
-              className={`av-web-studio-main-nav__link ${activeView === item.view && !editingContent ? "av-web-studio-main-nav__link--active" : ""}`}
+              className={`akash-visual-layout-builder-main-nav__link ${activeView === item.view && !editingContent ? "akash-visual-layout-builder-main-nav__link--active" : ""}`}
               onClick={(event) => handleNavClick(event, item.view, item.href)}
             >
-              <span className="av-web-studio-main-nav__icon">{VIEW_ICONS[item.view]}</span>
-              <span className="av-web-studio-main-nav__label">{VIEW_LABELS[item.view]}</span>
+              <span className="akash-visual-layout-builder-main-nav__icon">{VIEW_ICONS[item.view]}</span>
+              <span className="akash-visual-layout-builder-main-nav__label">{VIEW_LABELS[item.view]}</span>
             </a>
           </li>
         ))}
       </ul>
 
-      <div className="av-web-studio-main-nav__bottom">
+      <div className="akash-visual-layout-builder-main-nav__bottom">
         {editingContent && onBackToList && (
-          <button type="button" className="av-web-studio-main-nav__back" onClick={onBackToList}>
+          <button type="button" className="akash-visual-layout-builder-main-nav__back" onClick={onBackToList}>
             ← Back to list
           </button>
         )}
-        <div className="av-web-studio-main-nav__footer">
-          <span className="av-web-studio-main-nav__version">v{window.avWebStudioBuilderData.version}</span>
+        <div className="akash-visual-layout-builder-main-nav__footer">
+          <span className="akash-visual-layout-builder-main-nav__version">v{window.akashVisualLayoutBuilderData.version}</span>
         </div>
       </div>
     </nav>

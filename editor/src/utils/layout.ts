@@ -42,7 +42,7 @@ function combineAssets(mode: LayoutMode, globalPart: LayoutPart, pagePart: Layou
 function wrapRegion(region: "header" | "footer", scope: "global" | "page", html: string): string {
   const trimmed = html.trim();
   if (!trimmed) return "";
-  return `<div class="av-web-studio-region av-web-studio-region--${region} av-web-studio-region--${scope}" data-av-web-studio-region="${region}">${trimmed}</div>`;
+  return `<div class="akash-visual-layout-builder-region akash-visual-layout-builder-region--${region} akash-visual-layout-builder-region--${scope}" data-akash-visual-layout-builder-region="${region}">${trimmed}</div>`;
 }
 
 export function resolveLayout(globalLayout: GlobalLayout, pageLayout: PageLayout) {
@@ -98,7 +98,7 @@ export function buildPreviewBody(
 ): { html: string; css: string; js: string } {
   const resolved = resolveLayout(globalLayout, pageLayout);
   const bodyHtml = code.html.trim()
-    ? `<div class="av-web-studio-page">${code.html}</div>`
+    ? `<div class="akash-visual-layout-builder-page">${code.html}</div>`
     : "";
 
   return {

@@ -75,7 +75,7 @@ function compileColumn(column: VisualColumn): string {
     style.push("position:relative");
   }
   const body = column.children.map(compileChild).join("\n");
-  return `<div class="av-web-studio-col" data-av-web-studio-id="${column.id}" style="${style.join(";")}">${body}</div>`;
+  return `<div class="akash-visual-layout-builder-col" data-akash-visual-layout-builder-id="${column.id}" style="${style.join(";")}">${body}</div>`;
 }
 
 function cssLength(value: number | string | undefined | null, fallback: string): string {
@@ -87,35 +87,35 @@ function cssLength(value: number | string | undefined | null, fallback: string):
 function compileInnerSection(section: InnerSection): string {
   const gap = cssLength(section.settings.gap, "0px");
   const inner = section.columns.map(compileColumn).join("\n");
-  return `<div class="av-web-studio-inner-section" data-av-web-studio-id="${section.id}" style="${sectionStyle(section.settings, true)}"><div class="av-web-studio-container" style="display:flex;flex-wrap:wrap;gap:${gap};width:100%;">${inner}</div></div>`;
+  return `<div class="akash-visual-layout-builder-inner-section" data-akash-visual-layout-builder-id="${section.id}" style="${sectionStyle(section.settings, true)}"><div class="akash-visual-layout-builder-container" style="display:flex;flex-wrap:wrap;gap:${gap};width:100%;">${inner}</div></div>`;
 }
 
 function compileSection(section: VisualSection): string {
   const gap = cssLength(section.settings.gap, "0px");
   const max = cssLength(section.settings.contentWidth, "1140px");
   const cols = section.columns.map(compileColumn).join("\n");
-  const container = `<div class="av-web-studio-container" style="max-width:${max};margin:0 auto;display:flex;flex-wrap:wrap;gap:${gap};width:100%;">${cols}</div>`;
-  return `<section class="av-web-studio-section" data-av-web-studio-id="${section.id}" style="${sectionStyle(section.settings)}">${container}</section>`;
+  const container = `<div class="akash-visual-layout-builder-container" style="max-width:${max};margin:0 auto;display:flex;flex-wrap:wrap;gap:${gap};width:100%;">${cols}</div>`;
+  return `<section class="akash-visual-layout-builder-section" data-akash-visual-layout-builder-id="${section.id}" style="${sectionStyle(section.settings)}">${container}</section>`;
 }
 
 export function compileVisualDocument(doc: VisualDocument): PageCode {
-  const html = `<div class="av-web-studio-visual-root">\n${doc.sections.map(compileSection).join("\n")}\n</div>`;
+  const html = `<div class="akash-visual-layout-builder-visual-root">\n${doc.sections.map(compileSection).join("\n")}\n</div>`;
   const responsiveCss = collectResponsiveCss(doc);
-  const css = `/* AV Web Studio — Visual mode */
-.av-web-studio-visual-root { width: 100%; }
-.av-web-studio-section { box-sizing: border-box; }
-.av-web-studio-col { min-width: 0; }
-.av-web-studio-w-heading, .av-web-studio-w-text, .av-web-studio-w-button, .av-web-studio-w-image, .av-web-studio-w-iconbox { word-break: break-word; }
+  const css = `/* Akash Visual Layout Builder — Visual mode */
+.akash-visual-layout-builder-visual-root { width: 100%; }
+.akash-visual-layout-builder-section { box-sizing: border-box; }
+.akash-visual-layout-builder-col { min-width: 0; }
+.akash-visual-layout-builder-w-heading, .akash-visual-layout-builder-w-text, .akash-visual-layout-builder-w-button, .akash-visual-layout-builder-w-image, .akash-visual-layout-builder-w-iconbox { word-break: break-word; }
 ${VISUAL_WIDGET_CSS}
 @media (max-width: 768px) {
-  .av-web-studio-container { flex-direction: column !important; }
-  .av-web-studio-col { flex: 1 1 100% !important; max-width: 100% !important; }
+  .akash-visual-layout-builder-container { flex-direction: column !important; }
+  .akash-visual-layout-builder-col { flex: 1 1 100% !important; max-width: 100% !important; }
 }
 ${responsiveCss}`;
   return { html, css, js: "" };
 }
 
-const VISUAL_CSS_MARKER = "/* AV Web Studio — Visual mode */";
+const VISUAL_CSS_MARKER = "/* Akash Visual Layout Builder — Visual mode */";
 
 export function mergeVisualCompile(existing: PageCode, compiled: PageCode): PageCode {
   const existingCss = (existing.css || "").trim();

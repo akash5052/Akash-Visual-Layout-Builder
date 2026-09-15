@@ -1,6 +1,6 @@
 import type { AiChatTurn } from "../types";
 
-const STORAGE_PREFIX = "av_web_studio_ai_chat_";
+const STORAGE_PREFIX = "akash_visual_layout_builder_ai_chat_";
 const MAX_TURNS = 40;
 
 export function aiHistoryStorageKey(pageId: number): string {

@@ -7,10 +7,10 @@ if (!defined('ABSPATH')) {
 /**
  * Supported content types for the page builder.
  */
-class Av_Web_Studio_Post_Types {
+class Akash_Visual_Layout_Builder_Post_Types {
 
 	/**
-	 * Post types editable with AV Web Studio.
+	 * Post types editable with Akash Visual Layout Builder.
 	 *
 	 * @return string[]
 	 */

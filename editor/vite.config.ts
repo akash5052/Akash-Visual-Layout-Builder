@@ -14,7 +14,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         format: "iife",
-        name: "avWebStudioBuilderApp",
+        name: "akashVisualLayoutBuilderApp",
         entryFileNames: "index.js",
         assetFileNames: "index.[ext]",
         inlineDynamicImports: true,

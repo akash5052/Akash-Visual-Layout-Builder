@@ -3,7 +3,7 @@ import App from "./App";
 import "./styles/editor.css";
 import "./styles/animations.css";
 
-const rootElement = document.getElementById("av-web-studio-root");
+const rootElement = document.getElementById("akash-visual-layout-builder-root");
 
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(<App />);

@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 /**
  * Image slots for AI-generated pages. Always uses files shipped in this plugin.
  */
-class Av_Web_Studio_AI_Images {
+class Akash_Visual_Layout_Builder_AI_Images {
 
 	/**
 	 * Map industry keys to bundled template image folders (assets/images/templates).
@@ -220,7 +220,7 @@ class Av_Web_Studio_AI_Images {
 	];
 
 	public static function industry_for_topic($topic, $page_title = '') {
-		return Av_Web_Studio_AI_Profiles::detect($topic, $page_title);
+		return Akash_Visual_Layout_Builder_AI_Profiles::detect($topic, $page_title);
 	}
 
 	/** @deprecated Use industry_for_topic */
@@ -259,8 +259,8 @@ class Av_Web_Studio_AI_Images {
 		}
 
 		if ($section_html) {
-			$heading = Av_Web_Studio_AI_Editor::extract_heading($section_html);
-			if ($heading && ! Av_Web_Studio_AI_Intent::is_bad_title($heading) && ! self::is_generic_topic($heading)) {
+			$heading = Akash_Visual_Layout_Builder_AI_Editor::extract_heading($section_html);
+			if ($heading && ! Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($heading) && ! self::is_generic_topic($heading)) {
 				$candidates[] = $heading;
 			}
 			$body = self::extract_section_text($section_html);
@@ -269,12 +269,12 @@ class Av_Web_Studio_AI_Images {
 			}
 		}
 
-		if ($page_title && ! Av_Web_Studio_AI_Intent::is_bad_title($page_title) && ! self::is_generic_topic($page_title)) {
+		if ($page_title && ! Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($page_title) && ! self::is_generic_topic($page_title)) {
 			$candidates[] = $page_title;
 		}
 
 		if ($page_html) {
-			$h1 = Av_Web_Studio_AI_Editor::extract_page_title($page_html);
+			$h1 = Akash_Visual_Layout_Builder_AI_Editor::extract_page_title($page_html);
 			if ($h1 && ! self::is_generic_topic($h1)) {
 				$candidates[] = $h1;
 			}
@@ -299,7 +299,7 @@ class Av_Web_Studio_AI_Images {
 			$parts = [];
 			foreach ($matches[1] as $chunk) {
 				$clean = trim(wp_strip_all_tags($chunk));
-				if ($clean !== '' && ! Av_Web_Studio_AI_Intent::is_bad_title($clean)) {
+				if ($clean !== '' && ! Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($clean)) {
 					$parts[] = $clean;
 				}
 			}
@@ -347,13 +347,13 @@ class Av_Web_Studio_AI_Images {
 		$scene   = $recipes[ $role ] ?? ( $recipes['default'] ?? self::$scene_recipes['business']['default'] );
 
 		$brand = trim($page_title);
-		if ($brand === '' || Av_Web_Studio_AI_Intent::is_bad_title($brand)) {
+		if ($brand === '' || Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($brand)) {
 			$brand = self::is_generic_topic($topic) ? self::industry_label($industry) : $topic;
 		}
 
 		$parts = [ $scene ];
 
-		if ($heading && ! self::is_generic_topic($heading) && ! Av_Web_Studio_AI_Intent::is_bad_title($heading)) {
+		if ($heading && ! self::is_generic_topic($heading) && ! Akash_Visual_Layout_Builder_AI_Intent::is_bad_title($heading)) {
 			$parts[] = 'related to "' . self::clip($heading, 60) . '"';
 		}
 
@@ -449,14 +449,14 @@ class Av_Web_Studio_AI_Images {
 		$id   = self::$industry_files[ $key ];
 		$slot = absint($index) % 4;
 		$rel  = sprintf('assets/images/templates/%s-%d.jpg', $id, $slot);
-		if (file_exists(AV_WEB_STUDIO_PLUGIN_DIR . $rel)) {
-			return AV_WEB_STUDIO_PLUGIN_URL . $rel;
+		if (file_exists(AKASH_VISUAL_LAYOUT_BUILDER_PLUGIN_DIR . $rel)) {
+			return AKASH_VISUAL_LAYOUT_BUILDER_PLUGIN_URL . $rel;
 		}
 		return self::placeholder_url();
 	}
 
 	public static function placeholder_url() {
-		return AV_WEB_STUDIO_PLUGIN_URL . 'assets/images/placeholder.svg';
+		return AKASH_VISUAL_LAYOUT_BUILDER_PLUGIN_URL . 'assets/images/placeholder.svg';
 	}
 
 	public static function media() {
@@ -474,7 +474,7 @@ class Av_Web_Studio_AI_Images {
 		return preg_replace_callback(
 			'~https?://[^\s"\')]+~i',
 			function ($m) use ($replacement) {
-				if (!Av_Web_Studio_Output::is_remote_stock_src($m[0])) {
+				if (!Akash_Visual_Layout_Builder_Output::is_remote_stock_src($m[0])) {
 					return $m[0];
 				}
 				if (is_callable($replacement)) {
@@ -504,7 +504,7 @@ class Av_Web_Studio_AI_Images {
 		return $topic;
 	}
 
-	public static function img_tag($alt, $topic, $class = 'av-web-studio-ai-img', $width = 800, $height = 600, $index = 0, $page_title = '', $section_type = '', $heading = '') {
+	public static function img_tag($alt, $topic, $class = 'akash-visual-layout-builder-ai-img', $width = 800, $height = 600, $index = 0, $page_title = '', $section_type = '', $heading = '') {
 		$src     = esc_url(self::relevant_url($topic, $width, $height, $index, $page_title, $section_type, $heading));
 		$alt_txt = esc_attr($alt);
 
@@ -678,7 +678,7 @@ class Av_Web_Studio_AI_Images {
 
 	public static function align_section_images($section_html, $topic, $page_title = '', $section_type = '') {
 		$resolved = self::resolve_topic($topic, $page_title, $section_html);
-		$heading  = Av_Web_Studio_AI_Editor::extract_heading($section_html);
+		$heading  = Akash_Visual_Layout_Builder_AI_Editor::extract_heading($section_html);
 		return self::align_images_in_markup($section_html, $resolved, $page_title, $section_type, $heading);
 	}
 

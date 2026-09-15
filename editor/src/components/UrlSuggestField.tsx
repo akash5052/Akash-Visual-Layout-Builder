@@ -192,12 +192,12 @@ export function UrlSuggestField({
 
   const panel = open
     ? createPortal(
-        <div className="av-web-studio-url-suggest__panel" id={listId} role="listbox" ref={panelRef} style={panelStyle}>
-          <div className="av-web-studio-url-suggest__heading">
+        <div className="akash-visual-layout-builder-url-suggest__panel" id={listId} role="listbox" ref={panelRef} style={panelStyle}>
+          <div className="akash-visual-layout-builder-url-suggest__heading">
             {loading ? "Loading…" : mode === "search" ? "Matching content" : "Recently updated"}
           </div>
           {!loading && items.length === 0 ? (
-            <div className="av-web-studio-url-suggest__empty">
+            <div className="akash-visual-layout-builder-url-suggest__empty">
               {mode === "search" ? "No pages or posts match that name." : "No published pages or posts yet."}
             </div>
           ) : (
@@ -209,17 +209,17 @@ export function UrlSuggestField({
                   type="button"
                   role="option"
                   aria-selected={index === activeIndex}
-                  className={`av-web-studio-url-suggest__item ${index === activeIndex ? "is-active" : ""}`}
+                  className={`akash-visual-layout-builder-url-suggest__item ${index === activeIndex ? "is-active" : ""}`}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => pick(item)}
                   onMouseEnter={() => setActiveIndex(index)}
                 >
-                  <span className="av-web-studio-url-suggest__title">{item.title || "(Untitled)"}</span>
-                  <span className="av-web-studio-url-suggest__meta">
-                    <span className={`av-web-studio-url-suggest__type av-web-studio-url-suggest__type--${item.post_type}`}>
+                  <span className="akash-visual-layout-builder-url-suggest__title">{item.title || "(Untitled)"}</span>
+                  <span className="akash-visual-layout-builder-url-suggest__meta">
+                    <span className={`akash-visual-layout-builder-url-suggest__type akash-visual-layout-builder-url-suggest__type--${item.post_type}`}>
                       {item.post_type === "post" ? "Post" : "Page"}
                     </span>
-                    <span className="av-web-studio-url-suggest__path">{url.replace(/^https?:\/\/[^/]+/i, "") || url}</span>
+                    <span className="akash-visual-layout-builder-url-suggest__path">{url.replace(/^https?:\/\/[^/]+/i, "") || url}</span>
                   </span>
                 </button>
               );
@@ -231,7 +231,7 @@ export function UrlSuggestField({
     : null;
 
   return (
-    <div className={`av-web-studio-url-suggest ${open ? "is-open" : ""}`} ref={rootRef}>
+    <div className={`akash-visual-layout-builder-url-suggest ${open ? "is-open" : ""}`} ref={rootRef}>
       <input
         ref={inputRef}
         id={id}

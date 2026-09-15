@@ -7,10 +7,10 @@ if (!defined('ABSPATH')) {
 /**
  * Site-wide and per-page header/footer layouts.
  */
-class Av_Web_Studio_Layout {
+class Akash_Visual_Layout_Builder_Layout {
 
-	const OPTION_GLOBAL = 'av_web_studio_global_layout';
-	const META_PAGE     = '_av_web_studio_page_layout';
+	const OPTION_GLOBAL = 'akash_visual_layout_builder_global_layout';
+	const META_PAGE     = '_akash_visual_layout_builder_page_layout';
 
 	const MODES = [ 'inherit', 'append', 'replace', 'none' ];
 
@@ -73,7 +73,7 @@ class Av_Web_Studio_Layout {
 		}
 
 		if (is_array($visual)) {
-			$compiled = Av_Web_Studio_Output::compile_visual($visual);
+			$compiled = Akash_Visual_Layout_Builder_Output::compile_visual($visual);
 			return [
 				'html'   => $compiled['html'],
 				'css'    => $compiled['css'],
@@ -346,7 +346,7 @@ class Av_Web_Studio_Layout {
 			return '';
 		}
 
-		return '<div class="av-web-studio-region av-web-studio-region--' . esc_attr($region) . ' av-web-studio-region--' . esc_attr($scope) . '" data-av-web-studio-region="' . esc_attr($region) . '">' . Av_Web_Studio_Output::kses_html($html) . '</div>';
+		return '<div class="akash-visual-layout-builder-region akash-visual-layout-builder-region--' . esc_attr($region) . ' akash-visual-layout-builder-region--' . esc_attr($scope) . '" data-akash-visual-layout-builder-region="' . esc_attr($region) . '">' . Akash_Visual_Layout_Builder_Output::kses_html($html) . '</div>';
 	}
 
 	/**

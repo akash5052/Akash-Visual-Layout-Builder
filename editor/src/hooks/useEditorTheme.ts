@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 export type EditorTheme = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 
-const STORAGE_KEY = "av-web-studio-editor-theme";
+const STORAGE_KEY = "akash-visual-layout-builder-editor-theme";
 
 function resolveTheme(theme: EditorTheme): ResolvedTheme {
   if (theme === "light") return "light";
@@ -27,8 +27,8 @@ export function useEditorTheme() {
     localStorage.setItem(STORAGE_KEY, theme);
     setResolved(resolveTheme(theme));
 
-    document.body.classList.remove("av-web-studio-theme-light", "av-web-studio-theme-dark");
-    document.body.classList.add(resolveTheme(theme) === "light" ? "av-web-studio-theme-light" : "av-web-studio-theme-dark");
+    document.body.classList.remove("akash-visual-layout-builder-theme-light", "akash-visual-layout-builder-theme-dark");
+    document.body.classList.add(resolveTheme(theme) === "light" ? "akash-visual-layout-builder-theme-light" : "akash-visual-layout-builder-theme-dark");
 
     if (theme !== "system") return;
 
@@ -36,8 +36,8 @@ export function useEditorTheme() {
     const onChange = () => {
       const next = resolveTheme("system");
       setResolved(next);
-      document.body.classList.remove("av-web-studio-theme-light", "av-web-studio-theme-dark");
-      document.body.classList.add(next === "light" ? "av-web-studio-theme-light" : "av-web-studio-theme-dark");
+      document.body.classList.remove("akash-visual-layout-builder-theme-light", "akash-visual-layout-builder-theme-dark");
+      document.body.classList.add(next === "light" ? "akash-visual-layout-builder-theme-light" : "akash-visual-layout-builder-theme-dark");
     };
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);

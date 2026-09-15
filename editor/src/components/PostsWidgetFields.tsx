@@ -9,15 +9,15 @@ type PostsWidget = PostsGridWidget | PostsListWidget | PostsCarouselWidget;
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="av-web-studio-visual__field">
-      <span className="av-web-studio-visual__field-label">{label}</span>
+    <div className="akash-visual-layout-builder-visual__field">
+      <span className="akash-visual-layout-builder-visual__field-label">{label}</span>
       {children}
     </div>
   );
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <div className="av-web-studio-visual__section-title">{children}</div>;
+  return <div className="akash-visual-layout-builder-visual__section-title">{children}</div>;
 }
 
 export function PostsWidgetFields({
@@ -248,7 +248,7 @@ export function PostsWidgetPreview({ widget, pageId = 0 }: { widget: PostsWidget
         if (!cancelled) setHtml(result.html);
       })
       .catch(() => {
-        if (!cancelled) setHtml('<div class="av-web-studio-posts__empty">Unable to load posts preview.</div>');
+        if (!cancelled) setHtml('<div class="akash-visual-layout-builder-posts__empty">Unable to load posts preview.</div>');
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -259,8 +259,8 @@ export function PostsWidgetPreview({ widget, pageId = 0 }: { widget: PostsWidget
   }, [payload, pageId]);
 
   if (loading && !html) {
-    return <div className="av-web-studio-posts__empty">Loading posts…</div>;
+    return <div className="akash-visual-layout-builder-posts__empty">Loading posts…</div>;
   }
 
-  return <div className="av-web-studio-visual-widget__compiled" dangerouslySetInnerHTML={{ __html: html }} />;
+  return <div className="akash-visual-layout-builder-visual-widget__compiled" dangerouslySetInnerHTML={{ __html: html }} />;
 }

@@ -20,23 +20,23 @@ export function SiteLayoutSidebar({
   const regionLabel = activeScope === "global-footer" ? "footer" : "header";
 
   return (
-    <aside className="av-web-studio-side-panel">
-      <div className="av-web-studio-side-panel__header">
+    <aside className="akash-visual-layout-builder-side-panel">
+      <div className="akash-visual-layout-builder-side-panel__header">
         <h3>Site layout</h3>
         <p>Global header &amp; footer</p>
       </div>
 
       <button
         type="button"
-        className={`av-web-studio-file ${activeScope === "global-header" ? "av-web-studio-file--active" : ""}`}
+        className={`akash-visual-layout-builder-file ${activeScope === "global-header" ? "akash-visual-layout-builder-file--active" : ""}`}
         onClick={() => onSelectScope("global-header")}
       >
-        <span className="av-web-studio-file__icon">⬆</span>
-        <span className="av-web-studio-file__path">Global Header</span>
+        <span className="akash-visual-layout-builder-file__icon">⬆</span>
+        <span className="akash-visual-layout-builder-file__path">Global Header</span>
       </button>
 
       {activeScope === "global-header" && (
-        <label className="av-web-studio-layout-toggle">
+        <label className="akash-visual-layout-builder-layout-toggle">
           <input
             type="checkbox"
             checked={globalLayout.header_enabled}
@@ -48,15 +48,15 @@ export function SiteLayoutSidebar({
 
       <button
         type="button"
-        className={`av-web-studio-file ${activeScope === "global-footer" ? "av-web-studio-file--active" : ""}`}
+        className={`akash-visual-layout-builder-file ${activeScope === "global-footer" ? "akash-visual-layout-builder-file--active" : ""}`}
         onClick={() => onSelectScope("global-footer")}
       >
-        <span className="av-web-studio-file__icon">⬇</span>
-        <span className="av-web-studio-file__path">Global Footer</span>
+        <span className="akash-visual-layout-builder-file__icon">⬇</span>
+        <span className="akash-visual-layout-builder-file__path">Global Footer</span>
       </button>
 
       {activeScope === "global-footer" && (
-        <label className="av-web-studio-layout-toggle">
+        <label className="akash-visual-layout-builder-layout-toggle">
           <input
             type="checkbox"
             checked={globalLayout.footer_enabled}
@@ -66,13 +66,13 @@ export function SiteLayoutSidebar({
         </label>
       )}
 
-      <p className="av-web-studio-side-panel__hint">
+      <p className="akash-visual-layout-builder-side-panel__hint">
         Visual builder is active for the global {regionLabel}. Use Desktop / Tablet / Mobile in the top bar for
         responsive editing.
       </p>
 
-      <div className="av-web-studio-side-panel__footer">
-        <button type="button" className="av-web-studio-btn av-web-studio-btn--primary av-web-studio-btn--block" disabled={isSaving} onClick={onSave}>
+      <div className="akash-visual-layout-builder-side-panel__footer">
+        <button type="button" className="akash-visual-layout-builder-btn akash-visual-layout-builder-btn--primary akash-visual-layout-builder-btn--block" disabled={isSaving} onClick={onSave}>
           {isSaving ? "Saving…" : "Save site layout"}
         </button>
       </div>

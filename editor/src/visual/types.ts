@@ -596,7 +596,7 @@ export const DEFAULT_COLUMN_SETTINGS: ColumnSettings = {
   zIndex: "",
 };
 
-export function uid(prefix = "av-web-studio"): string {
+export function uid(prefix = "akash-visual-layout-builder"): string {
   return `${prefix}_${Math.random().toString(36).slice(2, 9)}`;
 }
 

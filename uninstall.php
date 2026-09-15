@@ -1,10 +1,10 @@
 <?php
 /**
- * Uninstall AV Web Studio.
+ * Uninstall Akash Visual Layout Builder.
  *
  * Removes plugin options and post meta. Does not delete pages/posts.
  *
- * @package Av_Web_Studio
+ * @package Akash_Visual_Layout_Builder
  */
 
 if (!defined('WP_UNINSTALL_PLUGIN')) {
@@ -16,7 +16,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
  *
  * @param string $dir Absolute path.
  */
-function av_web_studio_uninstall_delete_dir($dir) {
+function akash_visual_layout_builder_uninstall_delete_dir($dir) {
 	if (!is_dir($dir)) {
 		return;
 	}
@@ -32,7 +32,7 @@ function av_web_studio_uninstall_delete_dir($dir) {
 		}
 		$path = $dir . DIRECTORY_SEPARATOR . $entry;
 		if (is_dir($path)) {
-			av_web_studio_uninstall_delete_dir($path);
+			akash_visual_layout_builder_uninstall_delete_dir($path);
 		} else {
 			wp_delete_file($path);
 		}
@@ -44,36 +44,36 @@ function av_web_studio_uninstall_delete_dir($dir) {
 /**
  * Delete plugin options, post meta, and uploaded template files.
  */
-function av_web_studio_uninstall() {
-	delete_option('av_web_studio_settings');
-	delete_option('av_web_studio_tracking');
-	delete_option('av_web_studio_global_layout');
-	delete_option('av_web_studio_popups');
-	delete_option('av_web_studio_custom_templates');
+function akash_visual_layout_builder_uninstall() {
+	delete_option('akash_visual_layout_builder_settings');
+	delete_option('akash_visual_layout_builder_tracking');
+	delete_option('akash_visual_layout_builder_global_layout');
+	delete_option('akash_visual_layout_builder_popups');
+	delete_option('akash_visual_layout_builder_custom_templates');
 
-	$av_web_studio_meta_keys = [
-		'_av_web_studio_html',
-		'_av_web_studio_css',
-		'_av_web_studio_js',
-		'_av_web_studio_code',
-		'_av_web_studio_enabled',
-		'_av_web_studio_edit_mode',
-		'_av_web_studio_visual',
-		'_av_web_studio_page_layout',
-		'_av_web_studio_layout',
-		'_av_web_studio_seo',
-		'_av_web_studio_page_template',
-		'_av_web_studio_hide_title',
+	$akash_visual_layout_builder_meta_keys = [
+		'_akash_visual_layout_builder_html',
+		'_akash_visual_layout_builder_css',
+		'_akash_visual_layout_builder_js',
+		'_akash_visual_layout_builder_code',
+		'_akash_visual_layout_builder_enabled',
+		'_akash_visual_layout_builder_edit_mode',
+		'_akash_visual_layout_builder_visual',
+		'_akash_visual_layout_builder_page_layout',
+		'_akash_visual_layout_builder_layout',
+		'_akash_visual_layout_builder_seo',
+		'_akash_visual_layout_builder_page_template',
+		'_akash_visual_layout_builder_hide_title',
 	];
 
-	foreach ($av_web_studio_meta_keys as $av_web_studio_meta_key) {
-		delete_post_meta_by_key($av_web_studio_meta_key);
+	foreach ($akash_visual_layout_builder_meta_keys as $akash_visual_layout_builder_meta_key) {
+		delete_post_meta_by_key($akash_visual_layout_builder_meta_key);
 	}
 
-	$av_web_studio_uploads = wp_upload_dir();
-	if (empty($av_web_studio_uploads['error']) && !empty($av_web_studio_uploads['basedir'])) {
-		av_web_studio_uninstall_delete_dir(trailingslashit($av_web_studio_uploads['basedir']) . 'av-web-studio-templates');
+	$akash_visual_layout_builder_uploads = wp_upload_dir();
+	if (empty($akash_visual_layout_builder_uploads['error']) && !empty($akash_visual_layout_builder_uploads['basedir'])) {
+		akash_visual_layout_builder_uninstall_delete_dir(trailingslashit($akash_visual_layout_builder_uploads['basedir']) . 'akash-visual-layout-builder-templates');
 	}
 }
 
-av_web_studio_uninstall();
+akash_visual_layout_builder_uninstall();
