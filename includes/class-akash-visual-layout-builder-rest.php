@@ -193,7 +193,14 @@ class Akash_Visual_Layout_Builder_REST {
 		register_rest_route(self::NAMESPACE, '/svg/(?P<id>\d+)', [
 			'methods'             => WP_REST_Server::DELETABLE,
 			'callback'            => [ $this, 'delete_svg' ],
-			'permission_callback' => [ $this, 'can_upload' ],
+			'permission_callback' => [ $this, 'can_delete_svg' ],
+			'args'                => [
+				'id' => [
+					'required'          => true,
+					'type'              => 'integer',
+					'sanitize_callback' => 'absint',
+				],
+			],
 		]);
 
 		register_rest_route(self::NAMESPACE, '/tracking', [
@@ -243,6 +250,30 @@ class Akash_Visual_Layout_Builder_REST {
 	 */
 	public function can_upload() {
 		return current_user_can('upload_files') && Akash_Visual_Layout_Builder_Post_Types::user_can_use_builder();
+	}
+
+	/**
+	 * Check permission to delete a specific SVG attachment.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return bool
+	 */
+	public function can_delete_svg($request) {
+		if (!$this->can_upload()) {
+			return false;
+		}
+
+		$id = absint($request['id']);
+		if ($id <= 0) {
+			return false;
+		}
+
+		$post = get_post($id);
+		if (!$post || $post->post_type !== 'attachment' || get_post_mime_type($id) !== Akash_Visual_Layout_Builder_SVG::MIME_TYPE) {
+			return false;
+		}
+
+		return current_user_can('delete_post', $id);
 	}
 
 	/**
@@ -1337,7 +1368,12 @@ class Akash_Visual_Layout_Builder_REST {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function delete_svg($request) {
-		$id     = (int) $request['id'];
+		$id = absint($request['id']);
+
+		if (!current_user_can('delete_post', $id)) {
+			return new WP_Error('akash_visual_layout_builder_forbidden', __('You cannot delete this SVG.', 'akash-visual-layout-builder'), [ 'status' => 403 ]);
+		}
+
 		$result = Akash_Visual_Layout_Builder_SVG::delete($id);
 
 		if (is_wp_error($result)) {

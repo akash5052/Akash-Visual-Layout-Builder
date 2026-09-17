@@ -97,7 +97,7 @@ When: a site administrator enters a GTM container ID on the Tracking screen and 
 
 Data sent: the GTM container ID. Google's `gtm.js` then collects page-view and related visitor data according to the container's tags (typically page URL, referrer, and browser information).
 
-Terms of Service: [Google Tag Manager terms](https://marketingplatform.google.com/about/tag-manager/terms/)
+Terms of Service: [Google Tag Manager terms](https://www.google.com/analytics/terms/tag-manager/)
 
 Privacy Policy: [Google Privacy Policy](https://policies.google.com/privacy)
 
@@ -109,7 +109,7 @@ When: a site administrator enters a GA4 measurement ID on the Tracking screen an
 
 Data sent: the GA4 measurement ID, plus standard Analytics data such as page URL, referrer, and browser information collected by Google's gtag script.
 
-Terms of Service: [Google Analytics terms](https://marketingplatform.google.com/about/analytics/terms/us/)
+Terms of Service: [Google Analytics terms](https://www.google.com/analytics/terms/us.html)
 
 Privacy Policy: [Google Privacy Policy](https://policies.google.com/privacy)
 
