@@ -116,7 +116,7 @@ class Akash_Visual_Layout_Builder_Admin {
 			self::MENU_SLUG,
 			__('Tracking', 'akash-visual-layout-builder'),
 			__('Tracking', 'akash-visual-layout-builder'),
-			'edit_posts',
+			'manage_options',
 			'akash-visual-layout-builder-tracking',
 			[ $this, 'render_builder_page' ]
 		);
@@ -348,8 +348,12 @@ class Akash_Visual_Layout_Builder_Admin {
 					'siteLayout' => admin_url('admin.php?page=akash-visual-layout-builder-site-layout'),
 					'popups'     => admin_url('admin.php?page=akash-visual-layout-builder-popups'),
 					'svg'        => admin_url('admin.php?page=akash-visual-layout-builder-svg'),
-					'tracking'   => admin_url('admin.php?page=akash-visual-layout-builder-tracking'),
-					'settings'   => admin_url('admin.php?page=akash-visual-layout-builder-settings'),
+					'tracking'   => Akash_Visual_Layout_Builder_Settings::current_user_can_manage()
+						? admin_url('admin.php?page=akash-visual-layout-builder-tracking')
+						: '',
+					'settings'   => Akash_Visual_Layout_Builder_Settings::current_user_can_manage()
+						? admin_url('admin.php?page=akash-visual-layout-builder-settings')
+						: '',
 				],
 				'user'              => [
 					'name'  => wp_get_current_user()->display_name,

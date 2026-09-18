@@ -114,6 +114,9 @@ export function MainNav({
   onPopupsBackToList,
 }: MainNavProps) {
   const urls = window.akashVisualLayoutBuilderData.adminUrls;
+  const canManage =
+    window.akashVisualLayoutBuilderData.canManageSettings ||
+    window.akashVisualLayoutBuilderData.pluginSettings?.can_manage_settings;
   const items: { view: AppView; href: string }[] = [
     { view: "dashboard", href: urls.dashboard },
     { view: "pages", href: urls.pages },
@@ -122,9 +125,11 @@ export function MainNav({
     { view: "site-layout", href: urls.siteLayout },
     { view: "popups", href: urls.popups },
     { view: "svg", href: urls.svg },
-    { view: "tracking", href: urls.tracking },
   ];
-  if (urls.settings && (window.akashVisualLayoutBuilderData.canManageSettings || window.akashVisualLayoutBuilderData.pluginSettings?.can_manage_settings)) {
+  if (urls.tracking && canManage) {
+    items.push({ view: "tracking", href: urls.tracking });
+  }
+  if (urls.settings && canManage) {
     items.push({ view: "settings", href: urls.settings });
   }
 

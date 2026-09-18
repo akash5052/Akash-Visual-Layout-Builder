@@ -110,7 +110,8 @@ class Akash_Visual_Layout_Builder_Custom_Templates {
 				'preview'     => $preview,
 				'accent'      => (string) ($meta['accent'] ?? '#2563eb'),
 				'source'      => 'uploaded',
-				'can_delete'  => true,
+				'can_delete'  => self::current_user_can_delete($id),
+				'author_id'   => isset($meta['author_id']) ? (int) $meta['author_id'] : 0,
 				'format'      => !empty($meta['has_visual']) ? 'visual' : 'code',
 			];
 		}
@@ -329,6 +330,7 @@ class Akash_Visual_Layout_Builder_Custom_Templates {
 			'accent'      => self::sanitize_accent($manifest['accent'] ?? '#2563eb'),
 			'preview'     => $preview_name,
 			'has_visual'  => $has_visual,
+			'author_id'   => get_current_user_id(),
 			'updated'     => current_time('mysql'),
 		];
 
@@ -356,10 +358,37 @@ class Akash_Visual_Layout_Builder_Custom_Templates {
 				'preview'     => '',
 				'accent'      => $meta['accent'],
 				'source'      => 'uploaded',
-				'can_delete'  => true,
+				'can_delete'  => self::current_user_can_delete($id),
+				'author_id'   => (int) $meta['author_id'],
 			],
 			'message'  => __('Template uploaded.', 'akash-visual-layout-builder'),
 		];
+	}
+
+	/**
+	 * Whether the current user may delete an uploaded template pack.
+	 *
+	 * Owners can delete their own packs. Users with the plugin settings capability
+	 * can delete any uploaded pack (including legacy packs without an author).
+	 *
+	 * @param string $id Template id.
+	 * @return bool
+	 */
+	public static function current_user_can_delete($id) {
+		$id  = sanitize_key($id);
+		$all = self::all();
+		if ($id === '' || empty($all[ $id ]) || !is_array($all[ $id ])) {
+			return false;
+		}
+
+		if (Akash_Visual_Layout_Builder_Settings::current_user_can_manage()) {
+			return true;
+		}
+
+		$author_id = isset($all[ $id ]['author_id']) ? (int) $all[ $id ]['author_id'] : 0;
+		$user_id   = get_current_user_id();
+
+		return $author_id > 0 && $user_id > 0 && $author_id === $user_id;
 	}
 
 	/**
@@ -373,6 +402,10 @@ class Akash_Visual_Layout_Builder_Custom_Templates {
 		$all = self::all();
 		if ($id === '' || empty($all[ $id ])) {
 			return new WP_Error('akash_visual_layout_builder_template_missing', __('Uploaded template not found.', 'akash-visual-layout-builder'), [ 'status' => 404 ]);
+		}
+
+		if (!self::current_user_can_delete($id)) {
+			return new WP_Error('akash_visual_layout_builder_template_forbidden', __('You cannot delete this template.', 'akash-visual-layout-builder'), [ 'status' => 403 ]);
 		}
 
 		$dir = self::upload_dir();

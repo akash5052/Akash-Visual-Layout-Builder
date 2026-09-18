@@ -120,8 +120,15 @@ class Akash_Visual_Layout_Builder_REST {
 
 		register_rest_route(self::NAMESPACE, '/templates/(?P<id>[a-z0-9_-]+)', [
 			'methods'             => WP_REST_Server::DELETABLE,
-			'callback'            => [$this, 'delete_template'],
-			'permission_callback' => [$this, 'can_upload'],
+			'callback'            => [ $this, 'delete_template' ],
+			'permission_callback' => [ $this, 'can_delete_template' ],
+			'args'                => [
+				'id' => [
+					'required'          => true,
+					'type'              => 'string',
+					'sanitize_callback' => 'sanitize_key',
+				],
+			],
 		]);
 
 		register_rest_route(self::NAMESPACE, '/layout/global', [
@@ -133,7 +140,7 @@ class Akash_Visual_Layout_Builder_REST {
 		register_rest_route(self::NAMESPACE, '/layout/global', [
 			'methods'             => WP_REST_Server::CREATABLE,
 			'callback'            => [$this, 'save_global_layout'],
-			'permission_callback' => [$this, 'can_edit'],
+			'permission_callback' => [$this, 'can_manage_settings'],
 		]);
 
 		register_rest_route(self::NAMESPACE, '/popups', [
@@ -206,13 +213,13 @@ class Akash_Visual_Layout_Builder_REST {
 		register_rest_route(self::NAMESPACE, '/tracking', [
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => [ $this, 'get_tracking' ],
-			'permission_callback' => [ $this, 'can_edit' ],
+			'permission_callback' => [ $this, 'can_manage_settings' ],
 		]);
 
 		register_rest_route(self::NAMESPACE, '/tracking', [
 			'methods'             => WP_REST_Server::CREATABLE,
 			'callback'            => [ $this, 'save_tracking' ],
-			'permission_callback' => [ $this, 'can_edit' ],
+			'permission_callback' => [ $this, 'can_manage_settings' ],
 		]);
 	}
 
@@ -274,6 +281,25 @@ class Akash_Visual_Layout_Builder_REST {
 		}
 
 		return current_user_can('delete_post', $id);
+	}
+
+	/**
+	 * Check permission to delete a specific uploaded template pack.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return bool
+	 */
+	public function can_delete_template($request) {
+		if (!$this->can_upload()) {
+			return false;
+		}
+
+		$id = sanitize_key($request['id'] ?? '');
+		if ($id === '') {
+			return false;
+		}
+
+		return Akash_Visual_Layout_Builder_Custom_Templates::current_user_can_delete($id);
 	}
 
 	/**
@@ -898,6 +924,10 @@ class Akash_Visual_Layout_Builder_REST {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function save_global_layout($request) {
+		if (!Akash_Visual_Layout_Builder_Settings::current_user_can_manage()) {
+			return new WP_Error('akash_visual_layout_builder_forbidden', __('You are not allowed to manage the site layout.', 'akash-visual-layout-builder'), [ 'status' => 403 ]);
+		}
+
 		$params = $request->get_json_params();
 		$layout = isset($params['layout']) && is_array($params['layout']) ? $params['layout'] : $params;
 
@@ -1203,7 +1233,12 @@ class Akash_Visual_Layout_Builder_REST {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function delete_template($request) {
-		$id     = sanitize_key($request['id'] ?? '');
+		$id = sanitize_key($request['id'] ?? '');
+
+		if (!Akash_Visual_Layout_Builder_Custom_Templates::current_user_can_delete($id)) {
+			return new WP_Error('akash_visual_layout_builder_forbidden', __('You cannot delete this template.', 'akash-visual-layout-builder'), [ 'status' => 403 ]);
+		}
+
 		$result = Akash_Visual_Layout_Builder_Custom_Templates::delete($id);
 
 		if (is_wp_error($result)) {
